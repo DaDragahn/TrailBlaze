@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="circularImage">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="cornerRect">
+        <item name="cornerSize">10%</item>
+    </style>
+
+    <style name="progressBar" parent="@style/Theme.TrailBlaze">
+        <item name="colorAccent">@color/orange</item>
+    </style>
+
+    <style name="profile_buttons">
+        <item name="color">@color/ash_gray</item>
+    </style>
+
+    <style name="SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="backgroundColor">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:editTextColor">@color/black</item>
+        <item name="android:textColorHint">@color/black</item>
+    </style>
+
+</resources>

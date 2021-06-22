@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/perfil_background"
+    android:orientation="vertical"
+    tools:context=".PerfilFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="top"
+        android:alpha="0.65"
+        app:cardBackgroundColor="@color/ash_gray"
+        app:layout_constraintBottom_toBottomOf="@id/profileImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="NotSibling">
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="15dp"
+            android:text="@string/logout"
+            android:textColor="@color/white" />
+    </androidx.cardview.widget.CardView>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/container"
+            android:layout_width="360dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="80dp"
+            android:alpha="0.65"
+            android:background="@color/ash_gray"
+            app:shapeAppearanceOverlay="@style/cornerRect" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileImage"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/profileimage"
+            android:padding="5dp"
+            app:shapeAppearanceOverlay="@style/circularImage"
+            app:strokeColor="@color/dirt_white"
+            app:strokeWidth="5dp" />
+
+        <TextView
+            android:id="@+id/firstName"
+            android:layout_width="345dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="155dp"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:textColor="@color/trailDarkGreen"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/user"
+            android:layout_width="345dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="200dp"
+            android:gravity="center"
+            android:textColor="@color/trailDarkGreen" />
+
+    </FrameLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:rowCount="2">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/trilhosBtn"
+            android:layout_width="155dp"
+            android:layout_height="125dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/round_buttons_perfil"
+            android:text="@string/trillhos"
+            android:textColor="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/gruposBtn"
+            android:layout_width="155dp"
+            android:layout_height="125dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/round_buttons_perfil"
+            android:text="@string/grupos"
+            android:textColor="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/amigosBtn"
+            android:layout_width="155dp"
+            android:layout_height="125dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/round_buttons_perfil"
+            android:text="@string/amigos"
+            android:textColor="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/fotosBtn"
+            android:layout_width="155dp"
+            android:layout_height="125dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/round_buttons_perfil"
+            android:text="@string/fotos"
+            android:textColor="@color/white" />
+
+    </GridLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

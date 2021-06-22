@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "35316203122",
+    "project_id": "trailblaze-3270f",
+    "storage_bucket": "trailblaze-3270f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35316203122:android:6b8d4efbde2c7a165b0ceb",
+        "android_client_info": {
+          "package_name": "dam.a42363.trailblaze"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "35316203122-p62uunvibmggkejjt4h1f7nir6cb311d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dam.a42363.trailblaze",
+            "certificate_hash": "62ab5dfd112deee959e3d73f62685aa5949b50fc"
+          }
+        },
+        {
+          "client_id": "35316203122-n3vu6bjcktrgtael99mts057nefjrpp9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUQE4TA9s63cv-_0nIijBXurajLgf6e2g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "35316203122-n3vu6bjcktrgtael99mts057nefjrpp9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

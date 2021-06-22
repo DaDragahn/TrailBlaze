@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/explorarFragment"
+        android:icon="@drawable/selector_explorar"
+        android:title="@string/explorar" />
+
+    <item
+        android:id="@+id/guardadosFragment"
+        android:icon="@drawable/selector_guardados"
+        android:title="@string/guardados" />
+
+    <item
+        android:id="@+id/contribuirFragment"
+        android:icon="@drawable/selector_contribuir"
+        android:title="@string/gravar" />
+
+    <item
+        android:id="@+id/perfilFragment"
+        android:icon="@drawable/selector_perfil"
+        android:title="@string/perfil" />
+</menu>

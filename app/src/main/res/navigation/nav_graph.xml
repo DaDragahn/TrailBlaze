@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/handlerFragment">
+
+    <fragment
+        android:id="@+id/handlerFragment"
+        android:name="dam.a42363.trailblaze.HandlerFragment"
+        android:label="fragment_handler"
+        tools:layout="@layout/fragment_handler">
+
+        <action
+            android:id="@+id/action_handlerFragment_to_explorarFragment"
+            app:destination="@id/explorarFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/explorarFragment"
+        android:name="dam.a42363.trailblaze.ExplorarFragment"
+        android:label="fragment_explorar"
+        tools:layout="@layout/fragment_explorar">
+
+        <action
+            android:id="@+id/action_explorarFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_explorarFragment_to_perfilFragment"
+            app:destination="@id/perfilFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_explorarFragment_to_fullInfoFragment"
+            app:destination="@id/fullInfoFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/guardadosFragment"
+        android:name="dam.a42363.trailblaze.GuardadosFragment"
+        android:label="fragment_guardados"
+        tools:layout="@layout/fragment_guardados">
+
+        <action
+            android:id="@+id/action_guardadosFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/contribuirFragment"
+        android:name="dam.a42363.trailblaze.ContribuirFragment"
+        android:label="fragment_contribuir"
+        tools:layout="@layout/fragment_contribuir">
+
+        <action
+            android:id="@+id/action_contribuirFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/perfilFragment"
+        android:name="dam.a42363.trailblaze.PerfilFragment"
+        android:label="fragment_perfil"
+        tools:layout="@layout/fragment_perfil">
+
+        <action
+            android:id="@+id/action_perfilFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="dam.a42363.trailblaze.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in">
+
+        <action
+            android:id="@+id/action_signInFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_signInFragment_to_registarFragment"
+            app:destination="@id/registarFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_signInFragment_to_perfilFragment"
+            app:destination="@id/perfilFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/registarFragment"
+        android:name="dam.a42363.trailblaze.RegistarFragment"
+        android:label="fragment_registar"
+        tools:layout="@layout/fragment_registar">
+
+        <action
+            android:id="@+id/action_registarFragment_to_criarPerfilFragment"
+            app:destination="@id/criarPerfilFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/criarPerfilFragment"
+        android:name="dam.a42363.trailblaze.CriarPerfilFragment"
+        android:label="fragment_criar_perfil"
+        tools:layout="@layout/fragment_criar_perfil">
+
+        <action
+            android:id="@+id/action_criarPerfilFragment_to_perfilFragment"
+            app:destination="@id/perfilFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="dam.a42363.trailblaze.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_loginFragment_to_perfilFragment"
+            app:destination="@id/perfilFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/fullInfoFragment"
+        android:name="dam.a42363.trailblaze.FullInfoFragment"
+        android:label="fragment_full_info"
+        tools:layout="@layout/fragment_full_info" />
+</navigation>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CriarPerfilFragment">
+
+    <EditText
+        android:id="@+id/firstName"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|left"
+        android:layout_marginStart="10dp"
+        android:hint="@string/firstName"
+        tools:ignore="RtlHardcoded" />
+
+    <EditText
+        android:id="@+id/lastName"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|right"
+        android:layout_marginEnd="10dp"
+        android:hint="@string/lastName"
+        tools:ignore="RtlHardcoded" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="168dp"
+        android:text="@string/guardar" />
+
+</FrameLayout>
