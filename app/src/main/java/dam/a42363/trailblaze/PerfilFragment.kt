@@ -17,23 +17,39 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import dam.a42363.trailblaze.databinding.FragmentExplorarBinding
+import dam.a42363.trailblaze.databinding.FragmentPerfilBinding
+import io.alterac.blurkit.BlurLayout
 
 class PerfilFragment : Fragment() {
 
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
+    private lateinit var blurLayout: BlurLayout
+
+    var _binding: FragmentPerfilBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        _binding = FragmentPerfilBinding.inflate(inflater, container, false)
+
+//        blurLayout = binding.blurLayout
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_perfil, container, false)
+        return binding.root
+//        inflater.inflate(R.layout.fragment_perfil, container, false)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+//        blurLayout.startBlur()
 
         navController = Navigation.findNavController(view)
 

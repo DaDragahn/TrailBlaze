@@ -1,24 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ContribuirFragment">
 
-    <TextView
-        android:id="@+id/text"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/contribuir"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.495" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <com.mapbox.mapboxsdk.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:mapbox_cameraZoom="15" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/recenterBtn"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="19dp"
+            android:layout_marginBottom="150dp"
+            android:clickable="true"
+            android:contentDescription="@string/center"
+            android:src="@drawable/ic_sharp_my_location"
+            app:fabCustomSize="43dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/recordBtn"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="70dp"
+            android:backgroundTint="@color/trailGreen"
+            android:contentDescription="@string/record"
+            android:src="@drawable/record_button"
+            app:backgroundTint="@color/trailGreen"
+            app:borderWidth="3dp"
+            app:maxImageSize="58dp" />
+
+        <!--            <com.google.android.material.button.MaterialButton-->
+        <!--                android:id="@+id/stopBtn"-->
+        <!--                android:layout_width="50dp"-->
+        <!--                android:layout_height="50dp"-->
+        <!--                android:layout_gravity="bottom|start"-->
+        <!--                android:layout_marginStart="30dp"-->
+        <!--                android:layout_marginBottom="70dp"-->
+        <!--                android:contentDescription="@string/record"-->
+        <!--                android:insetLeft="0dp"-->
+        <!--                android:insetTop="0dp"-->
+        <!--                android:insetRight="0dp"-->
+        <!--                android:insetBottom="0dp"-->
+        <!--                app:backgroundTint="@color/trailGreen"-->
+        <!--                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />-->
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/stopBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|start"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="70dp"
+            android:backgroundTint="@color/y_white"
+            android:contentDescription="@string/record"
+            android:foregroundGravity="center"
+            android:src="@drawable/ic_record_stop"
+            android:visibility="invisible"
+            app:backgroundTint="@color/trailGreen"
+            app:borderWidth="3dp"
+            app:fabCustomSize="48dp"
+            app:maxImageSize="35dp"
+            app:tint="@color/trailGreen" />
+
+
+        <!--            <com.google.android.material.button.MaterialButton-->
+        <!--                android:id="@+id/pauseBtn"-->
+        <!--                android:layout_width="50dp"-->
+        <!--                android:layout_height="50dp"-->
+        <!--                android:layout_gravity="bottom|end"-->
+        <!--                android:layout_marginEnd="30dp"-->
+        <!--                android:layout_marginBottom="70dp"-->
+        <!--                android:contentDescription="@string/record"-->
+        <!--                android:insetLeft="0dp"-->
+        <!--                android:insetTop="0dp"-->
+        <!--                android:insetRight="0dp"-->
+        <!--                android:insetBottom="0dp"-->
+        <!--                app:backgroundTint="@color/trailGreen"-->
+        <!--                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />-->
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/pauseBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="70dp"
+            android:backgroundTint="@color/y_white"
+            android:contentDescription="@string/record"
+            android:foregroundGravity="center"
+            android:src="@drawable/ic_pause_circle"
+            android:visibility="invisible"
+            app:backgroundTint="@color/trailGreen"
+            app:borderWidth="3dp"
+            app:fabCustomSize="50.5dp"
+            app:maxImageSize="34dp"
+            app:tint="@color/trailGreen" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/playBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="70dp"
+            android:backgroundTint="@color/y_white"
+            android:contentDescription="@string/record"
+            android:foregroundGravity="center"
+            android:src="@drawable/ic_play_circle"
+            android:visibility="invisible"
+            app:backgroundTint="@color/trailGreen"
+            app:borderWidth="3dp"
+            app:fabCustomSize="50.5dp"
+            app:maxImageSize="34dp"
+            app:tint="@color/trailGreen" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/chronometerHolder"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="70dp"
+            android:backgroundTint="@color/faded_green"
+            android:visibility="invisible"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="0dp">
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="A GRAVAR"
+                    android:textColor="@color/trailGreen"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Chronometer
+                    android:id="@+id/chronometer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/trailGreen"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+            </GridLayout>
+        </androidx.cardview.widget.CardView>
+
+
+    </FrameLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

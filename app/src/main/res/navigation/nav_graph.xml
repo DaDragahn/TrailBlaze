@@ -44,6 +44,12 @@
         <action
             android:id="@+id/action_explorarFragment_to_fullInfoFragment"
             app:destination="@id/fullInfoFragment" />
+        <action
+            android:id="@+id/action_explorarFragment_to_explorarListFragment"
+            app:destination="@id/explorarListFragment" />
+        <action
+            android:id="@+id/action_explorarFragment_to_navigationFragment"
+            app:destination="@id/navigationFragment" />
 
     </fragment>
     <fragment
@@ -73,6 +79,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_contribuirFragment_to_partilharFragment"
+            app:destination="@id/partilharFragment" />
 
     </fragment>
     <fragment
@@ -170,5 +179,28 @@
         android:id="@+id/fullInfoFragment"
         android:name="dam.a42363.trailblaze.FullInfoFragment"
         android:label="fragment_full_info"
-        tools:layout="@layout/fragment_full_info" />
+        tools:layout="@layout/fragment_full_info" >
+        <action
+            android:id="@+id/action_fullInfoFragment_to_navigationFragment"
+            app:destination="@id/navigationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/explorarListFragment"
+        android:name="dam.a42363.trailblaze.ExplorarListFragment"
+        android:label="fragment_explorar_list"
+        tools:layout="@layout/fragment_explorar_list" >
+        <action
+            android:id="@+id/action_explorarListFragment_to_explorarFragment"
+            app:destination="@id/explorarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigationFragment"
+        android:name="dam.a42363.trailblaze.NavigationFragment"
+        android:label="fragment_navigation"
+        tools:layout="@layout/fragment_navigation" />
+    <fragment
+        android:id="@+id/partilharFragment"
+        android:name="dam.a42363.trailblaze.PartilharFragment"
+        android:label="fragment_partilhar"
+        tools:layout="@layout/fragment_partilhar" />
 </navigation>

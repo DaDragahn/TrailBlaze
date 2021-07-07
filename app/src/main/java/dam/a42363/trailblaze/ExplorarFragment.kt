@@ -2,6 +2,7 @@ package dam.a42363.trailblaze
 
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat.setBackgroundTintList
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -22,8 +24,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
+import com.mapbox.api.directions.v5.models.DirectionsRoute
+import com.mapbox.core.constants.Constants
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
+import com.mapbox.geojson.LineString
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.geometry.LatLng
@@ -63,6 +68,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     private lateinit var navController: NavController
 
 
+    @SuppressLint("UseCompatLoadingForColorStateLists")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -79,6 +85,13 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         cardView = binding.cardViewInfo
 
         db = FirebaseFirestore.getInstance()
+
+        binding.iniciarBtn.backgroundTintList =
+            view?.resources?.getColorStateList(R.color.trailGreen)
+
+        binding.dirBtn.backgroundTintList =
+            view?.resources?.getColorStateList(R.color.orange)
+
 
         // Inflate the layout for this fragment
         return binding.root
@@ -105,7 +118,6 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             val uiSettings = mapboxMap.uiSettings
             uiSettings.setCompassMargins(0, 200, 50, 0)
             uiSettings.setCompassFadeFacingNorth(false)
-            uiSettings.isLogoEnabled = false
             enableLocationComponent(style)
             initMarkerIconSymbolLayer(style)
             checkGeoQuery(style)
@@ -139,8 +151,11 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 for (task in tasks) {
                     val snap = task.result
                     for (doc in snap!!.documents) {
-                        val lat = doc.getDouble("originLatitude")!!
-                        val lng = doc.getDouble("originLongitude")!!
+                        val activeRoute = DirectionsRoute.fromJson(doc.getString("route")!!)
+                        val optimizedRoute =
+                            LineString.fromPolyline(activeRoute.geometry()!!, Constants.PRECISION_6)
+                        val lat = optimizedRoute.coordinates().first().latitude()
+                        val lng = optimizedRoute.coordinates().first().longitude()
 
                         // We have to filter out a few false positives due to GeoHash
                         // accuracy, but most will match
@@ -153,8 +168,11 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                     }
                 }
                 for (docSnap in matchingDocs) {
-                    val lat = docSnap.getDouble("originLatitude")!!
-                    val lng = docSnap.getDouble("originLongitude")!!
+                    val activeRoute = DirectionsRoute.fromJson(docSnap.getString("route")!!)
+                    val optimizedRoute =
+                        LineString.fromPolyline(activeRoute.geometry()!!, Constants.PRECISION_6)
+                    val lat = optimizedRoute.coordinates().first().latitude()
+                    val lng = optimizedRoute.coordinates().first().longitude()
                     val marker = Point.fromLngLat(lng, lat)
                     markerList.add(
                         Feature.fromGeometry(
@@ -207,6 +225,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 db.collection("locations").document("${feature.id()}").get().addOnCompleteListener {
                     if (it.isSuccessful) {
                         val document = it.result
+                        val route = document?.getString("route")
 
                         binding.nome.text = document?.getString("Nome")
                         binding.localidade.text = document?.getString("localidade")
@@ -220,6 +239,13 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                             val bundle = bundleOf("feature" to feature.id())
                             navController.navigate(
                                 R.id.action_explorarFragment_to_fullInfoFragment,
+                                bundle
+                            )
+                        }
+                        binding.iniciarBtn.setOnClickListener {
+                            val bundle = bundleOf("route" to route)
+                            navController.navigate(
+                                R.id.action_explorarFragment_to_navigationFragment,
                                 bundle
                             )
                         }
@@ -325,7 +351,6 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 val uiSettings = mapboxMap.uiSettings
                 uiSettings.setCompassMargins(0, 300, 50, 0)
                 uiSettings.setCompassFadeFacingNorth(false)
-                uiSettings.isLogoEnabled = false
                 enableLocationComponent(style)
             }
         } else {

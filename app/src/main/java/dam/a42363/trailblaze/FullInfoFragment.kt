@@ -1,10 +1,12 @@
 package dam.a42363.trailblaze
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -35,6 +37,7 @@ class FullInfoFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
 
 
+    @SuppressLint("UseCompatLoadingForColorStateLists")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,11 +48,15 @@ class FullInfoFragment : Fragment() {
 
         cardView = binding.cardViewInfo
 
+        binding.iniciarBtn.backgroundTintList =
+            view?.resources?.getColorStateList(R.color.trailGreen)
+
 
         // Inflate the layout for this fragment
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
@@ -63,6 +70,8 @@ class FullInfoFragment : Fragment() {
         db.collection("locations").document("$feature").get().addOnCompleteListener {
             if (it.isSuccessful) {
                 val document = it.result
+                val route = document?.getString("route")
+
 
                 binding.nome.text = document?.getString("Nome")
                 binding.localidade.text = document?.getString("localidade")
@@ -70,8 +79,15 @@ class FullInfoFragment : Fragment() {
                     "Dificuldade: ${document?.getString("dificuldade")}"
                 binding.modalidade.text = document?.getString("modalidade")
                 binding.autor.text = document?.getString("autor");
-                binding.descricao.text = document?.getString("descricao");
+                binding.descricao.text = document?.getString("descricao")
 
+                binding.iniciarBtn.setOnClickListener {
+                    val bundle = bundleOf("route" to route)
+                    navController.navigate(
+                        R.id.action_fullInfoFragment_to_navigationFragment,
+                        bundle
+                    )
+                }
 
                 (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
                 cardView.visibility = View.VISIBLE

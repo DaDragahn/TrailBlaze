@@ -5,8 +5,9 @@ buildscript {
         google()
         mavenCentral()
     }
+
     dependencies {
-        classpath "com.android.tools.build:gradle:4.2.1"
+        classpath 'com.android.tools.build:gradle:4.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.8'
 
@@ -19,6 +20,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        jcenter()
         maven { url 'https://mapbox.bintray.com/mapbox' }
         maven {
             url 'https://api.mapbox.com/downloads/v2/releases/maven'
@@ -34,6 +36,7 @@ allprojects {
             }
         }
     }
+
 }
 
 task clean(type: Delete) {
