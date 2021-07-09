@@ -16,6 +16,8 @@
         <androidx.cardview.widget.CardView
             android:layout_width="350dp"
             android:layout_height="70dp"
+            android:layout_row="0"
+            android:layout_column="6"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:backgroundTint="@color/dirt_white"
@@ -31,6 +33,19 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/nomeTextView"
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:autofillHints="Nome"
+                android:inputType="text"
+                android:textColor="@color/black"
+                tools:ignore="LabelFor" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -51,6 +66,16 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/distanciaTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/black"/>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -71,6 +96,17 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/partidaFimTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/black"
+                />
         </androidx.cardview.widget.CardView>
 
         <GridLayout
@@ -119,6 +155,19 @@
                     android:textSize="15sp"
                     android:textStyle="bold"
                     tools:ignore="HardcodedText" />
+
+                <EditText
+                    android:id="@+id/dificuldadeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center|start"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:autofillHints="Nome"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    tools:ignore="LabelFor" />
             </androidx.cardview.widget.CardView>
 
         </GridLayout>
@@ -141,6 +190,19 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
+
+            <EditText
+                android:id="@+id/descricaoTextView"
+                android:layout_width="match_parent"
+                android:layout_height="39dp"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:autofillHints="Nome"
+                android:inputType="text"
+                android:textColor="@color/black"
+                tools:ignore="LabelFor" />
         </androidx.cardview.widget.CardView>
 
         <GridLayout
@@ -168,6 +230,19 @@
                     android:textSize="15sp"
                     android:textStyle="bold"
                     tools:ignore="HardcodedText" />
+
+                <EditText
+                    android:id="@+id/modalidadeTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="39dp"
+                    android:layout_gravity="center|start"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:autofillHints="Nome"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    tools:ignore="LabelFor" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -200,7 +275,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/dirBtn"
+                android:id="@+id/excludeBtn"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="160dp"
                 android:layout_height="55dp"
@@ -220,7 +295,7 @@
                 tools:ignore="SpUsage" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/iniciarBtn"
+                android:id="@+id/partilharBtn"
                 android:layout_width="160dp"
                 android:layout_height="55dp"
                 android:gravity="center"

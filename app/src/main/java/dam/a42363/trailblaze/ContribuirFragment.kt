@@ -2,20 +2,31 @@ package dam.a42363.trailblaze
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper.getMainLooper
 import android.os.SystemClock
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Chronometer
+import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.cardview.widget.CardView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mapbox.android.core.location.*
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
+import com.mapbox.geojson.Feature
+import com.mapbox.geojson.FeatureCollection
+import com.mapbox.geojson.LineString
+import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.location.LocationComponent
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
@@ -26,9 +37,11 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import dam.a42363.trailblaze.databinding.FragmentContribuirBinding
+import timber.log.Timber
+import java.lang.ref.WeakReference
 
 class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
-    var _binding: FragmentContribuirBinding? = null
+    private var _binding: FragmentContribuirBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var mapView: MapView
@@ -36,12 +49,10 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
     private var permissionsManager: PermissionsManager? = null
 
-    private val ICON_GEOJSON_SOURSE_ID = "icon-source-id"
-    private val ICON_GEOJSON_LAYER_ID = "icon-layer-id"
-
     private lateinit var locationComponent: LocationComponent
-
-    private lateinit var cardView: CardView
+    private var locationEngine: LocationEngine? = null
+    private val DEFAULT_INTERVAL_IN_MILLISECONDS = 5000L
+    private val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
 
     private lateinit var db: FirebaseFirestore
     private lateinit var navController: NavController
@@ -55,13 +66,40 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     private lateinit var chronometerHolder: CardView
     private lateinit var chronometer: Chronometer
 
-    var timeWhenStopped: Long = 0
+    private var timeWhenStopped: Long = 0
+    var isRecording: Boolean = false
+    var isPlaying: Boolean = false
+    var routeCoordinates: ArrayList<Point> = ArrayList()
+    var numberExample = 0.00001
 
+    private val callback: TrackingLocationCallback =
+        TrackingLocationCallback(this)
+    private var doubleBackToExitPressedOnce = false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val backCallback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (doubleBackToExitPressedOnce) {
+                activity?.finishAndRemoveTask()          // Handle the back button event
+            }
+
+            doubleBackToExitPressedOnce = true
+            Toast.makeText(requireContext(), "Please click BACK again to exit", Toast.LENGTH_SHORT)
+                .show()
+
+            Handler(getMainLooper()).postDelayed(
+                Runnable { doubleBackToExitPressedOnce = false },
+                2000
+            )
+        }
+
+        backCallback.isEnabled
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
 
         Mapbox.getInstance(requireContext(), getString(R.string.mapbox_access_token))
@@ -81,36 +119,71 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         chronometer = binding.chronometer
 
         recordButton.setOnClickListener {
+            isRecording = true
+            isPlaying = true
             recordButton.visibility = View.INVISIBLE
             pauseButton.visibility = View.VISIBLE
             stopButton.visibility = View.VISIBLE
             chronometerHolder.visibility = View.VISIBLE
-            chronometer.base = SystemClock.elapsedRealtime() + timeWhenStopped;
+            chronometer.base = SystemClock.elapsedRealtime() + timeWhenStopped
             chronometer.start()
+            routeCoordinates.clear()
+            routeCoordinates.add(
+                Point.fromLngLat(
+                    locationComponent.lastKnownLocation!!.longitude,
+                    locationComponent.lastKnownLocation!!
+                        .latitude
+                )
+            )
         }
 
         pauseButton.setOnClickListener {
+            isPlaying = false
             playButton.visibility = View.VISIBLE
             pauseButton.visibility = View.INVISIBLE
-            timeWhenStopped = chronometer.base - SystemClock.elapsedRealtime();
-            chronometer.stop();
+            timeWhenStopped = chronometer.base - SystemClock.elapsedRealtime()
+            chronometer.stop()
         }
 
         playButton.setOnClickListener {
+            isPlaying = true
             pauseButton.visibility = View.VISIBLE
             playButton.visibility = View.INVISIBLE
-            chronometer.base = SystemClock.elapsedRealtime() + timeWhenStopped;
+            chronometer.base = SystemClock.elapsedRealtime() + timeWhenStopped
             chronometer.start()
         }
         stopButton.setOnClickListener {
+            isRecording = false
+            isPlaying = false
             chronometer.base = SystemClock.elapsedRealtime()
             timeWhenStopped = 0
-            navController.navigate(R.id.action_contribuirFragment_to_partilharFragment)
+            routeCoordinates.add(
+                Point.fromLngLat(
+                    locationComponent.lastKnownLocation!!.longitude + numberExample,
+                    locationComponent.lastKnownLocation!!
+                        .latitude + numberExample
+                )
+            )
+
+            val lineString: LineString = LineString.fromLngLats(routeCoordinates)
+
+            val feature = Feature.fromGeometry(lineString)
+
+            val featureJson = FeatureCollection.fromFeature(feature).toJson()
+
+//            val lineStringTest = lineString.toJson()
+//            Log.d("TrackingLocation", lineStringTest)
+
+            locationEngine?.removeLocationUpdates(callback)
+
+            val bundle = bundleOf(
+                "routeCoordinates" to featureJson
+            )
+            navController.navigate(R.id.action_contribuirFragment_to_partilharFragment, bundle)
         }
 
 
         return binding.root
-//        inflater.inflate(R.layout.fragment_contribuir, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -149,11 +222,11 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         if (PermissionsManager.areLocationPermissionsGranted(requireContext())) {
 
             // Get an instance of the component
-            locationComponent = mapboxMap!!.locationComponent
+            locationComponent = mapboxMap.locationComponent
             // Set the LocationComponent activation options
             val locationComponentActivationOptions =
                 LocationComponentActivationOptions.builder(requireContext(), loadedMapStyle)
-//                    .useDefaultLocationEngine(false)
+                    .useDefaultLocationEngine(false)
                     .build()
 
             // Activate with the LocationComponentActivationOptions object
@@ -168,20 +241,133 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             // Set the component's render mode
             locationComponent.renderMode = RenderMode.COMPASS
 
-//            initLocationEngine()
+            initLocationEngine()
         } else {
             permissionsManager = PermissionsManager(this)
             permissionsManager!!.requestLocationPermissions(requireActivity())
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private fun initLocationEngine() {
+        locationEngine = LocationEngineProvider.getBestLocationEngine(requireContext())
+        val request = LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
+            .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+            .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME).build()
+        locationEngine!!.requestLocationUpdates(request, callback, getMainLooper())
+        locationEngine!!.getLastLocation(callback)
+    }
 
     override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
-        TODO("Not yet implemented")
+        Toast.makeText(
+            requireContext(),
+            R.string.user_location_permission_explanation,
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     override fun onPermissionResult(granted: Boolean) {
-        TODO("Not yet implemented")
+        if (granted) {
+            if (mapboxMap.style != null) {
+                enableLocationComponent(mapboxMap.style!!)
+            }
+        } else {
+            Toast.makeText(
+                requireContext(),
+                R.string.user_location_permission_not_granted,
+                Toast.LENGTH_LONG
+            ).show()
+            requireActivity().finish()
+        }
     }
 
+    private class TrackingLocationCallback(fragment: ContribuirFragment?) :
+        LocationEngineCallback<LocationEngineResult> {
+        private var fragmentWeakReference: WeakReference<ContribuirFragment> =
+            WeakReference(fragment)
+
+        override fun onSuccess(result: LocationEngineResult) {
+            val fragment: ContribuirFragment? = fragmentWeakReference.get()
+            if (fragment != null) {
+                val location = result.lastLocation ?: return
+
+                // Pass the new location to the Maps SDK's LocationComponent
+                if (result.lastLocation != null) {
+                    fragment.mapboxMap.locationComponent
+                        .forceLocationUpdate(location)
+                }
+                if (fragment.isRecording && fragment.isPlaying) {
+                    val latitude = result.lastLocation!!.latitude
+                    val longitude = result.lastLocation!!.longitude
+//                    Toast.makeText(
+//                        fragment.context,
+//                        String.format(
+//                            fragment.getString(R.string.new_location),
+//                            latitude.toString(),
+//                            longitude.toString()
+//                        ),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+
+                    fragment.routeCoordinates.add(
+                        Point.fromLngLat(
+                            longitude + fragment.numberExample,
+                            latitude + fragment.numberExample
+                        )
+                    )
+                    fragment.numberExample += 0.001
+                }
+            }
+        }
+
+        override fun onFailure(exception: Exception) {
+            Timber.d(exception.localizedMessage)
+            val fragment: ContribuirFragment? = fragmentWeakReference.get()
+            if (fragment != null) {
+                Toast.makeText(
+                    fragment.context, exception.localizedMessage,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mapView.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapView.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mapView.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mapView.onStop()
+        routeCoordinates.clear()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mapView.onSaveInstanceState(outState)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        locationEngine?.removeLocationUpdates(callback)
+        mapView.onDestroy()
+        numberExample = 0.00001
+        routeCoordinates.clear()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mapView.onLowMemory()
+    }
 }

@@ -1,9 +1,14 @@
 package dam.a42363.trailblaze
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Looper.getMainLooper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -13,6 +18,27 @@ class GuardadosFragment : Fragment() {
 
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
+    private var doubleBackToExitPressedOnce = false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val backCallback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (doubleBackToExitPressedOnce) {
+                activity?.finishAndRemoveTask()          // Handle the back button event
+            }
+
+            doubleBackToExitPressedOnce = true
+            Toast.makeText(requireContext(), "Please click BACK again to exit", Toast.LENGTH_SHORT)
+                .show()
+
+            Handler(Looper.getMainLooper()).postDelayed(
+                Runnable { doubleBackToExitPressedOnce = false },
+                2000
+            )
+        }
+
+        backCallback.isEnabled
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

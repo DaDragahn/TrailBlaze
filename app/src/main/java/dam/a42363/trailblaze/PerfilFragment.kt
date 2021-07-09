@@ -1,6 +1,8 @@
 package dam.a42363.trailblaze
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -29,11 +32,32 @@ class PerfilFragment : Fragment() {
 
     var _binding: FragmentPerfilBinding? = null
     private val binding get() = _binding!!
+    private var doubleBackToExitPressedOnce = false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val backCallback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (doubleBackToExitPressedOnce) {
+                activity?.finishAndRemoveTask()          // Handle the back button event
+            }
+
+            doubleBackToExitPressedOnce = true
+            Toast.makeText(requireContext(), "Please click BACK again to exit", Toast.LENGTH_SHORT)
+                .show()
+
+            Handler(Looper.getMainLooper()).postDelayed(
+                Runnable { doubleBackToExitPressedOnce = false },
+                2000
+            )
+        }
+
+        backCallback.isEnabled
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentPerfilBinding.inflate(inflater, container, false)
 

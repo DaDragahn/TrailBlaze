@@ -202,5 +202,9 @@
         android:id="@+id/partilharFragment"
         android:name="dam.a42363.trailblaze.PartilharFragment"
         android:label="fragment_partilhar"
-        tools:layout="@layout/fragment_partilhar" />
+        tools:layout="@layout/fragment_partilhar" >
+        <action
+            android:id="@+id/action_partilharFragment_to_explorarFragment"
+            app:destination="@id/explorarFragment" />
+    </fragment>
 </navigation>
