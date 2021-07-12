@@ -88,37 +88,39 @@ class PerfilFragment : Fragment() {
                 (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
             }
 
-            val logout = view.findViewById<Button>(R.id.logout)
-            val email = view.findViewById<TextView>(R.id.user)
-            val name = view.findViewById<TextView>(R.id.firstName)
-            val profileImage = view.findViewById<ImageView>(R.id.profileImage)
+            val logout = binding.logout
+            val email = binding.user
+            val name = binding.firstName
+            val profileImage = binding.profileImage
 
 
             if (user != null) {
-                email.text = user.email!!.toString()
-            }
+//                email.text = user.email!!.toString()
+//                name.text = user.displayName
+//
+//            if (user.displayName != null) {
+//                Glide.with(this).load(user.photoUrl).into(profileImage)
+//            }
 
-            name.text = user?.displayName
-
-            if (user?.displayName != null) {
-                Glide.with(this).load(user.photoUrl).into(profileImage)
-            }
-
-            val db = FirebaseFirestore.getInstance()
-            db.collection("users").document(user!!.uid).get()
-                .addOnCompleteListener { task: Task<DocumentSnapshot?> ->
-                    if (task.isSuccessful) {
-                        val documentSnapshot = task.result
-                        if (documentSnapshot!!.exists()) {
-                            name.text = documentSnapshot.getString("name")
+                val db = FirebaseFirestore.getInstance()
+                db.collection("users").document(user.uid).get()
+                    .addOnCompleteListener { task: Task<DocumentSnapshot?> ->
+                        if (task.isSuccessful) {
+                            val documentSnapshot = task.result
+                            if (documentSnapshot!!.exists()) {
+                                name.text = documentSnapshot.getString("nome")
+                                email.text = documentSnapshot.getString("email")
+                                if (!documentSnapshot.getString("photoUrl").equals(""))
+                                    Glide.with(this).load(documentSnapshot.getString("photoUrl"))
+                                        .into(profileImage)
+                            } else {
+                                Log.d("MainActivity", "No such document")
+                            }
                         } else {
-                            Log.d("MainActivity", "No such document")
+                            Log.d("MainActivity", "get failed with ", task.exception)
                         }
-                    } else {
-                        Log.d("MainActivity", "get failed with ", task.exception)
                     }
-                }
-
+            }
             logout.setOnClickListener {
                 auth.signOut()
                 Toast.makeText(this.activity, "Logged Out", Toast.LENGTH_SHORT).show()

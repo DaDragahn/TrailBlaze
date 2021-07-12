@@ -13,28 +13,38 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mapbox.geojson.FeatureCollection
+import dam.a42363.trailblaze.databinding.FragmentCriarPerfilBinding
+import dam.a42363.trailblaze.databinding.FragmentRegistarBinding
 
 class CriarPerfilFragment : Fragment() {
 
     private lateinit var firstName: EditText
     private lateinit var lastName: EditText
     private lateinit var save: Button
+    private lateinit var email: String
 
     private lateinit var db: FirebaseFirestore
 
     private lateinit var navController: NavController
 
+    private var _binding: FragmentCriarPerfilBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        _binding = FragmentCriarPerfilBinding.inflate(inflater, container, false)
 
-        if (activity != null && this.activity is MainActivity) {
-            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
-        }
+        firstName = binding.firstName
+        lastName = binding.lastName
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_criar_perfil, container, false)
+        save = binding.save
+
+        email = arguments?.getString("email").toString()
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,10 +52,9 @@ class CriarPerfilFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
-        firstName = view.findViewById(R.id.firstName)
-        lastName = view.findViewById(R.id.lastName)
-
-        save = view.findViewById<Button>(R.id.save)
+        if (activity != null && this.activity is MainActivity) {
+            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+        }
 
         save.setOnClickListener {
             val txtFirstName = firstName.text.toString()
@@ -61,10 +70,12 @@ class CriarPerfilFragment : Fragment() {
                 db = FirebaseFirestore.getInstance()
 
                 val updates: MutableMap<String, Any> = HashMap()
-                updates["name"] = "$txtFirstName $txtLastName"
+                updates["nome"] = "$txtFirstName $txtLastName"
+                updates["email"] = email
+                updates["photoUrl"] = ""
 
                 db.collection("users").document(user!!.uid).set(updates)
-                navController.navigate(R.id.action_signInFragment_to_perfilFragment)
+                navController.navigate(R.id.action_criarPerfilFragment_to_perfilFragment)
             }
         }
     }

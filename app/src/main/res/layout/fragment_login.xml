@@ -51,6 +51,7 @@
                     android:drawableStart="@drawable/ic_key"
                     android:drawablePadding="20dp"
                     android:hint="@string/password"
+                    android:inputType="textPassword"
                     android:paddingStart="12dip"
                     android:paddingEnd="12dip"
                     android:textColor="@color/black"

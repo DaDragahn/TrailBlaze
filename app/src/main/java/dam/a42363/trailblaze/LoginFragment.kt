@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
+import dam.a42363.trailblaze.databinding.FragmentCriarPerfilBinding
+import dam.a42363.trailblaze.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
 
@@ -21,17 +23,16 @@ class LoginFragment : Fragment() {
 
     private lateinit var navController: NavController
 
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
-        if (activity != null && this.activity is MainActivity) {
-            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
-        }
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        return binding.root
     }
 
 
@@ -40,10 +41,14 @@ class LoginFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
-        email = view.findViewById(R.id.email)
-        password = view.findViewById(R.id.password)
+        if (activity != null && this.activity is MainActivity) {
+            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+        }
 
-        login = view.findViewById(R.id.login)
+        email = binding.email
+        password = binding.password
+
+        login = binding.login
 
         auth = FirebaseAuth.getInstance()
 

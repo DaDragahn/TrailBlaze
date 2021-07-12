@@ -20,10 +20,12 @@ import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import dam.a42363.trailblaze.databinding.FragmentExplorarBinding
 import dam.a42363.trailblaze.databinding.FragmentSignInBinding
+import java.util.HashMap
 
-class SignInFragment : Fragment(), View.OnClickListener {
+class SignInFragment : Fragment(){
 
     companion object {
         private const val RC_SIGN_IN = 9001
@@ -35,7 +37,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
     private lateinit var loginBtn: MaterialButton
     private lateinit var registerBtn: MaterialButton
 
-    var _binding: FragmentSignInBinding? = null
+    private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
@@ -43,7 +45,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
 
@@ -63,12 +65,6 @@ class SignInFragment : Fragment(), View.OnClickListener {
         navController = Navigation.findNavController(view)
 
         auth = FirebaseAuth.getInstance()
-
-        val register = view.findViewById<Button>(R.id.register)
-        val login = view.findViewById<Button>(R.id.login)
-
-        register.setOnClickListener(this)
-        login.setOnClickListener(this)
 
         //--------------------------------------------GOOGLE--------------------------------------------\\
 //        signInButton = view.findViewById(R.id.googleSignIn)
@@ -92,12 +88,16 @@ class SignInFragment : Fragment(), View.OnClickListener {
 
     }
 
-    override fun onClick(v: View?) {
-        TODO("Not yet implemented")
-    }
-
     private fun updateUI(user: FirebaseUser?) {
-        navController.navigate(R.id.action_signInFragment_to_perfilFragment)
+        val db = FirebaseFirestore.getInstance()
+        val updates: MutableMap<String, Any> =
+            HashMap()
+        updates["nome"] = user?.displayName.toString()
+        updates["email"] = user?.email.toString()
+        updates["photoUrl"] = user?.photoUrl.toString()
+        db.collection("users").document(user!!.uid).set(updates).addOnSuccessListener {
+            navController.navigate(R.id.action_signInFragment_to_perfilFragment)
+        }
     }
 
     private fun signIn() {

@@ -5,33 +5,40 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
+import dam.a42363.trailblaze.databinding.FragmentRegistarBinding
 
 class RegistarFragment : Fragment() {
 
     private lateinit var email: EditText
     private lateinit var password: EditText
+    private lateinit var register: MaterialButton
     private lateinit var auth: FirebaseAuth
 
     private lateinit var navController: NavController
 
+    private var _binding: FragmentRegistarBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        _binding = FragmentRegistarBinding.inflate(inflater, container, false)
 
-        if (activity != null && this.activity is MainActivity) {
-            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
-        }
+        email = binding.email
+        password = binding.password
+        register = binding.register
+        auth = FirebaseAuth.getInstance()
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_registar, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,10 +46,10 @@ class RegistarFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
-        email = view.findViewById(R.id.email)
-        password = view.findViewById(R.id.password)
-        val register = view.findViewById<Button>(R.id.register)
-        auth = FirebaseAuth.getInstance()
+        if (activity != null && this.activity is MainActivity) {
+            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+        }
+
         register.setOnClickListener {
             val txtEmail = email.text.toString()
             val txtPassword = password.text.toString()
@@ -63,12 +70,14 @@ class RegistarFragment : Fragment() {
             if (task.isSuccessful) {
                 Toast.makeText(this.activity, "Register Successful", Toast.LENGTH_SHORT)
                     .show()
-                navController.navigate(R.id.action_registarFragment_to_criarPerfilFragment)
+                val bundle = bundleOf(
+                    "email" to email
+                )
+                navController.navigate(R.id.action_registarFragment_to_criarPerfilFragment, bundle)
             } else {
                 Toast.makeText(this.activity, "Registration Failed", Toast.LENGTH_SHORT)
                     .show()
             }
         }
     }
-
 }
