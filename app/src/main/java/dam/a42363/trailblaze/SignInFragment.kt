@@ -16,9 +16,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import dam.a42363.trailblaze.databinding.FragmentExplorarBinding
+import dam.a42363.trailblaze.databinding.FragmentSignInBinding
 
 class SignInFragment : Fragment(), View.OnClickListener {
 
@@ -29,6 +32,11 @@ class SignInFragment : Fragment(), View.OnClickListener {
     private lateinit var navController: NavController
     private lateinit var signInButton: SignInButton
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var loginBtn: MaterialButton
+    private lateinit var registerBtn: MaterialButton
+
+    var _binding: FragmentSignInBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
 
@@ -36,13 +44,22 @@ class SignInFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        _binding = FragmentSignInBinding.inflate(inflater, container, false)
+
+        loginBtn = binding.login
+        registerBtn = binding.register
+        signInButton = binding.googleSignIn
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_in, container, false)
+        return binding.root
     }
 
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         navController = Navigation.findNavController(view)
 
         auth = FirebaseAuth.getInstance()
@@ -54,7 +71,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
         login.setOnClickListener(this)
 
         //--------------------------------------------GOOGLE--------------------------------------------\\
-        signInButton = view.findViewById(R.id.googleSignIn)
+//        signInButton = view.findViewById(R.id.googleSignIn)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -65,6 +82,14 @@ class SignInFragment : Fragment(), View.OnClickListener {
         signInButton.setOnClickListener {
             signIn()
         }
+
+        loginBtn.setOnClickListener {
+            navController.navigate(R.id.action_signInFragment_to_loginFragment)
+        }
+        registerBtn.setOnClickListener {
+            navController.navigate(R.id.action_signInFragment_to_registarFragment)
+        }
+
     }
 
     override fun onClick(v: View?) {

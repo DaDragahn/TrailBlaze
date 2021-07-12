@@ -1,34 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/first_screen"
     tools:context=".CriarPerfilFragment">
 
-    <EditText
-        android:id="@+id/firstName"
-        android:layout_width="190dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|left"
-        android:layout_marginStart="10dp"
-        android:hint="@string/firstName"
-        tools:ignore="RtlHardcoded" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/lastName"
-        android:layout_width="190dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|right"
-        android:layout_marginEnd="10dp"
-        android:hint="@string/lastName"
-        tools:ignore="RtlHardcoded" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="95dp"
+            app:cardBackgroundColor="@color/y_white"
+            app:cardCornerRadius="20dip"
+            app:cardElevation="0dp">
 
-    <Button
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="168dp"
-        android:text="@string/guardar" />
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical">
 
-</FrameLayout>
+                <EditText
+                    android:id="@+id/firstName"
+                    android:layout_width="280dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/custom_input"
+                    android:hint="@string/firstName"
+                    android:paddingStart="12dip"
+                    android:paddingEnd="12dip"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/ash_gray" />
+
+                <EditText
+                    android:id="@+id/lastName"
+                    android:layout_width="280dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/custom_input"
+                    android:hint="@string/lastName"
+                    android:paddingStart="12dip"
+                    android:paddingEnd="12dip"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/ash_gray" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/save"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/guardar"
+                    app:cornerRadius="50dip" />
+
+            </GridLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

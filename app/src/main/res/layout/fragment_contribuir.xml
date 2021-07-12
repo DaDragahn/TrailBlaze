@@ -163,7 +163,6 @@
             </GridLayout>
         </androidx.cardview.widget.CardView>
 
-
     </FrameLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -16,8 +16,8 @@
     <string name="background">background</string>
     <string name="login">Login</string>
     <string name="register">Registar</string>
-    <string name="email">email</string>
-    <string name="password">password</string>
+    <string name="email">Email Address</string>
+    <string name="password">Password</string>
     <string name="profileimage">ProfileImage</string>
     <string name="logout">LOGOUT</string>
     <string name="trillhos">Meus Trilhos</string>

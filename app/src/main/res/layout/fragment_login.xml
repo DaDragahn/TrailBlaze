@@ -1,31 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/first_screen"
     tools:context=".LoginFragment">
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="75dp"
-        android:hint="@string/email" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:hint="@string/password" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="95dp"
+            app:cardBackgroundColor="@color/y_white"
+            app:cardCornerRadius="20dip"
+            app:cardElevation="0dp">
 
-    <Button
-        android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="100dp"
-        android:text="@string/login" />
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical">
 
-</FrameLayout>
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="280dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/custom_input"
+                    android:drawableStart="@drawable/ic_person"
+                    android:drawablePadding="10dp"
+                    android:hint="@string/email"
+                    android:paddingStart="12dip"
+                    android:paddingEnd="12dip"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/ash_gray" />
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="280dip"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/custom_input"
+                    android:drawableStart="@drawable/ic_key"
+                    android:drawablePadding="20dp"
+                    android:hint="@string/password"
+                    android:paddingStart="12dip"
+                    android:paddingEnd="12dip"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/ash_gray" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/login"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/login"
+                    app:cornerRadius="50dip" />
+
+
+            </GridLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
