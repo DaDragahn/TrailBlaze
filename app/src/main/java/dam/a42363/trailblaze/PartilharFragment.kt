@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -17,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mapbox.api.directions.v5.DirectionsCriteria
+import com.mapbox.api.directions.v5.MapboxDirections
+import com.mapbox.api.directions.v5.models.DirectionsResponse
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.api.geocoding.v5.GeocodingCriteria
 import com.mapbox.api.geocoding.v5.MapboxGeocoding
@@ -49,25 +50,13 @@ class PartilharFragment : Fragment() {
     private var routeCoordinates: FeatureCollection? = null
     private val binding get() = _binding!!
     private var currentRoute: DirectionsRoute? = null
-    private var optimizedRoute: LineString? = null
     private lateinit var origin: Point
+    private lateinit var destination: Point
     private val TAG = "TrackingLocation"
     private var routeJson: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-//        activity?.onBackPressedDispatcher?.addCallback(
-//            viewLifecycleOwner,
-//            object : OnBackPressedCallback(true) {
-//                override fun handleOnBackPressed() {
-//                    if (!shouldInterceptBackPress()) {
-//                        isEnabled = false
-//                        activity!!.onBackPressed()
-//                    }
-//
-//                }
-//            })
 
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
             Log.d("tag", "back button pressed")    // Handle the back button event
@@ -110,8 +99,6 @@ class PartilharFragment : Fragment() {
 
     }
 
-    fun shouldInterceptBackPress() = true
-
     private fun reverseGeocode(point: Point) {
         try {
             val client = MapboxGeocoding.builder()
@@ -153,56 +140,72 @@ class PartilharFragment : Fragment() {
         val features: List<Feature>? = featureCollection.features()
         if (features != null && features.isNotEmpty()) {
             val feature: Feature = features[0]
-            requestMapMatched(feature)
+            requestRoute(feature)
         }
     }
 
-    private fun requestMapMatched(feature: Feature) {
-        val points: List<Point> =
+    private fun requestRoute(feature: Feature) {
+        var index = 2
+        var points: List<Point> =
             (Objects.requireNonNull(feature.geometry()) as LineString).coordinates()
-        MapboxMapMatching.builder()
-            .accessToken(Mapbox.getAccessToken()!!)
-            .profile(DirectionsCriteria.PROFILE_WALKING)
-            .coordinates(points)
-            .steps(true)
-            .build().enqueueCall(object : Callback<MapMatchingResponse> {
-                @SuppressLint("SetTextI18n")
-                override fun onResponse(
-                    call: Call<MapMatchingResponse?>,
-                    response: Response<MapMatchingResponse?>
-                ) {
-                    if (response.isSuccessful && response.body()!!.matchings()!!.isNotEmpty()) {
-                        currentRoute =
-                            response.body()!!.matchings()!![0].toDirectionRoute()
-                        optimizedRoute = LineString.fromPolyline(
-                            currentRoute?.geometry()!!,
-                            Constants.PRECISION_6
-                        )
-                        val distance: Float = (currentRoute!!.distance() / 1000f).toFloat()
-                        if (distance < 1) {
-                            binding.distanciaTextView.text =
-                                "%.0f".format(currentRoute!!.distance()) + "m"
+        origin = points.first()
+        destination = points.last()
+        points = points.drop(1)
+        points = points.dropLast(1)
+        Log.v("TrackingLocation", "$origin" + "$destination")
+        while (points.size > 23) {
+            points = points.drop(index++)
+        }
+        Log.v("TrackingLocation", points.size.toString())
+        if (points.size > 1) {
+            MapboxDirections.builder()
+                .accessToken(Mapbox.getAccessToken()!!)
+                .profile(DirectionsCriteria.PROFILE_WALKING)
+                .origin(origin)
+                .destination(destination)
+                .waypoints(points)
+                .steps(true)
+                .build().enqueueCall(object : Callback<DirectionsResponse> {
+                    @SuppressLint("SetTextI18n")
+                    override fun onResponse(
+                        call: Call<DirectionsResponse?>,
+                        response: Response<DirectionsResponse?>
+                    ) {
+                        if (response.isSuccessful && response.body()!!.routes().isNotEmpty()) {
+                            currentRoute =
+                                response.body()!!.routes()[0]
+//                            optimizedRoute = LineString.fromPolyline(
+//                                currentRoute?.geometry()!!,
+//                                Constants.PRECISION_6
+//                            )
+                            val distance: Float = (currentRoute!!.distance() / 1000f).toFloat()
+                            if (distance < 1) {
+                                binding.distanciaTextView.text =
+                                    "%.0f".format(currentRoute!!.distance()) + "m"
+                            } else {
+                                binding.distanciaTextView.text = distance.toString() + "Km"
+                            }
+                            reverseGeocode(origin)
+//                            Log.d(
+//                                "TrackingLocation",
+//                                optimizedRoute!!.coordinates().size.toString()
+//                            )
+                            Log.d("TrackingLocation", currentRoute?.toJson()!!)
+
                         } else {
-                            binding.distanciaTextView.text = distance.toString() + "Km"
+                            // If the response code does not response "OK" an error has occurred.
+                            Timber.e("MapboxMapMatching failed with %s", response.code())
                         }
-                        origin = optimizedRoute?.coordinates()!!.first()
-                        reverseGeocode(origin)
-                        Log.d("TrackingLocation", optimizedRoute!!.coordinates().size.toString())
-                        Log.d("TrackingLocation", currentRoute?.toJson()!!)
-
-                    } else {
-                        // If the response code does not response "OK" an error has occurred.
-                        Timber.e("MapboxMapMatching failed with %s", response.code())
                     }
-                }
 
-                override fun onFailure(
-                    call: Call<MapMatchingResponse?>?,
-                    throwable: Throwable?
-                ) {
-                    Timber.e(throwable, "MapboxMapMatching error")
-                }
-            })
+                    override fun onFailure(
+                        call: Call<DirectionsResponse?>?,
+                        throwable: Throwable?
+                    ) {
+                        Timber.e(throwable, "MapboxMapMatching error")
+                    }
+                })
+        }
     }
 
     private fun savedRouteOnDatabase() {
@@ -228,13 +231,5 @@ class PartilharFragment : Fragment() {
             navController.navigate(R.id.action_partilharFragment_to_explorarFragment)
         }
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        routeJson = ""
-        routeCoordinates = null
-        currentRoute = null
-        optimizedRoute = null
     }
 }

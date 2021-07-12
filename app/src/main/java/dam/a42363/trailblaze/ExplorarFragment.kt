@@ -251,8 +251,9 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                         val document = it.result
                         val route = document?.getString("route")
 
-                        binding.nome.text = document?.getString("Nome")
+                        binding.nome.text = document?.getString("nome")
                         binding.localidade.text = document?.getString("localidade")
+                        binding.distancia.text ="Distância: ${ document?.getString("distancia")}"
                         binding.dificuldade.text =
                             "Dificuldade: ${document?.getString("dificuldade")}"
 

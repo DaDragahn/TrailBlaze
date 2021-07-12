@@ -73,7 +73,7 @@ class FullInfoFragment : Fragment() {
                 val route = document?.getString("route")
 
 
-                binding.nome.text = document?.getString("Nome")
+                binding.nome.text = document?.getString("nome")
                 binding.localidade.text = document?.getString("localidade")
                 binding.dificuldade.text =
                     "Dificuldade: ${document?.getString("dificuldade")}"

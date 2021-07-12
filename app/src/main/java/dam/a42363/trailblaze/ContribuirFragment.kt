@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper.getMainLooper
 import android.os.SystemClock
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +50,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
     private lateinit var locationComponent: LocationComponent
     private var locationEngine: LocationEngine? = null
-    private val DEFAULT_INTERVAL_IN_MILLISECONDS = 5000L
+    private val DEFAULT_INTERVAL_IN_MILLISECONDS = 30000L
     private val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
 
     private lateinit var db: FirebaseFirestore
@@ -70,7 +69,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     var isRecording: Boolean = false
     var isPlaying: Boolean = false
     var routeCoordinates: ArrayList<Point> = ArrayList()
-    var numberExample = 0.00001
+//    var numberExample = 0.001
 
     private val callback: TrackingLocationCallback =
         TrackingLocationCallback(this)
@@ -88,7 +87,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 .show()
 
             Handler(getMainLooper()).postDelayed(
-                Runnable { doubleBackToExitPressedOnce = false },
+                { doubleBackToExitPressedOnce = false },
                 2000
             )
         }
@@ -159,9 +158,8 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             timeWhenStopped = 0
             routeCoordinates.add(
                 Point.fromLngLat(
-                    locationComponent.lastKnownLocation!!.longitude + numberExample,
-                    locationComponent.lastKnownLocation!!
-                        .latitude + numberExample
+                    locationComponent.lastKnownLocation!!.longitude,
+                    locationComponent.lastKnownLocation!!.latitude
                 )
             )
 
@@ -311,11 +309,11 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
                     fragment.routeCoordinates.add(
                         Point.fromLngLat(
-                            longitude + fragment.numberExample,
-                            latitude + fragment.numberExample
+                            longitude,
+                            latitude
                         )
                     )
-                    fragment.numberExample += 0.001
+//                    fragment.numberExample += 0.001
                 }
             }
         }
@@ -362,7 +360,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         super.onDestroy()
         locationEngine?.removeLocationUpdates(callback)
         mapView.onDestroy()
-        numberExample = 0.00001
+//        numberExample = 0.00001
         routeCoordinates.clear()
     }
 

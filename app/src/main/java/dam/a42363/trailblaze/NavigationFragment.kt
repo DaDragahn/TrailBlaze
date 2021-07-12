@@ -32,8 +32,6 @@ import com.mapbox.navigation.base.trip.model.RouteProgress
 import com.mapbox.navigation.core.MapboxNavigation
 import com.mapbox.navigation.core.arrival.ArrivalObserver
 import com.mapbox.navigation.core.replay.MapboxReplayer
-import com.mapbox.navigation.core.replay.ReplayLocationEngine
-import com.mapbox.navigation.core.replay.route.ReplayProgressObserver
 import com.mapbox.navigation.ui.camera.NavigationCamera
 import com.mapbox.navigation.ui.route.NavigationMapRoute
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -41,8 +39,6 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState
 import dam.a42363.trailblaze.databinding.FragmentNavigationBinding
 import timber.log.Timber
 import java.lang.ref.WeakReference
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
@@ -53,16 +49,17 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     private var navigationMapRoute: NavigationMapRoute? = null
     private var mapboxNavigation: MapboxNavigation? = null
     private lateinit var locationComponent: LocationComponent
-    private val mapboxReplayer = MapboxReplayer()
+//    private val mapboxReplayer = MapboxReplayer()
     private lateinit var permissionsManager: PermissionsManager
     private var _binding: FragmentNavigationBinding? = null
     private lateinit var optimizedRoute: DirectionsRoute
     private val binding get() = _binding!!
 
-    private val DEFAULT_INTERVAL_IN_MILLISECONDS = 5000L
+    private val DEFAULT_INTERVAL_IN_MILLISECONDS = 2000L
     private val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
-    private val db = FirebaseFirestore.getInstance()
-    private val ICON_GEOJSON_SOURCE_ID = "icon-source-id"
+    private val time = System.currentTimeMillis()
+//    private val db = FirebaseFirestore.getInstance()
+//    private val ICON_GEOJSON_SOURCE_ID = "icon-source-id"
 
     private lateinit var slidingUpPanelLayout: SlidingUpPanelLayout
 
@@ -156,13 +153,13 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 //            initMarkerIconSymbolLayer(style)
             val navigationOptions = MapboxNavigation
                 .defaultNavigationOptionsBuilder(requireContext(), Mapbox.getAccessToken())
-                .locationEngine(ReplayLocationEngine(mapboxReplayer))
+//                .locationEngine(ReplayLocationEngine(mapboxReplayer))
                 .build()
             mapboxNavigation = MapboxNavigation(navigationOptions)
-            mapboxNavigation!!.registerRouteProgressObserver(replayProgressObserver)
-            mapboxNavigation!!.registerArrivalObserver(arrivalObserver);
-            mapboxReplayer.pushRealLocation(requireContext(), 0.0)
-            mapboxReplayer.play()
+//            mapboxNavigation!!.registerRouteProgressObserver(replayProgressObserver)
+            mapboxNavigation!!.registerArrivalObserver(arrivalObserver)
+//            mapboxReplayer.pushRealLocation(requireContext(), 0.0)
+//            mapboxReplayer.play()
 
             mapCamera = NavigationCamera(mapboxMap)
             mapCamera?.addProgressChangeListener(mapboxNavigation!!)
@@ -182,6 +179,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 getMainLooper()
             )
 
+            mapboxNavigation!!.navigationOptions.locationEngine.getLastLocation(locationEngineCallback)
             val routes: ArrayList<DirectionsRoute> = ArrayList()
             routes.add(optimizedRoute)
             Log.v("RecordRoute", "$routes[0]")
@@ -313,7 +311,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
     override fun onDestroy() {
         mapView.onDestroy()
-        mapboxNavigation?.unregisterRouteProgressObserver(replayProgressObserver)
+//        mapboxNavigation?.unregisterRouteProgressObserver(replayProgressObserver)
         mapboxNavigation?.unregisterArrivalObserver(arrivalObserver);
         mapboxNavigation?.stopTripSession()
         mapboxNavigation?.onDestroy()
@@ -333,11 +331,16 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         private var fragmentWeakReference: WeakReference<NavigationFragment> =
             WeakReference(fragment)
 
-        @SuppressLint("LogNotTimber")
         override fun onSuccess(result: LocationEngineResult) {
             val fragment: NavigationFragment? = fragmentWeakReference.get()
             if (fragment != null) {
                 fragment.updateLocation(result.locations)
+//                Toast.makeText(
+//                    fragment.context,
+//                    fragment.time.toString(),
+//                    Toast.LENGTH_SHORT
+//                ).show()
+                Log.d("TrackingLocation", "Updating!")
 //                val updates: MutableMap<String, Any> =
 //                    HashMap()
 //                val latitude = result.lastLocation!!.latitude
@@ -359,7 +362,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         locationComponent.forceLocationUpdate(locations, false)
     }
 
-    private val replayProgressObserver = ReplayProgressObserver(mapboxReplayer)
+//    private val replayProgressObserver = ReplayProgressObserver(mapboxReplayer)
 
     private var arrivalObserver: ArrivalObserver = object : ArrivalObserver {
         override fun onNextRouteLegStart(routeLegProgress: RouteLegProgress) {
