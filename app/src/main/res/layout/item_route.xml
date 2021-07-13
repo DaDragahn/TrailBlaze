@@ -1,27 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp">
 
-    <!--    <com.skydoves.transformationlayout.TransformationLayout-->
-    <!--        android:id="@+id/transformationLayout"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:transformation_duration="550">-->
+    <com.skydoves.transformationlayout.TransformationLayout
+        android:id="@+id/transformationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:transformation_duration="550">
 
-    <!--        <com.google.android.material.card.MaterialCardView-->
-    <!--            android:id="@+id/cardView"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_margin="6dp"-->
-    <!--            android:background="@color/ash_gray"-->
-    <!--            android:foreground="?attr/selectableItemBackground"-->
-    <!--            app:cardBackgroundColor="@color/white"-->
-    <!--            app:cardCornerRadius="14dp"-->
-    <!--            app:cardElevation="4dp">-->
-    <!--        </com.google.android.material.card.MaterialCardView>-->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="6dp"
+            android:background="@color/ash_gray"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="4dp">
 
-    <!--    </com.skydoves.transformationlayout.TransformationLayout>-->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:background="@drawable/trail_logo_big"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/dirt_white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:elevation="4dp"
+                    android:maxLines="1"
+                    android:textColor="@color/trailGreen"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/image"
+                    tools:text="Bulbasaur" />
+
+                <TextView
+                    android:id="@+id/localidade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="30dp"
+                    android:elevation="4dp"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/image"
+                    tools:text="Sintra, Lisboa" />
+
+                <TextView
+                    android:id="@+id/author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:elevation="4dp"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/image"
+                    tools:text="Nuno Morgado" />
+
+            </GridLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/likeBtn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center|end"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/dirt_white"
+                android:contentDescription="@string/record"
+                android:elevation="0dp"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_heart_outlined"
+                android:visibility="visible"
+                app:backgroundTint="@color/dirt_white"
+                app:elevation="0dp"
+                app:fabCustomSize="35dp"
+                app:maxImageSize="25dp"
+                app:tint="@color/trailGreen" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/downloadBtn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="5dp"
+                android:backgroundTint="@color/dirt_white"
+                android:contentDescription="@string/record"
+                android:elevation="0dp"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_round_download"
+                android:visibility="visible"
+                app:backgroundTint="@color/trailGreen"
+                app:borderWidth="2dp"
+                app:elevation="0dp"
+                app:fabCustomSize="25dp"
+                app:maxImageSize="17dp"
+                app:tint="@color/trailGreen" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </com.skydoves.transformationlayout.TransformationLayout>
 
 </LinearLayout>
