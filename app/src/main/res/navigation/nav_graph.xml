@@ -192,6 +192,9 @@
         <action
             android:id="@+id/action_explorarListFragment_to_explorarFragment"
             app:destination="@id/explorarFragment" />
+        <action
+            android:id="@+id/action_explorarListFragment_to_fullInfoFragment"
+            app:destination="@id/fullInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigationFragment"

@@ -134,6 +134,19 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
             cardView.visibility = View.GONE
         }
+
+        binding.lista.setOnClickListener{
+            val local = Point.fromLngLat(
+                locationComponent.lastKnownLocation!!.longitude,
+                locationComponent.lastKnownLocation!!
+                    .latitude
+            )
+            val bundle = bundleOf(
+                "local" to local.toJson()
+            )
+            navController.navigate(R.id.action_explorarFragment_to_explorarListFragment, bundle)
+
+        }
     }
 
     override fun onMapReady(mapboxMap: MapboxMap) {

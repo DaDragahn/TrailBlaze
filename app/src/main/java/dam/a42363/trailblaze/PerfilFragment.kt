@@ -28,7 +28,6 @@ class PerfilFragment : Fragment() {
 
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
-    private lateinit var blurLayout: BlurLayout
 
     var _binding: FragmentPerfilBinding? = null
     private val binding get() = _binding!!
@@ -60,8 +59,6 @@ class PerfilFragment : Fragment() {
     ): View {
 
         _binding = FragmentPerfilBinding.inflate(inflater, container, false)
-
-//        blurLayout = binding.blurLayout
 
 
         // Inflate the layout for this fragment
@@ -95,13 +92,6 @@ class PerfilFragment : Fragment() {
 
 
             if (user != null) {
-//                email.text = user.email!!.toString()
-//                name.text = user.displayName
-//
-//            if (user.displayName != null) {
-//                Glide.with(this).load(user.photoUrl).into(profileImage)
-//            }
-
                 val db = FirebaseFirestore.getInstance()
                 db.collection("users").document(user.uid).get()
                     .addOnCompleteListener { task: Task<DocumentSnapshot?> ->
