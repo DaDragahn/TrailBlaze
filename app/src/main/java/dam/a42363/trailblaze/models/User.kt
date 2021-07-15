@@ -1,4 +1,4 @@
-package dam.a42363.trailblaze
+package dam.a42363.trailblaze.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

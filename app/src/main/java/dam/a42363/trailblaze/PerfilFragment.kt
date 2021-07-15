@@ -60,7 +60,9 @@ class PerfilFragment : Fragment() {
 
         _binding = FragmentPerfilBinding.inflate(inflater, container, false)
 
-
+        binding.amigosBtn.setOnClickListener{
+            navController.navigate(R.id.action_perfilFragment_to_amigosFragment)
+        }
         // Inflate the layout for this fragment
         return binding.root
 //        inflater.inflate(R.layout.fragment_perfil, container, false)

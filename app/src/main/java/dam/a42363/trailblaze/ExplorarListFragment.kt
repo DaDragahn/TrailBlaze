@@ -3,7 +3,6 @@ package dam.a42363.trailblaze
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,10 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.core.constants.Constants
-import com.mapbox.geojson.Feature
 import com.mapbox.geojson.LineString
 import com.mapbox.geojson.Point
 import dam.a42363.trailblaze.databinding.FragmentExplorarListBinding
+import dam.a42363.trailblaze.models.RouteInfo
 
 class ExplorarListFragment : Fragment(), RouteRecyclerAdapter.OnListListener {
     private lateinit var navController: NavController
@@ -93,7 +92,6 @@ class ExplorarListFragment : Fragment(), RouteRecyclerAdapter.OnListListener {
     }
 
     private fun updateRouteInfo() {
-        val markerList: MutableList<Feature> = java.util.ArrayList()
         val radiusInM = (2 * 1000).toDouble()
         val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = java.util.ArrayList()
@@ -134,15 +132,12 @@ class ExplorarListFragment : Fragment(), RouteRecyclerAdapter.OnListListener {
                     val localidade = docSnap.getString("localidade")!!
                     val author = docSnap.getString("autor")!!
                     val id = docSnap.id
-                    Log.d("TrackingLocation", "$name $localidade $author")
-                    val route = RouteInfo(name, localidade, author,id)
+                    val route = RouteInfo(name, localidade, author, id)
 
                     routeInfoList.add(route)
                 }
-                Log.d("TrackingLocation", routeInfoList.size.toString())
                 routesListView = binding.routesListView
-
-                routeAdapter = RouteRecyclerAdapter(routeInfoList,this)
+                routeAdapter = RouteRecyclerAdapter(routeInfoList, this)
 
                 routesListView.adapter = routeAdapter
             }

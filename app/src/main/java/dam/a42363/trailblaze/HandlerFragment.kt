@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
+import dam.a42363.trailblaze.utils.SampleMethods
 
 class HandlerFragment : Fragment() {
 

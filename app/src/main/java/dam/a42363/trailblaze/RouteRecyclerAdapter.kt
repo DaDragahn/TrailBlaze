@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dam.a42363.trailblaze.databinding.ItemRouteBinding
+import dam.a42363.trailblaze.models.RouteInfo
 
 class RouteRecyclerAdapter(
     private val items: ArrayList<RouteInfo>,
