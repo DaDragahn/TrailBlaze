@@ -13,22 +13,36 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="top"
-        android:alpha="0.65"
-        app:cardBackgroundColor="@color/ash_gray"
-        app:layout_constraintBottom_toBottomOf="@id/profileImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="NotSibling">
+        app:cardBackgroundColor="@color/ash_gray_alpha"
+        app:cardElevation="0dp">
 
-        <Button
-            android:id="@+id/logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center"
-            android:layout_marginEnd="15dp"
-            android:text="@string/logout"
-            android:textColor="@color/white" />
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="30dp"
+                android:text="@string/perfil"
+                android:textColor="@color/trailGreen"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="15dp"
+                android:text="@string/logout"
+                android:textColor="@color/white" />
+
+        </GridLayout>
+
+
     </androidx.cardview.widget.CardView>
 
     <FrameLayout
@@ -37,14 +51,35 @@
         android:layout_height="match_parent"
         android:layout_gravity="top">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/container"
+        <androidx.cardview.widget.CardView
             android:layout_width="360dp"
             android:layout_height="180dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="80dp"
-            android:background="@color/ash_gray_alpha"
-            app:shapeAppearanceOverlay="@style/cornerRect" />
+            app:cardBackgroundColor="@color/ash_gray_alpha"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="0dp">
+
+            <TextView
+                android:id="@+id/firstName"
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="75dp"
+                android:gravity="center|center_horizontal|center_vertical"
+                android:textColor="@color/trailDarkGreen"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/user"
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="120dp"
+                android:gravity="center"
+                android:textColor="@color/trailDarkGreen" />
+
+        </androidx.cardview.widget.CardView>
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profileImage"
@@ -53,29 +88,11 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:contentDescription="@string/profileimage"
+            android:elevation="2dp"
             android:padding="5dp"
             app:shapeAppearanceOverlay="@style/circularImage"
             app:strokeColor="@color/dirt_white"
             app:strokeWidth="5dp" />
-
-        <TextView
-            android:id="@+id/firstName"
-            android:layout_width="345dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="155dp"
-            android:gravity="center|center_horizontal|center_vertical"
-            android:textColor="@color/trailDarkGreen"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/user"
-            android:layout_width="345dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="200dp"
-            android:gravity="center"
-            android:textColor="@color/trailDarkGreen" />
 
         <GridLayout
             android:layout_width="match_parent"

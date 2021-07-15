@@ -21,14 +21,15 @@
 
         <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <Button
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
-                android:background="@drawable/ic_settings__1_"
+                android:background="@drawable/ic_arrow_back"
                 android:backgroundTint="@color/trailGreen" />
 
             <TextView
@@ -38,7 +39,8 @@
                 android:layout_marginStart="10dp"
                 android:text="@string/amigos"
                 android:textColor="@color/trailGreen"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/addAmigos"
@@ -46,7 +48,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical|end"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/ic_settings__1_"
+                android:background="@drawable/ic_3_dots"
                 android:backgroundTint="@color/trailGreen" />
         </GridLayout>
 
