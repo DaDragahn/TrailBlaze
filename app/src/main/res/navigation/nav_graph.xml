@@ -97,6 +97,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_perfilFragment_to_amigosFragment"
+            app:destination="@id/amigosFragment" />
 
     </fragment>
     <fragment
@@ -210,4 +213,18 @@
             android:id="@+id/action_partilharFragment_to_explorarFragment"
             app:destination="@id/explorarFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/amigosFragment"
+        android:name="dam.a42363.trailblaze.AmigosFragment"
+        android:label="fragment_amigos"
+        tools:layout="@layout/fragment_amigos" >
+        <action
+            android:id="@+id/action_amigosFragment_to_addAmigosFragment"
+            app:destination="@id/addAmigosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAmigosFragment"
+        android:name="dam.a42363.trailblaze.AddAmigosFragment"
+        android:label="fragment_add_amigos"
+        tools:layout="@layout/fragment_add_amigos" />
 </navigation>

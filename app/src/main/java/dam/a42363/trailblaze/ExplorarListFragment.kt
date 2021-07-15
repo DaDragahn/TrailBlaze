@@ -31,7 +31,7 @@ import dam.a42363.trailblaze.databinding.FragmentExplorarListBinding
 class ExplorarListFragment : Fragment(), RouteRecyclerAdapter.OnListListener {
     private lateinit var navController: NavController
 
-    var _binding: FragmentExplorarListBinding? = null
+    private var _binding: FragmentExplorarListBinding? = null
     private val binding get() = _binding!!
     private var doubleBackToExitPressedOnce = false
     private lateinit var routesListView: RecyclerView
