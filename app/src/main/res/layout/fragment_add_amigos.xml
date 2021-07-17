@@ -23,13 +23,14 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/dirBtn"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="start|center_vertical"
                 android:layout_marginStart="20dp"
                 android:background="@drawable/ic_arrow_back"
-                android:backgroundTint="@color/trailGreen" />
+                app:backgroundTint="@color/trailGreen" />
 
             <SearchView
                 android:id="@+id/searchView"

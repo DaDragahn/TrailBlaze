@@ -2,16 +2,19 @@ package dam.a42363.trailblaze
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper.getMainLooper
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Chronometer
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.firebase.firestore.FirebaseFirestore
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.mapbox.android.core.location.LocationEngineCallback
 import com.mapbox.android.core.location.LocationEngineRequest
 import com.mapbox.android.core.location.LocationEngineResult
@@ -31,12 +34,12 @@ import com.mapbox.navigation.base.trip.model.RouteLegProgress
 import com.mapbox.navigation.base.trip.model.RouteProgress
 import com.mapbox.navigation.core.MapboxNavigation
 import com.mapbox.navigation.core.arrival.ArrivalObserver
-import com.mapbox.navigation.core.replay.MapboxReplayer
 import com.mapbox.navigation.ui.camera.NavigationCamera
 import com.mapbox.navigation.ui.route.NavigationMapRoute
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState
 import dam.a42363.trailblaze.databinding.FragmentNavigationBinding
+import dam.a42363.trailblaze.utils.Constants
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
@@ -49,7 +52,10 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     private var navigationMapRoute: NavigationMapRoute? = null
     private var mapboxNavigation: MapboxNavigation? = null
     private lateinit var locationComponent: LocationComponent
-//    private val mapboxReplayer = MapboxReplayer()
+
+    private lateinit var navController: NavController
+
+    //    private val mapboxReplayer = MapboxReplayer()
     private lateinit var permissionsManager: PermissionsManager
     private var _binding: FragmentNavigationBinding? = null
     private lateinit var optimizedRoute: DirectionsRoute
@@ -58,10 +64,28 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     private val DEFAULT_INTERVAL_IN_MILLISECONDS = 2000L
     private val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
     private val time = System.currentTimeMillis()
+
+    private var CAMERA_PERMISSION_CODE = 100
+
+    private var chronoTime: Long? = null
+
+    private lateinit var camera: SurfaceView
 //    private val db = FirebaseFirestore.getInstance()
 //    private val ICON_GEOJSON_SOURCE_ID = "icon-source-id"
 
     private lateinit var slidingUpPanelLayout: SlidingUpPanelLayout
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (savedInstanceState != null) {
+            chronoTime = savedInstanceState.getLong("test")
+        } else {
+            chronoTime = 0
+//            binding.chronometer.start()
+        }
+    }
+
 
     @SuppressLint("LogNotTimber")
     override fun onCreateView(
@@ -96,13 +120,45 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             slidingUpPanelLayout.panelState = PanelState.COLLAPSED
         }
 
-
         optimizedRoute = DirectionsRoute.fromJson(arguments?.getString("route")!!)
         Log.v("RecordRoute", "$optimizedRoute")
 
-        binding.chronometer.start()
+        if (chronoTime == 0L) {
+            binding.chronometer.start()
+        }
+
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        navController = Navigation.findNavController(view)
+
+        binding.cameraBtn.setOnClickListener {
+
+            if (allPermissionGranted()) {
+                Toast.makeText(requireContext(), "We have Permission", Toast.LENGTH_SHORT)
+                    .show()
+                navController.navigate(R.id.action_navigationFragment_to_cameraFragment)
+
+            } else {
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    Constants.REQUIRED_PERMISSIONS,
+                    Constants.REQUEST_CODE
+                )
+            }
+        }
+    }
+
+    private fun allPermissionGranted() =
+        Constants.REQUIRED_PERMISSIONS.all {
+            ContextCompat.checkSelfPermission(
+                requireActivity().baseContext,
+                it
+            ) == PackageManager.PERMISSION_GRANTED
+        }
 
 
     @SuppressLint("MissingPermission")
@@ -179,7 +235,9 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 getMainLooper()
             )
 
-            mapboxNavigation!!.navigationOptions.locationEngine.getLastLocation(locationEngineCallback)
+            mapboxNavigation!!.navigationOptions.locationEngine.getLastLocation(
+                locationEngineCallback
+            )
             val routes: ArrayList<DirectionsRoute> = ArrayList()
             routes.add(optimizedRoute)
             Log.v("RecordRoute", "$routes[0]")
@@ -321,6 +379,9 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     override fun onSaveInstanceState(outState: Bundle) {
         mapView.onSaveInstanceState(outState)
         super.onSaveInstanceState(outState)
+
+        outState.putLong("test", binding.chronometer.base)
+
     }
 
     private val locationEngineCallback = MyLocationEngineCallback(this)

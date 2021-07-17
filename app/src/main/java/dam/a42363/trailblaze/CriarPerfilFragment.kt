@@ -2,6 +2,7 @@ package dam.a42363.trailblaze
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +14,8 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.mapbox.geojson.FeatureCollection
+import com.google.firebase.storage.FirebaseStorage
 import dam.a42363.trailblaze.databinding.FragmentCriarPerfilBinding
-import dam.a42363.trailblaze.databinding.FragmentRegistarBinding
 
 class CriarPerfilFragment : Fragment() {
 
@@ -25,7 +25,11 @@ class CriarPerfilFragment : Fragment() {
     private lateinit var email: String
 
     private lateinit var db: FirebaseFirestore
+    private lateinit var storage: FirebaseStorage
+
     private lateinit var navController: NavController
+
+    private lateinit var key: String
 
     private var _binding: FragmentCriarPerfilBinding? = null
     private val binding get() = _binding!!
@@ -67,16 +71,34 @@ class CriarPerfilFragment : Fragment() {
                 val user = auth.currentUser
 
                 db = FirebaseFirestore.getInstance()
+                storage = FirebaseStorage.getInstance()
 
-                val updates: MutableMap<String, Any> = HashMap()
-                updates["nome"] = "$txtFirstName $txtLastName"
-                updates["email"] = email
-                updates["photoUrl"] = ""
+//                db.collection("users").
 
-                db.collection("users").document(user!!.uid).set(updates)
-                navController.navigate(R.id.action_criarPerfilFragment_to_perfilFragment)
+
+                val storageRef = storage.reference
+//                val userId = user?.uid
+//                val filePath = storageRef.child("$userId.jpg")
+
+
+//                gs://trailblaze-3270f.appspot.com/Profile Images/default-profile-pic.jpg
+
+                val imgURL =
+                    storageRef.child("images/defaultPic.jpg").downloadUrl.addOnSuccessListener {
+                        Log.d("URL", it.toString())
+                        val updates: MutableMap<String, Any> = HashMap()
+                        updates["nome"] = "$txtFirstName $txtLastName"
+                        updates["email"] = email
+                        updates["photoUrl"] = it.toString()
+
+                        db.collection("users").document(user!!.uid).set(updates)
+                        navController.navigate(R.id.action_criarPerfilFragment_to_perfilFragment)
+
+                    }.addOnFailureListener {
+                        Log.d("URL", "Fail", it)
+
+                    }
             }
         }
     }
-
 }

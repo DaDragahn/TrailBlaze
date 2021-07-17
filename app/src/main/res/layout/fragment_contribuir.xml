@@ -25,6 +25,7 @@
             android:layout_marginBottom="150dp"
             android:clickable="true"
             android:contentDescription="@string/center"
+            android:focusable="true"
             android:src="@drawable/ic_sharp_my_location"
             app:fabCustomSize="43dp" />
 

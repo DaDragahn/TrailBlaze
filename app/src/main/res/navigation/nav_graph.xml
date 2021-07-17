@@ -203,7 +203,11 @@
         android:id="@+id/navigationFragment"
         android:name="dam.a42363.trailblaze.NavigationFragment"
         android:label="fragment_navigation"
-        tools:layout="@layout/fragment_navigation" />
+        tools:layout="@layout/fragment_navigation" >
+        <action
+            android:id="@+id/action_navigationFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
     <fragment
         android:id="@+id/partilharFragment"
         android:name="dam.a42363.trailblaze.PartilharFragment"
@@ -227,4 +231,13 @@
         android:name="dam.a42363.trailblaze.AddAmigosFragment"
         android:label="fragment_add_amigos"
         tools:layout="@layout/fragment_add_amigos" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="dam.a42363.trailblaze.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" >
+        <action
+            android:id="@+id/action_cameraFragment_to_navigationFragment"
+            app:destination="@id/navigationFragment" />
+    </fragment>
 </navigation>

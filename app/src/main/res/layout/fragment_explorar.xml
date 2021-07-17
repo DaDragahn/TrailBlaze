@@ -32,22 +32,39 @@
                 android:searchIcon="@drawable/ic_magnifying_glass"
                 android:theme="@style/SearchView" />
 
-            <Button
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/filtro"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_gravity="center_vertical|end"
+                android:layout_gravity="start|center_vertical"
                 android:layout_marginStart="15dp"
-                android:background="@drawable/ic_settings__1_"
-                android:backgroundTint="@color/black" />
+                android:background="@drawable/ic_settings__1_" />
 
-            <Button
+<!--            <Button-->
+<!--                android:id="@+id/filtro"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:layout_gravity="center_vertical|end"-->
+<!--                android:layout_marginStart="15dp"-->
+<!--                android:background="@drawable/ic_settings__1_"-->
+<!--                android:backgroundTint="@color/black" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/lista"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:layout_gravity="end|center_vertical"-->
+<!--                android:layout_marginEnd="15dp"-->
+<!--                android:background="@drawable/ic_list" />-->
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/lista"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="15dp"
-                android:background="@drawable/ic_list" />
+                android:background="@drawable/ic_list"/>
 
         </GridLayout>
 

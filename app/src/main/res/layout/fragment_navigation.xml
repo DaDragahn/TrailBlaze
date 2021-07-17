@@ -30,11 +30,26 @@
             android:layout_height="43dp"
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="19dp"
+            android:layout_marginBottom="200dp"
+            android:clickable="true"
+            android:contentDescription="@string/center"
+            android:focusable="true"
+            android:src="@drawable/ic_sharp_my_location"
+            app:fabCustomSize="43dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/cameraBtn"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="19dp"
             android:layout_marginBottom="150dp"
             android:clickable="true"
             android:contentDescription="@string/center"
-            android:src="@drawable/ic_sharp_my_location"
+            android:focusable="true"
+            android:src="@drawable/ic_camera_filled"
             app:fabCustomSize="43dp" />
+
     </FrameLayout>
 
     <GridLayout
@@ -42,13 +57,14 @@
         android:layout_height="150dp"
         android:background="@drawable/slideup_view"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_arrow_ios_upward_outline"
             android:layout_gravity="center_horizontal"
+            android:background="@drawable/ic_arrow_ios_upward_outline"
             android:contentDescription="arrowUp"
             tools:ignore="HardcodedText" />
 
@@ -64,10 +80,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_arrow_ios_upward_outline"
             android:layout_gravity="center_horizontal"
+            android:background="@drawable/ic_arrow_ios_upward_outline"
             android:contentDescription="arrowUp"
             tools:ignore="HardcodedText" />
     </GridLayout>
+
+    <!--    <androidx.camera.view.PreviewView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent" />-->
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

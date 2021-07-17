@@ -20,6 +20,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -48,10 +52,11 @@ dependencies {
 
     //Firebase
     implementation 'com.google.firebase:firebase-auth:21.0.1'
-    implementation 'com.google.firebase:firebase-firestore:23.0.1'
+    implementation 'com.google.firebase:firebase-firestore:23.0.2'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
     implementation 'com.firebase:geofire-android-common:3.1.0'
     implementation 'com.firebaseui:firebase-ui-firestore:7.1.1'
+    implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
 
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
@@ -72,6 +77,13 @@ dependencies {
 
     //Slide
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
+    implementation 'com.google.firebase:firebase-storage:20.0.0'
+
+    //Camera
+    implementation "androidx.camera:camera-camera2:1.1.0-alpha06"
+    implementation "androidx.camera:camera-lifecycle:1.1.0-alpha06"
+    implementation "androidx.camera:camera-view:1.0.0-alpha26"
+
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
