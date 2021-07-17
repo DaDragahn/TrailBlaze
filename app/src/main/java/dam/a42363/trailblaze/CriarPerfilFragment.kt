@@ -77,27 +77,21 @@ class CriarPerfilFragment : Fragment() {
 
 
                 val storageRef = storage.reference
-//                val userId = user?.uid
-//                val filePath = storageRef.child("$userId.jpg")
 
+                storageRef.child("images/defaultPic.jpg").downloadUrl.addOnSuccessListener {
+                    Log.d("URL", it.toString())
+                    val updates: MutableMap<String, Any> = HashMap()
+                    updates["nome"] = "$txtFirstName $txtLastName"
+                    updates["email"] = email
+                    updates["photoUrl"] = it.toString()
 
-//                gs://trailblaze-3270f.appspot.com/Profile Images/default-profile-pic.jpg
+                    db.collection("users").document(user!!.uid).set(updates)
+                    navController.navigate(R.id.action_criarPerfilFragment_to_perfilFragment)
 
-                val imgURL =
-                    storageRef.child("images/defaultPic.jpg").downloadUrl.addOnSuccessListener {
-                        Log.d("URL", it.toString())
-                        val updates: MutableMap<String, Any> = HashMap()
-                        updates["nome"] = "$txtFirstName $txtLastName"
-                        updates["email"] = email
-                        updates["photoUrl"] = it.toString()
+                }.addOnFailureListener {
+                    Log.d("URL", "Fail", it)
 
-                        db.collection("users").document(user!!.uid).set(updates)
-                        navController.navigate(R.id.action_criarPerfilFragment_to_perfilFragment)
-
-                    }.addOnFailureListener {
-                        Log.d("URL", "Fail", it)
-
-                    }
+                }
             }
         }
     }
