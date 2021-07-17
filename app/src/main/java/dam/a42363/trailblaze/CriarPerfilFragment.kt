@@ -25,7 +25,6 @@ class CriarPerfilFragment : Fragment() {
     private lateinit var email: String
 
     private lateinit var db: FirebaseFirestore
-
     private lateinit var navController: NavController
 
     private var _binding: FragmentCriarPerfilBinding? = null

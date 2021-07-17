@@ -2,7 +2,6 @@ package dam.a42363.trailblaze
 
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,7 +13,6 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat.setBackgroundTintList
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -48,6 +46,7 @@ import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import dam.a42363.trailblaze.databinding.FragmentExplorarBinding
 import java.util.*
+
 
 class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     MapboxMap.OnMapClickListener {
@@ -135,7 +134,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             cardView.visibility = View.GONE
         }
 
-        binding.lista.setOnClickListener{
+        binding.lista.setOnClickListener {
             val local = Point.fromLngLat(
                 locationComponent.lastKnownLocation!!.longitude,
                 locationComponent.lastKnownLocation!!
@@ -219,8 +218,10 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                         )
                     )
                 }
-                val iconSource = style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURSE_ID)
-                iconSource?.setGeoJson(FeatureCollection.fromFeatures(markerList))
+                mapboxMap.getStyle {
+                    val iconSource = it.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURSE_ID)
+                    iconSource?.setGeoJson(FeatureCollection.fromFeatures(markerList))
+                }
             }
     }
 
@@ -266,7 +267,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
                         binding.nome.text = document?.getString("nome")
                         binding.localidade.text = document?.getString("localidade")
-                        binding.distancia.text ="Distância: ${ document?.getString("distancia")}"
+                        binding.distancia.text = "Distância: ${document?.getString("distancia")}"
                         binding.dificuldade.text =
                             "Dificuldade: ${document?.getString("dificuldade")}"
 
