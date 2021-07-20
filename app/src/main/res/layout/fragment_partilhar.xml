@@ -245,6 +245,7 @@
                     android:inputType="text"
                     android:textColor="@color/black"
                     tools:ignore="LabelFor" />
+
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView

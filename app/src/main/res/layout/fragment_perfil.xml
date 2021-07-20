@@ -109,7 +109,7 @@
                 android:layout_height="125dp"
                 android:layout_marginStart="25dp"
                 android:background="@drawable/round_buttons_perfil"
-                android:text="@string/trillhos"
+                android:text="@string/trilhos"
                 android:textColor="@color/white" />
 
             <androidx.appcompat.widget.AppCompatButton

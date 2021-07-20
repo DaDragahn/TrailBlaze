@@ -100,6 +100,15 @@
         <action
             android:id="@+id/action_perfilFragment_to_amigosFragment"
             app:destination="@id/amigosFragment" />
+        <action
+            android:id="@+id/action_perfilFragment_to_trrailsFragment"
+            app:destination="@id/trrailsFragment" />
+        <action
+            android:id="@+id/action_perfilFragment_to_gruposFragment"
+            app:destination="@id/gruposFragment" />
+        <action
+            android:id="@+id/action_perfilFragment_to_fotosFragment"
+            app:destination="@id/fotosFragment" />
 
     </fragment>
     <fragment
@@ -240,4 +249,19 @@
             android:id="@+id/action_cameraFragment_to_navigationFragment"
             app:destination="@id/navigationFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/trrailsFragment"
+        android:name="dam.a42363.trailblaze.TrailsFragment"
+        android:label="fragment_trrails"
+        tools:layout="@layout/fragment_trails" />
+    <fragment
+        android:id="@+id/gruposFragment"
+        android:name="dam.a42363.trailblaze.GruposFragment"
+        android:label="fragment_grupos"
+        tools:layout="@layout/fragment_grupos" />
+    <fragment
+        android:id="@+id/fotosFragment"
+        android:name="dam.a42363.trailblaze.FotosFragment"
+        android:label="fragment_fotos"
+        tools:layout="@layout/fragment_fotos" />
 </navigation>
