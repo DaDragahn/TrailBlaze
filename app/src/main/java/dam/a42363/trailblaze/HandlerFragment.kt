@@ -10,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -25,68 +27,16 @@ class HandlerFragment : Fragment() {
     private lateinit var navController: NavController
 
     private lateinit var progressBar: ProgressBar
+    private lateinit var requestPermissionLauncher : ActivityResultLauncher<String>
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_handler, container, false)
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-            99
-        )
-        navController = Navigation.findNavController(view)
-
-        progressBar = view.findViewById(R.id.circular_progress_bar)
-
-        auth = FirebaseAuth.getInstance()
-
-        if (checkLocationPermission()) {
-            val user = auth.currentUser
-            Handler(Looper.getMainLooper()).postDelayed({
-                if (user != null && auth.uid != null) {
-                    val currentUser = SampleMethods.getUser(auth, user)
-                    val bundle = bundleOf("User" to currentUser)
-                    navController.navigate(R.id.explorarFragment, bundle)
-                    progressBar.visibility = View.INVISIBLE
-
-                } else {
-                    navController.navigate(R.id.action_handlerFragment_to_explorarFragment)
-                    progressBar.visibility = View.INVISIBLE
-                }
-            }, 3000)
-        }
-    }
-
-    private fun checkLocationPermission(): Boolean {
-        if (ActivityCompat.checkSelfPermission(
-                requireActivity().applicationContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestLocationPermission()
-            return false
-        }
-        return true
-    }
-
-    private fun requestLocationPermission() {
-        val requestPermissionLauncher =
+        requestPermissionLauncher =
             registerForActivityResult(
                 ActivityResultContracts.RequestPermission()
             ) { isGranted: Boolean ->
                 if (isGranted) {
-                    Toast.makeText(
-                        requireActivity().applicationContext,
-                        "Permission Granted!",
-                        Toast.LENGTH_LONG
-                    ).show()
                     val user = auth.currentUser
                     Handler(Looper.getMainLooper()).postDelayed({
                         if (user != null && auth.uid != null) {
@@ -111,6 +61,50 @@ class HandlerFragment : Fragment() {
                     ).show()
                 }
             }
-        requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_handler, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
+
+        progressBar = view.findViewById(R.id.circular_progress_bar)
+
+        auth = FirebaseAuth.getInstance()
+
+        if (checkLocationPermission()) {
+            val user = auth.currentUser
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (user != null && auth.uid != null) {
+                    val currentUser = SampleMethods.getUser(auth, user)
+                    val bundle = bundleOf("User" to currentUser)
+                    navController.navigate(R.id.explorarFragment, bundle)
+                    progressBar.visibility = View.INVISIBLE
+
+                } else {
+                    navController.navigate(R.id.action_handlerFragment_to_explorarFragment)
+                    progressBar.visibility = View.INVISIBLE
+                }
+            }, 3000)
+        }
+    }
+
+    private fun checkLocationPermission(): Boolean {
+        if (ContextCompat.checkSelfPermission(
+                requireActivity().applicationContext,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            return false
+        }
+        return true
     }
 }
