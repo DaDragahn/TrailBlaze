@@ -62,7 +62,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     private val ICON_GEOJSON_SOURSE_ID = "icon-source-id"
     private val ICON_GEOJSON_LAYER_ID = "icon-layer-id"
 
-    private lateinit var locationComponent: LocationComponent
+    private var locationComponent: LocationComponent? = null
 
     private lateinit var cardView: CardView
 
@@ -136,8 +136,8 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
         binding.lista.setOnClickListener {
             val local = Point.fromLngLat(
-                locationComponent.lastKnownLocation!!.longitude,
-                locationComponent.lastKnownLocation!!
+                locationComponent?.lastKnownLocation!!.longitude,
+                locationComponent?.lastKnownLocation!!
                     .latitude
             )
             val bundle = bundleOf(
@@ -156,6 +156,10 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             uiSettings.setCompassFadeFacingNorth(false)
             enableLocationComponent(style)
             initMarkerIconSymbolLayer(style)
+            Log.d(
+                "TESTE",
+                locationComponent?.lastKnownLocation?.latitude.toString()
+            )
             checkGeoQuery(style)
             mapboxMap.addOnMapClickListener(this)
         }
@@ -164,8 +168,8 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     private fun checkGeoQuery(style: Style) {
         val markerList: MutableList<Feature> = ArrayList()
         val center = GeoLocation(
-            locationComponent.lastKnownLocation!!.latitude,
-            locationComponent.lastKnownLocation!!
+            locationComponent?.lastKnownLocation!!.latitude,
+            locationComponent!!.lastKnownLocation!!
                 .longitude
         )
         val radiusInM = (2 * 1000).toDouble()
@@ -310,23 +314,29 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             locationComponent = mapboxMap.locationComponent
 
             // Activate with a built LocationComponentActivationOptions object
-            locationComponent.activateLocationComponent(
+            locationComponent!!.activateLocationComponent(
                 LocationComponentActivationOptions.builder(
                     requireContext(),
                     style
                 ).build()
             )
+
+            Log.d(
+                "TESTE",
+                locationComponent?.lastKnownLocation?.latitude.toString()
+            )
+
             // Enable to make component visible
-            locationComponent.isLocationComponentEnabled = true
+            locationComponent!!.isLocationComponentEnabled = true
 
             // Set the component's camera mode
-            locationComponent.cameraMode = CameraMode.TRACKING
+            locationComponent!!.cameraMode = CameraMode.TRACKING
 
             // Set the component's render mode
-            locationComponent.renderMode = RenderMode.COMPASS
+            locationComponent!!.renderMode = RenderMode.COMPASS
 
             binding.recenterBtn.setOnClickListener {
-                locationComponent.setCameraMode(
+                locationComponent!!.setCameraMode(
                     CameraMode.TRACKING_GPS,
                     750L,
                     15.0,
@@ -334,7 +344,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                     0.0,
                     null
                 )
-                locationComponent.zoomWhileTracking(15.0)
+                locationComponent!!.zoomWhileTracking(15.0)
             }
         } else {
             permissionsManager = PermissionsManager(this)

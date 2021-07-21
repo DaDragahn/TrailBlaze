@@ -34,4 +34,10 @@
     <string name="partilhar">Partilhar</string>
     <string name="amigos">Amigos</string>
 
+    <string-array name="modalidades">
+        <item>Caminhada</item>
+        <item>Bicicleta</item>
+        <item>Corrida</item>
+    </string-array>
+
 </resources>

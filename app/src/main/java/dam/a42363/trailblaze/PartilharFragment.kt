@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.activity.addCallback
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -72,6 +73,9 @@ class PartilharFragment : Fragment() {
 
         _binding = FragmentPartilharBinding.inflate(inflater, container, false)
 
+
+
+
         routeJson = arguments?.getString("routeCoordinates")
         routeCoordinates = FeatureCollection.fromJson(routeJson!!)
         Log.d(TAG, "$routeJson")
@@ -86,6 +90,14 @@ class PartilharFragment : Fragment() {
             savedRouteOnDatabase()
         }
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val modalidades = resources.getStringArray(R.array.modalidades)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, modalidades)
+        binding.autoCompleteTextView.setAdapter(arrayAdapter)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -226,7 +238,8 @@ class PartilharFragment : Fragment() {
         updates["distancia"] = binding.distanciaTextView.text.toString()
         updates["geohash"] = hash
         updates["localidade"] = binding.partidaFimTextView.text.toString()
-        updates["modalidade"] = binding.modalidadeTextView.text.toString()
+//        updates["modalidade"] = binding.modalidadeTextView.text.toString()
+        updates["modalidade"] = binding.autoCompleteTextView.text.toString()
         updates["route"] = currentRoute?.toJson()!!
         db.collection("locations").add(updates).addOnSuccessListener {
             navController.navigate(R.id.action_partilharFragment_to_explorarFragment)

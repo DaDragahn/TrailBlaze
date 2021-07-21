@@ -7,121 +7,27 @@
     android:orientation="vertical"
     tools:context=".PartilharFragment">
 
-    <GridLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        tools:ignore="UselessParent">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="350dp"
-            android:layout_height="70dp"
-            android:layout_row="0"
-            android:layout_column="6"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="@color/dirt_white"
-            app:cardCornerRadius="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:text="Nome:"
-                android:textColor="@color/trailGreen"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <EditText
-                android:id="@+id/nomeTextView"
-                android:layout_width="match_parent"
-                android:layout_height="41dp"
-                android:layout_gravity="center|start"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:autofillHints="Nome"
-                android:inputType="text"
-                android:textColor="@color/black"
-                tools:ignore="LabelFor" />
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="350dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="@color/dirt_white"
-            app:cardCornerRadius="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:text="Distância:"
-                android:textColor="@color/trailGreen"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:id="@+id/distanciaTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="10dp"
-                android:textColor="@color/black"/>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="350dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="@color/dirt_white"
-            app:cardCornerRadius="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:text="Partida/Fim:"
-                android:textColor="@color/trailGreen"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:id="@+id/partidaFimTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="10dp"
-                android:textColor="@color/black"
-                />
-        </androidx.cardview.widget.CardView>
+        android:layout_height="match_parent">
 
         <GridLayout
-            android:layout_width="350dp"
-            android:layout_height="75dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:columnCount="2"
-            android:orientation="horizontal">
+            android:id="@+id/gridLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/gridLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UselessParent">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="120dp"
+                android:layout_width="350dp"
                 android:layout_height="70dp"
-                android:layout_gravity="start"
+                android:layout_gravity="center_horizontal"
                 android:backgroundTint="@color/dirt_white"
                 app:cardCornerRadius="10dp">
 
@@ -130,95 +36,33 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="Grupo:"
-                    android:textColor="@color/trailGreen"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    tools:ignore="HardcodedText" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="200dp"
-                android:layout_height="70dp"
-                android:layout_gravity="end"
-                android:backgroundTint="@color/dirt_white"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:cardCornerRadius="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:text="Dificuldade:"
+                    android:text="Nome:"
                     android:textColor="@color/trailGreen"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     tools:ignore="HardcodedText" />
 
                 <EditText
-                    android:id="@+id/dificuldadeTextView"
+                    android:id="@+id/nomeTextView"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="41dp"
                     android:layout_gravity="center|start"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:autofillHints="Nome"
+                    android:backgroundTint="@color/trailGreen"
                     android:inputType="text"
                     android:textColor="@color/black"
                     tools:ignore="LabelFor" />
             </androidx.cardview.widget.CardView>
 
-        </GridLayout>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="350dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="@color/dirt_white"
-            app:cardCornerRadius="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:text="Descrição:"
-                android:textColor="@color/trailGreen"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
-
-            <EditText
-                android:id="@+id/descricaoTextView"
-                android:layout_width="match_parent"
-                android:layout_height="39dp"
-                android:layout_gravity="center|start"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:autofillHints="Nome"
-                android:inputType="text"
-                android:textColor="@color/black"
-                tools:ignore="LabelFor" />
-        </androidx.cardview.widget.CardView>
-
-        <GridLayout
-            android:layout_width="350dp"
-            android:layout_height="75dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:columnCount="2"
-            android:orientation="horizontal">
-
 
             <androidx.cardview.widget.CardView
-                android:layout_width="120dp"
+                android:layout_width="350dp"
                 android:layout_height="70dp"
-                android:layout_gravity="start"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
                 android:backgroundTint="@color/dirt_white"
                 app:cardCornerRadius="10dp">
 
@@ -227,55 +71,263 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="Modalidade:"
+                    android:text="Partida/Fim:"
+                    android:textColor="@color/trailGreen"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/partidaFimTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:textColor="@color/black" />
+            </androidx.cardview.widget.CardView>
+
+            <GridLayout
+                android:layout_width="350dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:columnCount="2"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="130dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="start"
+                    android:backgroundTint="@color/dirt_white"
+                    app:cardCornerRadius="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Distância:"
+                        android:textColor="@color/trailGreen"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/distanciaTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|start"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:textColor="@color/black" />
+                </androidx.cardview.widget.CardView>
+
+                <!--            <androidx.cardview.widget.CardView-->
+                <!--                android:layout_width="130dp"-->
+                <!--                android:layout_height="70dp"-->
+                <!--                android:layout_gravity="start"-->
+                <!--                android:backgroundTint="@color/dirt_white"-->
+                <!--                app:cardCornerRadius="10dp">-->
+
+                <!--                <TextView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_gravity="top"-->
+                <!--                    android:layout_marginStart="10dp"-->
+                <!--                    android:layout_marginTop="5dp"-->
+                <!--                    android:text="Grupo:"-->
+                <!--                    android:textColor="@color/trailGreen"-->
+                <!--                    android:textSize="15sp"-->
+                <!--                    android:textStyle="bold"-->
+                <!--                    tools:ignore="HardcodedText" />-->
+                <!--            </androidx.cardview.widget.CardView>-->
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="200dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="end"
+                    android:backgroundTint="@color/dirt_white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cardCornerRadius="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Dificuldade:"
+                        android:textColor="@color/trailGreen"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
+
+                    <EditText
+                        android:id="@+id/dificuldadeTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center|start"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:autofillHints="Nome"
+                        android:backgroundTint="@color/trailGreen"
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        tools:ignore="LabelFor" />
+                </androidx.cardview.widget.CardView>
+
+            </GridLayout>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="350dp"
+                android:layout_height="130dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:backgroundTint="@color/dirt_white"
+                app:cardCornerRadius="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Descrição:"
                     android:textColor="@color/trailGreen"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     tools:ignore="HardcodedText" />
 
                 <EditText
-                    android:id="@+id/modalidadeTextView"
+                    android:id="@+id/descricaoTextView"
                     android:layout_width="match_parent"
-                    android:layout_height="39dp"
-                    android:layout_gravity="center|start"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom|start"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:autofillHints="Nome"
-                    android:inputType="text"
+                    android:backgroundTint="@color/trailGreen"
+                    android:inputType="textMultiLine"
+                    android:maxLines="4"
+                    android:scrollHorizontally="false"
                     android:textColor="@color/black"
                     tools:ignore="LabelFor" />
-
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="200dp"
-                android:layout_height="70dp"
-                android:layout_gravity="end"
-                android:backgroundTint="@color/dirt_white"
-                app:cardCornerRadius="10dp">
+            <GridLayout
+                android:layout_width="350dp"
+                android:layout_height="85dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:columnCount="2"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:text="Foto:"
-                    android:textColor="@color/trailGreen"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    tools:ignore="HardcodedText" />
-            </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="130dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="start"
+                    android:backgroundTint="@color/dirt_white"
+                    app:cardCornerRadius="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Modalidade:"
+                        android:textColor="@color/trailGreen"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:background="@color/dirt_white"
+                        android:backgroundTint="@color/dirt_white"
+                        android:outlineAmbientShadowColor="@color/dirt_white"
+                        android:outlineSpotShadowColor="@color/dirt_white"
+                        app:boxBackgroundColor="@color/dirt_white"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxStrokeColor="@color/dirt_white"
+                        app:endIconTint="@color/trailGreen"
+                        app:placeholderTextColor="@color/dirt_white"
+                        tools:targetApi="p">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autoCompleteTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/dirt_white"
+                            android:backgroundTint="@color/dirt_white"
+                            android:inputType="none"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:textColor="@color/black"
+                            android:textSize="12.1sp"
+                            tools:ignore="LabelFor" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!--                <EditText-->
+                    <!--                    android:id="@+id/modalidadeTextView"-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="39dp"-->
+                    <!--                    android:layout_gravity="center|start"-->
+                    <!--                    android:layout_marginStart="10dp"-->
+                    <!--                    android:layout_marginTop="10dp"-->
+                    <!--                    android:layout_marginEnd="10dp"-->
+                    <!--                    android:autofillHints="Nome"-->
+                    <!--                    android:inputType="text"-->
+                    <!--                    android:textColor="@color/black"-->
+                    <!--                    tools:ignore="LabelFor" />-->
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="200dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="end"
+                    android:backgroundTint="@color/dirt_white"
+                    app:cardCornerRadius="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Foto:"
+                        android:textColor="@color/trailGreen"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
+                </androidx.cardview.widget.CardView>
+
+            </GridLayout>
 
         </GridLayout>
 
         <GridLayout
+            android:id="@+id/gridLayout"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
+            android:layout_gravity="bottom|center_horizontal"
             android:columnCount="2"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gridLayout2">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/excludeBtn"
@@ -311,6 +363,6 @@
                 tools:ignore="SpUsage" />
         </GridLayout>
 
-    </GridLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
