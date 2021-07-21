@@ -220,7 +220,7 @@ class PartilharFragment : Fragment() {
             HashMap()
         updates["nome"] = binding.nomeTextView.text.toString()
         updates["autor"] = user.displayName.toString()
-        updates["id"] = user.uid
+        updates["uid"] = user.uid
         updates["descricao"] = binding.descricaoTextView.text.toString()
         updates["dificuldade"] = binding.dificuldadeTextView.text.toString()
         updates["distancia"] = binding.distanciaTextView.text.toString()
@@ -231,6 +231,5 @@ class PartilharFragment : Fragment() {
         db.collection("locations").add(updates).addOnSuccessListener {
             navController.navigate(R.id.action_partilharFragment_to_explorarFragment)
         }
-
     }
 }

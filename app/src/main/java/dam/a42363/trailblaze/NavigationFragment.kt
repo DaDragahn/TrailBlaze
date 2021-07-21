@@ -74,25 +74,16 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 //    private val ICON_GEOJSON_SOURCE_ID = "icon-source-id"
 
     private lateinit var slidingUpPanelLayout: SlidingUpPanelLayout
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        if (savedInstanceState != null) {
-            chronoTime = savedInstanceState.getLong("test")
-        } else {
-            chronoTime = 0
-//            binding.chronometer.start()
-        }
-    }
-
-
+    private var destroy: Boolean = false
     @SuppressLint("LogNotTimber")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         Mapbox.getInstance(requireContext(), getString(R.string.mapbox_access_token))
+        if (_binding != null) {
+            return binding.root
+        }
         _binding = FragmentNavigationBinding.inflate(inflater, container, false)
         mapView = binding.mapView
         mapView.onCreate(savedInstanceState)
@@ -123,9 +114,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         optimizedRoute = DirectionsRoute.fromJson(arguments?.getString("route")!!)
         Log.v("RecordRoute", "$optimizedRoute")
 
-        if (chronoTime == 0L) {
-            binding.chronometer.start()
-        }
+        binding.chronometer.start()
 
         return binding.root
     }
@@ -367,21 +356,21 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         mapView.onPause()
     }
 
-    override fun onDestroy() {
-        mapView.onDestroy()
+    override fun onDestroyView() {
+        if (destroy) {
+            mapView.onDestroy()
 //        mapboxNavigation?.unregisterRouteProgressObserver(replayProgressObserver)
-        mapboxNavigation?.unregisterArrivalObserver(arrivalObserver);
-        mapboxNavigation?.stopTripSession()
-        mapboxNavigation?.onDestroy()
-        super.onDestroy()
+            mapboxNavigation?.unregisterArrivalObserver(arrivalObserver);
+            mapboxNavigation?.stopTripSession()
+            mapboxNavigation?.onDestroy()
+            binding.chronometer.stop()
+        }
+        super.onDestroyView()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         mapView.onSaveInstanceState(outState)
         super.onSaveInstanceState(outState)
-
-        outState.putLong("test", binding.chronometer.base)
-
     }
 
     private val locationEngineCallback = MyLocationEngineCallback(this)

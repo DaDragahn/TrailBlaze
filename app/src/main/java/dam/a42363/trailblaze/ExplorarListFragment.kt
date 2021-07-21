@@ -15,21 +15,25 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.core.constants.Constants
 import com.mapbox.geojson.LineString
 import com.mapbox.geojson.Point
 import dam.a42363.trailblaze.databinding.FragmentExplorarListBinding
+import dam.a42363.trailblaze.databinding.ItemRouteBinding
 import dam.a42363.trailblaze.models.RouteInfo
 
-class ExplorarListFragment : Fragment(), RouteRecyclerAdapter.OnListListener {
+class ExplorarListFragment : Fragment() {
     private lateinit var navController: NavController
-
+    private var adapter: FindTrailsFirestoreRecyclerAdapter? = null
     private var _binding: FragmentExplorarListBinding? = null
     private val binding get() = _binding!!
     private var doubleBackToExitPressedOnce = false
@@ -37,7 +41,6 @@ class ExplorarListFragment : Fragment(), RouteRecyclerAdapter.OnListListener {
     private lateinit var center: GeoLocation
     var routeInfoList: ArrayList<RouteInfo> = ArrayList()
     private lateinit var db: FirebaseFirestore
-    private lateinit var routeAdapter: RouteRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +55,7 @@ class ExplorarListFragment : Fragment(), RouteRecyclerAdapter.OnListListener {
                 .show()
 
             Handler(Looper.getMainLooper()).postDelayed(
-                Runnable { doubleBackToExitPressedOnce = false },
+                { doubleBackToExitPressedOnce = false },
                 2000
             )
         }
@@ -64,9 +67,21 @@ class ExplorarListFragment : Fragment(), RouteRecyclerAdapter.OnListListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        if (_binding != null) {
+            return binding.root
+        }
         _binding = FragmentExplorarListBinding.inflate(inflater, container, false)
 
-
+        binding.lista.setOnClickListener {
+            navController.navigate(R.id.action_explorarListFragment_to_explorarFragment)
+        }
+        db = FirebaseFirestore.getInstance()
+        val point = arguments?.getString("local")?.let { Point.fromJson(it) }
+        if (point != null) {
+            center = GeoLocation(point.latitude(), point.longitude())
+        }
+        routesListView = binding.routesListView
+        updateRouteInfo()
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -79,16 +94,6 @@ class ExplorarListFragment : Fragment(), RouteRecyclerAdapter.OnListListener {
         if (activity != null && this.activity is MainActivity) {
             (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
         }
-
-        binding.lista.setOnClickListener() {
-            navController.navigate(R.id.action_explorarListFragment_to_explorarFragment)
-        }
-        db = FirebaseFirestore.getInstance()
-        val point = arguments?.getString("local")?.let { Point.fromJson(it) }
-        if (point != null) {
-            center = GeoLocation(point.latitude(), point.longitude())
-        }
-        updateRouteInfo()
     }
 
     private fun updateRouteInfo() {
@@ -106,7 +111,7 @@ class ExplorarListFragment : Fragment(), RouteRecyclerAdapter.OnListListener {
         // Collect all the query results together into a single list
         Tasks.whenAllComplete(tasks)
             .addOnCompleteListener {
-                val matchingDocs: MutableList<DocumentSnapshot> =
+                val matchingDocs: MutableList<String> =
                     java.util.ArrayList()
                 for (task in tasks) {
                     val snap = task.result
@@ -123,36 +128,82 @@ class ExplorarListFragment : Fragment(), RouteRecyclerAdapter.OnListListener {
                         val distanceInM =
                             GeoFireUtils.getDistanceBetween(docLocation, center)
                         if (distanceInM <= radiusInM) {
-                            matchingDocs.add(doc)
+                            matchingDocs.add(doc.id)
                         }
                     }
                 }
-                for (docSnap in matchingDocs) {
-                    val name = docSnap.getString("nome")!!
-                    val localidade = docSnap.getString("localidade")!!
-                    val author = docSnap.getString("autor")!!
-                    val id = docSnap.id
-                    val route = RouteInfo(name, localidade, author, id)
-
-                    routeInfoList.add(route)
-                }
-                routesListView = binding.routesListView
-                routeAdapter = RouteRecyclerAdapter(routeInfoList, this)
-
-                routesListView.adapter = routeAdapter
+                val query = db.collection("locations")
+                    .whereIn(FieldPath.documentId(), matchingDocs)
+                displayUserTrails(query)
             }
     }
 
-    override fun onNoteClick(position: Int) {
-        val bundle = bundleOf(
-            "feature" to routeInfoList[position].id
-        )
-        routeInfoList.clear()
+    private fun displayUserTrails(query: Query) {
+        val options = FirestoreRecyclerOptions.Builder<RouteInfo>()
+            .setQuery(query, RouteInfo::class.java).build()
 
-        navController.navigate(
-            R.id.action_explorarListFragment_to_fullInfoFragment,
-            bundle
-        )
+        adapter = FindTrailsFirestoreRecyclerAdapter(options)
+        adapter!!.startListening()
+        routesListView.adapter = adapter
+    }
+
+    inner class FindTrailsViewHolder(val routeBinding: ItemRouteBinding) :
+        RecyclerView.ViewHolder(routeBinding.root) {
+        fun setVariables(nome: String, author: String, localidade: String) {
+            routeBinding.name.text = nome
+            routeBinding.author.text = author
+            routeBinding.localidade.text = localidade
+        }
+    }
+
+    private inner class FindTrailsFirestoreRecyclerAdapter(
+        options: FirestoreRecyclerOptions<RouteInfo>
+    ) :
+        FirestoreRecyclerAdapter<RouteInfo, FindTrailsViewHolder>(options) {
+
+
+        override fun onBindViewHolder(
+            holder: FindTrailsViewHolder,
+            position: Int,
+            model: RouteInfo
+        ) {
+            val name = snapshots.getSnapshot(position).getString("nome")!!
+            val author = snapshots.getSnapshot(position).getString("autor")!!
+            val localidade = snapshots.getSnapshot(position).getString("localidade")!!
+            holder.setVariables(name, author, localidade)
+            holder.routeBinding.cardView.setOnClickListener {
+                val bundle = bundleOf(
+                    "feature" to snapshots.getSnapshot(position).id
+                )
+                routeInfoList.clear()
+
+                navController.navigate(
+                    R.id.action_explorarListFragment_to_fullInfoFragment,
+                    bundle
+                )
+            }
+        }
+
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int
+        ): FindTrailsViewHolder {
+            return FindTrailsViewHolder(
+                ItemRouteBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent, false
+                )
+            )
+        }
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        if (adapter != null) {
+            adapter!!.stopListening()
+        }
     }
 
     override fun onDestroy() {

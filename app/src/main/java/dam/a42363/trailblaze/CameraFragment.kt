@@ -35,16 +35,6 @@ class CameraFragment : Fragment() {
 
     private lateinit var cameraExecutor: ExecutorService
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val backCallback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            parentFragmentManager.popBackStackImmediate()
-        }
-        backCallback.isEnabled
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
