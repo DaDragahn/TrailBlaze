@@ -81,10 +81,20 @@ class FullInfoFragment : Fragment() {
                 binding.autor.text = document?.getString("autor");
                 binding.descricao.text = document?.getString("descricao")
 
-                binding.iniciarBtn.setOnClickListener {
-                    val bundle = bundleOf("route" to route)
+                binding.decisionCardView.visibility = View.VISIBLE
+                val bundle = bundleOf("route" to route)
+
+
+                binding.individualBtn.setOnClickListener {
                     navController.navigate(
                         R.id.action_fullInfoFragment_to_navigationFragment,
+                        bundle
+                    )
+                }
+
+                binding.acompanhadoBtn.setOnClickListener {
+                    navController.navigate(
+                        R.id.action_fullInfoFragment_to_escolherModoFragment,
                         bundle
                     )
                 }

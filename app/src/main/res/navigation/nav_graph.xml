@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_explorarFragment_to_navigationFragment"
             app:destination="@id/navigationFragment" />
+        <action
+            android:id="@+id/action_explorarFragment_to_escolherModoFragment"
+            app:destination="@id/escolherModoFragment" />
 
     </fragment>
     <fragment
@@ -195,6 +198,9 @@
         <action
             android:id="@+id/action_fullInfoFragment_to_navigationFragment"
             app:destination="@id/navigationFragment" />
+        <action
+            android:id="@+id/action_fullInfoFragment_to_escolherModoFragment"
+            app:destination="@id/escolherModoFragment" />
     </fragment>
     <fragment
         android:id="@+id/explorarListFragment"
@@ -216,6 +222,9 @@
         <action
             android:id="@+id/action_navigationFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_navigationFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
     <fragment
         android:id="@+id/partilharFragment"
@@ -264,4 +273,13 @@
         android:name="dam.a42363.trailblaze.FotosFragment"
         android:label="fragment_fotos"
         tools:layout="@layout/fragment_fotos" />
+    <fragment
+        android:id="@+id/escolherModoFragment"
+        android:name="dam.a42363.trailblaze.EscolherModoFragment"
+        android:label="fragment_escolher_modo"
+        tools:layout="@layout/fragment_escolher_modo" >
+        <action
+            android:id="@+id/action_escolherModoFragment_to_navigationFragment"
+            app:destination="@id/navigationFragment" />
+    </fragment>
 </navigation>

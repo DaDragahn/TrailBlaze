@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.firebase.auth.FirebaseAuth
 import com.mapbox.android.core.location.LocationEngineCallback
 import com.mapbox.android.core.location.LocationEngineRequest
 import com.mapbox.android.core.location.LocationEngineResult
@@ -55,6 +56,9 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
     private lateinit var navController: NavController
 
+    private lateinit var auth: FirebaseAuth
+
+
     //    private val mapboxReplayer = MapboxReplayer()
     private lateinit var permissionsManager: PermissionsManager
     private var _binding: FragmentNavigationBinding? = null
@@ -75,6 +79,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
     private lateinit var slidingUpPanelLayout: SlidingUpPanelLayout
     private var destroy: Boolean = false
+
     @SuppressLint("LogNotTimber")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -123,6 +128,13 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(view)
+
+        auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
+
+        if (user == null && auth.uid == null) {
+            navController.navigate(R.id.action_navigationFragment_to_signInFragment)
+        }
 
         binding.cameraBtn.setOnClickListener {
 

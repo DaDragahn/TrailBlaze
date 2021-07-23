@@ -286,11 +286,26 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                             )
                         }
                         binding.iniciarBtn.setOnClickListener {
+
+                            binding.decisionCardView.visibility = View.VISIBLE
                             val bundle = bundleOf("route" to route)
-                            navController.navigate(
-                                R.id.action_explorarFragment_to_navigationFragment,
-                                bundle
-                            )
+
+
+                            binding.individualBtn.setOnClickListener {
+                                navController.navigate(
+                                    R.id.action_explorarFragment_to_navigationFragment,
+                                    bundle
+                                )
+                            }
+
+                            binding.acompanhadoBtn.setOnClickListener {
+                                navController.navigate(
+                                    R.id.action_explorarFragment_to_escolherModoFragment,
+                                    bundle
+                                )
+                            }
+
+
                         }
                     }
                 }

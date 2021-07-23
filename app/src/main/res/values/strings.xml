@@ -33,6 +33,13 @@
     <string name="excluir">Excluir</string>
     <string name="partilhar">Partilhar</string>
     <string name="amigos">Amigos</string>
+    <string name="individual">Individual</string>
+    <string name="acompanhado">Acompanhado</string>
+    <string name="seleciona_o_tipo_de_percurso">Seleciona o tipo de Percurso</string>
+    <string name="convidar">Convidar</string>
+    <string name="nao">Não</string>
+    <string name="sim">Sim</string>
+    <string name="deseja_continuar_com_este_grupo">Deseja continuar com este grupo</string>
 
     <string-array name="modalidades">
         <item>Caminhada</item>
