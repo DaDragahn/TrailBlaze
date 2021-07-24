@@ -87,7 +87,7 @@
                     android:layout_marginTop="15dp" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/login"
+                    android:id="@+id/start"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                     android:layout_marginEnd="20dp"
                     android:backgroundTint="@color/white"
                     android:text="@string/convidar"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     app:cornerRadius="50dip"
                     app:strokeColor="@color/trailGreen"
                     app:strokeWidth="2dp" />
