@@ -213,13 +213,13 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/iniciarBtn"
         android:layout_width="150dp"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:background="@drawable/buttons"
         android:backgroundTint="@color/trailGreen"
         android:text="@string/iniciar"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="17dip"
+        android:textSize="17sp"
         app:icon="@drawable/ic_location_arrow"
         app:iconGravity="textStart"
         app:iconPadding="3dp"
@@ -230,7 +230,6 @@
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96"
-        tools:ignore="SpUsage" />
+        app:layout_constraintVertical_bias="0.96" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

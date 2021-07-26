@@ -16,6 +16,11 @@
         android:title="@string/gravar" />
 
     <item
+        android:id="@+id/notificationsFragment"
+        android:icon="@drawable/selector_notification"
+        android:title="@string/notificacoes" />
+
+    <item
         android:id="@+id/perfilFragment"
         android:icon="@drawable/selector_perfil"
         android:title="@string/perfil" />

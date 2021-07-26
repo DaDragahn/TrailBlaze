@@ -40,6 +40,9 @@
     <string name="nao">Não</string>
     <string name="sim">Sim</string>
     <string name="deseja_continuar_com_este_grupo">Deseja continuar com este grupo</string>
+    <string name="notificacoes">Notificações</string>
+    <string name="recusar">Recusar</string>
+    <string name="aceitar">Aceitar</string>
 
     <string-array name="modalidades">
         <item>Caminhada</item>

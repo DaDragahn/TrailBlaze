@@ -7,9 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
@@ -20,9 +17,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import dam.a42363.trailblaze.databinding.FragmentExplorarBinding
 import dam.a42363.trailblaze.databinding.FragmentPerfilBinding
-import io.alterac.blurkit.BlurLayout
 
 class PerfilFragment : Fragment() {
 
@@ -65,7 +60,7 @@ class PerfilFragment : Fragment() {
         }
 
         binding.trilhosBtn.setOnClickListener{
-            navController.navigate(R.id.action_perfilFragment_to_trrailsFragment)
+            navController.navigate(R.id.action_perfilFragment_to_trailsFragment)
         }
         // Inflate the layout for this fragment
         return binding.root

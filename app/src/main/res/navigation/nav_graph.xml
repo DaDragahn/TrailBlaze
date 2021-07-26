@@ -104,8 +104,8 @@
             android:id="@+id/action_perfilFragment_to_amigosFragment"
             app:destination="@id/amigosFragment" />
         <action
-            android:id="@+id/action_perfilFragment_to_trrailsFragment"
-            app:destination="@id/trrailsFragment" />
+            android:id="@+id/action_perfilFragment_to_trailsFragment"
+            app:destination="@id/trailsFragment" />
         <action
             android:id="@+id/action_perfilFragment_to_gruposFragment"
             app:destination="@id/gruposFragment" />
@@ -194,7 +194,7 @@
         android:id="@+id/fullInfoFragment"
         android:name="dam.a42363.trailblaze.FullInfoFragment"
         android:label="fragment_full_info"
-        tools:layout="@layout/fragment_full_info" >
+        tools:layout="@layout/fragment_full_info">
         <action
             android:id="@+id/action_fullInfoFragment_to_navigationFragment"
             app:destination="@id/navigationFragment" />
@@ -206,7 +206,7 @@
         android:id="@+id/explorarListFragment"
         android:name="dam.a42363.trailblaze.ExplorarListFragment"
         android:label="fragment_explorar_list"
-        tools:layout="@layout/fragment_explorar_list" >
+        tools:layout="@layout/fragment_explorar_list">
         <action
             android:id="@+id/action_explorarListFragment_to_explorarFragment"
             app:destination="@id/explorarFragment" />
@@ -218,7 +218,7 @@
         android:id="@+id/navigationFragment"
         android:name="dam.a42363.trailblaze.NavigationFragment"
         android:label="fragment_navigation"
-        tools:layout="@layout/fragment_navigation" >
+        tools:layout="@layout/fragment_navigation">
         <action
             android:id="@+id/action_navigationFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
@@ -230,7 +230,7 @@
         android:id="@+id/partilharFragment"
         android:name="dam.a42363.trailblaze.PartilharFragment"
         android:label="fragment_partilhar"
-        tools:layout="@layout/fragment_partilhar" >
+        tools:layout="@layout/fragment_partilhar">
         <action
             android:id="@+id/action_partilharFragment_to_explorarFragment"
             app:destination="@id/explorarFragment" />
@@ -239,7 +239,7 @@
         android:id="@+id/amigosFragment"
         android:name="dam.a42363.trailblaze.AmigosFragment"
         android:label="fragment_amigos"
-        tools:layout="@layout/fragment_amigos" >
+        tools:layout="@layout/fragment_amigos">
         <action
             android:id="@+id/action_amigosFragment_to_addAmigosFragment"
             app:destination="@id/addAmigosFragment" />
@@ -253,13 +253,13 @@
         android:id="@+id/cameraFragment"
         android:name="dam.a42363.trailblaze.CameraFragment"
         android:label="fragment_camera"
-        tools:layout="@layout/fragment_camera" >
+        tools:layout="@layout/fragment_camera">
         <action
             android:id="@+id/action_cameraFragment_to_navigationFragment"
             app:destination="@id/navigationFragment" />
     </fragment>
     <fragment
-        android:id="@+id/trrailsFragment"
+        android:id="@+id/trailsFragment"
         android:name="dam.a42363.trailblaze.TrailsFragment"
         android:label="fragment_trrails"
         tools:layout="@layout/fragment_trails" />
@@ -277,9 +277,14 @@
         android:id="@+id/escolherModoFragment"
         android:name="dam.a42363.trailblaze.EscolherModoFragment"
         android:label="fragment_escolher_modo"
-        tools:layout="@layout/fragment_escolher_modo" >
+        tools:layout="@layout/fragment_escolher_modo">
         <action
             android:id="@+id/action_escolherModoFragment_to_navigationFragment"
             app:destination="@id/navigationFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="dam.a42363.trailblaze.NotificationsFragment"
+        android:label="fragment_notifications"
+        tools:layout="@layout/fragment_notifications" />
 </navigation>

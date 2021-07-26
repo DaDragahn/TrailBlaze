@@ -248,12 +248,11 @@
                         android:backgroundTint="@color/orange"
                         android:text="@string/dir"
                         android:textColor="@color/white"
-                        android:textSize="15dip"
+                        android:textSize="15sp"
                         app:icon="@drawable/ic_directions"
                         app:iconGravity="textStart"
                         app:iconPadding="3dp"
-                        app:iconTint="@color/white"
-                        tools:ignore="SpUsage" />
+                        app:iconTint="@color/white" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/iniciarBtn"
@@ -266,12 +265,11 @@
                         android:text="@string/iniciar"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="15dip"
+                        android:textSize="15sp"
                         app:icon="@drawable/ic_location_arrow"
                         app:iconGravity="textStart"
                         app:iconPadding="3dp"
-                        app:iconTint="@color/white"
-                        tools:ignore="SpUsage" />
+                        app:iconTint="@color/white" />
                 </GridLayout>
 
             </GridLayout>
