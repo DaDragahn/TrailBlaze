@@ -13,11 +13,7 @@
 
         <action
             android:id="@+id/action_handlerFragment_to_explorarFragment"
-            app:destination="@id/explorarFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/explorarFragment" />
 
     </fragment>
     <fragment
@@ -28,19 +24,11 @@
 
         <action
             android:id="@+id/action_explorarFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/signInFragment" />
 
         <action
             android:id="@+id/action_explorarFragment_to_perfilFragment"
-            app:destination="@id/perfilFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/perfilFragment" />
         <action
             android:id="@+id/action_explorarFragment_to_fullInfoFragment"
             app:destination="@id/fullInfoFragment" />
@@ -63,11 +51,7 @@
 
         <action
             android:id="@+id/action_guardadosFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/signInFragment" />
     </fragment>
     <fragment
         android:id="@+id/contribuirFragment"
@@ -77,11 +61,7 @@
 
         <action
             android:id="@+id/action_contribuirFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/signInFragment" />
         <action
             android:id="@+id/action_contribuirFragment_to_partilharFragment"
             app:destination="@id/partilharFragment" />
@@ -95,11 +75,7 @@
 
         <action
             android:id="@+id/action_perfilFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/signInFragment" />
         <action
             android:id="@+id/action_perfilFragment_to_amigosFragment"
             app:destination="@id/amigosFragment" />
@@ -122,27 +98,15 @@
 
         <action
             android:id="@+id/action_signInFragment_to_loginFragment"
-            app:destination="@id/loginFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/loginFragment" />
 
         <action
             android:id="@+id/action_signInFragment_to_registarFragment"
-            app:destination="@id/registarFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/registarFragment" />
 
         <action
             android:id="@+id/action_signInFragment_to_perfilFragment"
-            app:destination="@id/perfilFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/perfilFragment" />
 
     </fragment>
     <fragment
@@ -153,11 +117,7 @@
 
         <action
             android:id="@+id/action_registarFragment_to_criarPerfilFragment"
-            app:destination="@id/criarPerfilFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/criarPerfilFragment" />
 
     </fragment>
     <fragment
@@ -168,11 +128,7 @@
 
         <action
             android:id="@+id/action_criarPerfilFragment_to_perfilFragment"
-            app:destination="@id/perfilFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/perfilFragment" />
 
     </fragment>
     <fragment
@@ -183,11 +139,7 @@
 
         <action
             android:id="@+id/action_loginFragment_to_perfilFragment"
-            app:destination="@id/perfilFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/perfilFragment" />
 
     </fragment>
     <fragment
@@ -286,5 +238,12 @@
         android:id="@+id/notificationsFragment"
         android:name="dam.a42363.trailblaze.NotificationsFragment"
         android:label="fragment_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_notifications">
+        <action
+            android:id="@+id/action_notificationsFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_notificationsFragment_to_navigationFragment"
+            app:destination="@id/navigationFragment" />
+    </fragment>
 </navigation>
