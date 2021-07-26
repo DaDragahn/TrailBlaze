@@ -86,7 +86,7 @@
                         app:strokeWidth="1dp" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/partilharBtn"
+                        android:id="@+id/acceptBtn"
                         android:layout_width="160dp"
                         android:layout_height="60dp"
                         android:layout_gravity="end"

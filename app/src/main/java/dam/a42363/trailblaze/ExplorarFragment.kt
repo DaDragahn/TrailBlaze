@@ -288,10 +288,9 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                         binding.iniciarBtn.setOnClickListener {
 
                             binding.decisionCardView.visibility = View.VISIBLE
-                            val bundle = bundleOf("route" to route)
-
 
                             binding.individualBtn.setOnClickListener {
+                                val bundle = bundleOf("route" to route)
                                 navController.navigate(
                                     R.id.action_explorarFragment_to_navigationFragment,
                                     bundle
@@ -299,6 +298,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                             }
 
                             binding.acompanhadoBtn.setOnClickListener {
+                                val bundle = bundleOf("route" to route,"feature" to feature.id())
                                 navController.navigate(
                                     R.id.action_explorarFragment_to_escolherModoFragment,
                                     bundle

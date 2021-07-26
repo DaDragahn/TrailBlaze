@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.mapbox.api.directions.v5.models.DirectionsRoute
 import dam.a42363.trailblaze.databinding.FragmentEscolherModoBinding
 import dam.a42363.trailblaze.databinding.ItemAmigoBinding
 import dam.a42363.trailblaze.databinding.ItemAmigoConvidarBinding
@@ -35,6 +37,8 @@ class EscolherModoFragment : Fragment() {
     private lateinit var navController: NavController
     private var adapter: FindFriendsFirestoreRecyclerAdapter? = null
     private val friendsArray = ArrayList<String>()
+    private var optimizedRoute: String? = null
+    private var feature: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +53,12 @@ class EscolherModoFragment : Fragment() {
         friendRef = db.collection("Friends").document("FriendDocument").collection(onlineId)
         userRef = db.collection("users")
         displayAllFriends()
+        binding.start.setOnClickListener {
+            inviteAndStartTrail()
+        }
+
+        optimizedRoute = arguments?.getString("route")!!
+        feature = arguments?.getString("feature")!!
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -58,6 +68,42 @@ class EscolherModoFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
+    }
+
+    private fun inviteAndStartTrail() {
+
+        val lobby = db.collection("Trails").document()
+
+        db.collection("users").document(onlineId).get().addOnCompleteListener {
+            if (it.isSuccessful) {
+                val documentSnapshot = it.result
+                if (documentSnapshot!!.exists()) {
+                    val docSent = hashMapOf(
+                        "idTrail" to lobby.id,
+                        "nome" to documentSnapshot.getString("nome"),
+                        "photoUrl" to documentSnapshot.getString("photoUrl"),
+                        "idRoute" to feature
+                    )
+                    for (id in friendsArray) {
+                        db.collection("Invites").document("InviteDocument").collection(id)
+                            .document(onlineId)
+                            .set(docSent)
+                    }
+                    val lobbySent = hashMapOf(
+                        "nome" to documentSnapshot.getString("nome"),
+                        "LastLocation" to ""
+                    )
+                    lobby.collection(onlineId).add(lobbySent)
+                }
+            }
+        }
+
+        val bundle = bundleOf("route" to optimizedRoute)
+
+        navController.navigate(
+            R.id.action_escolherModoFragment_to_navigationFragment,
+            bundle
+        )
     }
 
     private fun displayAllFriends() {
@@ -105,7 +151,7 @@ class EscolherModoFragment : Fragment() {
                     val userName: String = snapshot.getString("nome")!!
                     val photoUrl: String = snapshot.getString("photoUrl")!!
                     holder.setVariables(userName, photoUrl, ctx)
-                    holder.amigoBinding.check.setOnCheckedChangeListener { buttonView, isChecked ->
+                    holder.amigoBinding.check.setOnCheckedChangeListener { _, isChecked ->
                         if (isChecked) {
                             if (friendsArray.isEmpty())
                                 binding.start.visibility = View.VISIBLE
