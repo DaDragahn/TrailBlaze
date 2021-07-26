@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -105,29 +106,43 @@ class NotificationsFragment : Fragment() {
             model: Invites
         ) {
             val id = snapshots.getSnapshot(position).id
-            val name = snapshots.getSnapshot(position).getString("nome")!!
-            val photoUrl = snapshots.getSnapshot(position).getString("photoUrl")!!
-            val idTrail = snapshots.getSnapshot(position).getString("idTrail")!!
-            val idRoute = snapshots.getSnapshot(position).getString("idRoute")!!
+            val name = snapshots.getSnapshot(position).getString("nome")
+            val photoUrl = snapshots.getSnapshot(position).getString("photoUrl")
+            val idTrail = snapshots.getSnapshot(position).getString("idTrail")
+            val idRoute = snapshots.getSnapshot(position).getString("idRoute")
 
-            locationRef.document(idRoute).addSnapshotListener { snapshot, _ ->
-                if (snapshot != null && snapshot.exists()) {
-                    val routeName = snapshot.getString("nome")!!
-                    val routeInfo = snapshot.getString("route")!!
-                    holder.setVariables(name, photoUrl, routeName, ctx)
-                    holder.notificationBinding.acceptBtn.setOnClickListener {
-                        val lobbySent = hashMapOf(
-                            "nome" to auth.currentUser!!.displayName,
-                            "LastLocation" to ""
-                        )
-                        db.collection("Trails").document(idTrail).collection(onlineId)
-                            .add(lobbySent)
-                        db.collection("Invites").document("InviteDocument").collection(onlineId)
-                            .document(id).delete()
-                    }
-                    holder.notificationBinding.excludeBtn.setOnClickListener {
-                        db.collection("Invites").document("InviteDocument").collection(onlineId)
-                            .document(id).delete()
+            if (idRoute != null) {
+                locationRef.document(idRoute).addSnapshotListener { snapshot, _ ->
+                    if (snapshot != null && snapshot.exists()) {
+                        val routeName = snapshot.getString("nome")!!
+                        val routeInfo = snapshot.getString("route")!!
+                        if (name != null) {
+                            if (photoUrl != null) {
+                                holder.setVariables(name, photoUrl, routeName, ctx)
+                            }
+                        }
+                        holder.notificationBinding.acceptBtn.setOnClickListener {
+                            val lobbySent = hashMapOf(
+                                "nome" to auth.currentUser!!.displayName,
+                                "LastLocation" to ""
+                            )
+                            if (idTrail != null) {
+                                db.collection("Trails").document(idTrail).collection(onlineId)
+                                    .add(lobbySent)
+                            }
+                            db.collection("Invites").document("InviteDocument").collection(onlineId)
+                                .document(id).delete()
+                            val bundle = bundleOf("route" to routeInfo)
+
+                            navController.navigate(
+                                R.id.action_notificationsFragment_to_navigationFragment,
+                                bundle
+                            )
+                        }
+                        holder.notificationBinding.excludeBtn.setOnClickListener {
+                            db.collection("Invites").document("InviteDocument").collection(onlineId)
+                                .document(id).delete()
+                        }
                     }
                 }
             }
