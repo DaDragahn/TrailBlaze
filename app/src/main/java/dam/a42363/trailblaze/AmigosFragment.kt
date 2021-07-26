@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import dam.a42363.trailblaze.databinding.FragmentAmigosBinding
 import dam.a42363.trailblaze.databinding.ItemAmigoBinding
-
 import dam.a42363.trailblaze.models.Friends
 
 
@@ -29,8 +29,7 @@ class AmigosFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var db: FirebaseFirestore
     private lateinit var userRef: CollectionReference
-    private lateinit var friendRef:
-            Query
+    private lateinit var friendRef: Query
     private lateinit var auth: FirebaseAuth
     private lateinit var onlineId: String
     private lateinit var amigosListView: RecyclerView
@@ -48,7 +47,6 @@ class AmigosFragment : Fragment() {
         onlineId = auth.currentUser!!.uid
         db = FirebaseFirestore.getInstance()
         friendRef = db.collection("Friends").document("FriendDocument").collection(onlineId)
-    Log.d("TAG",onlineId)
         userRef = db.collection("users")
         displayAllFriends()
         return binding.root
