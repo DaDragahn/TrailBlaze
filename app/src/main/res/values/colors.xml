@@ -13,9 +13,11 @@
     <color name="dirt_white">#F1F1ED</color>
     <color name="ash_gray">#999999</color>
     <color name="ash_gray_alpha">#A6999999</color>
+    <color name="ash_gray_alpha_plus">#D9999999</color>
     <color name="trailGreen">#3F9E00</color>
     <color name="trailDarkGreen">#043A06</color>
     <color name="record_red">#CB3C0E</color>
+    <color name="red">#FF0000</color>
     <color name="t_white">#CCFFFFFF</color>
     <color name="y_white">#A6FFFFFF</color>
     <color name="faded_green">#523F9E00</color>

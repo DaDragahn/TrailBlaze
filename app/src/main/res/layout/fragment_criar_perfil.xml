@@ -13,9 +13,9 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="300dp"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="95dp"
+            android:layout_marginTop="100dp"
             app:cardBackgroundColor="@color/y_white"
             app:cardCornerRadius="20dip"
             app:cardElevation="0dp">
@@ -26,37 +26,89 @@
                 android:layout_gravity="center"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/firstName"
-                    android:layout_width="280dip"
-                    android:layout_height="40dp"
-                    android:layout_gravity="top|center_horizontal"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/custom_input"
-                    android:hint="@string/firstName"
-                    android:paddingStart="12dip"
-                    android:paddingEnd="12dip"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/ash_gray" />
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusBottomEnd="50dp"
+                    app:boxCornerRadiusBottomStart="50dp"
+                    app:boxCornerRadiusTopEnd="50dp"
+                    app:boxCornerRadiusTopStart="50dp"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp"
+                    app:hintEnabled="false">
 
-                <EditText
-                    android:id="@+id/lastName"
-                    android:layout_width="280dip"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/firstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/email"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/ash_gray" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/custom_input"
-                    android:hint="@string/lastName"
-                    android:paddingStart="12dip"
-                    android:paddingEnd="12dip"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/ash_gray" />
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusBottomEnd="50dp"
+                    app:boxCornerRadiusBottomStart="50dp"
+                    app:boxCornerRadiusTopEnd="50dp"
+                    app:boxCornerRadiusTopStart="50dp"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/lastName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="10dp"
+                        android:hint="@string/lastName"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/ash_gray" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--                                <EditText-->
+                <!--                                    android:id="@+id/firstName"-->
+                <!--                                    android:layout_width="280dip"-->
+                <!--                                    android:layout_height="40dp"-->
+                <!--                                    android:layout_gravity="top|center_horizontal"-->
+                <!--                                    android:layout_marginTop="20dp"-->
+                <!--                                    android:background="@drawable/custom_input"-->
+                <!--                                    android:hint="@string/firstName"-->
+                <!--                                    android:paddingStart="12dip"-->
+                <!--                                    android:paddingEnd="12dip"-->
+                <!--                                    android:textColor="@color/black"-->
+                <!--                                    android:textColorHint="@color/ash_gray" />-->
+
+                <!--                                <EditText-->
+                <!--                                    android:id="@+id/lastName"-->
+                <!--                                    android:layout_width="280dip"-->
+                <!--                                    android:layout_height="40dp"-->
+                <!--                                    android:layout_gravity="center"-->
+                <!--                                    android:layout_marginTop="20dp"-->
+                <!--                                    android:background="@drawable/custom_input"-->
+                <!--                                    android:hint="@string/lastName"-->
+                <!--                                    android:paddingStart="12dip"-->
+                <!--                                    android:paddingEnd="12dip"-->
+                <!--                                    android:textColor="@color/black"-->
+                <!--                                    android:textColorHint="@color/ash_gray" />-->
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/save"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:backgroundTint="@color/white"
                     android:text="@string/guardar"

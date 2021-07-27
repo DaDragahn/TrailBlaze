@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.PopupMenu
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -24,11 +24,16 @@ class PerfilFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
 
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+
     var _binding: FragmentPerfilBinding? = null
     private val binding get() = _binding!!
+
     private var doubleBackToExitPressedOnce = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
 
         val backCallback = requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (doubleBackToExitPressedOnce) {
@@ -48,6 +53,10 @@ class PerfilFragment : Fragment() {
         backCallback.isEnabled
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.perfil_menu, menu)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,13 +64,19 @@ class PerfilFragment : Fragment() {
 
         _binding = FragmentPerfilBinding.inflate(inflater, container, false)
 
-        binding.amigosBtn.setOnClickListener{
+        binding.amigosBtn.setOnClickListener {
             navController.navigate(R.id.action_perfilFragment_to_amigosFragment)
         }
 
-        binding.trilhosBtn.setOnClickListener{
+        binding.trilhosBtn.setOnClickListener {
             navController.navigate(R.id.action_perfilFragment_to_trailsFragment)
         }
+
+        toolbar = binding.toolbar
+
+        toolbar.inflateMenu(R.menu.perfil_menu)
+
+
         // Inflate the layout for this fragment
         return binding.root
 //        inflater.inflate(R.layout.fragment_perfil, container, false)
@@ -71,9 +86,22 @@ class PerfilFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        blurLayout.startBlur()
-
         navController = Navigation.findNavController(view)
+
+        toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.editarPerfil -> {
+                    navController.navigate(R.id.action_perfilFragment_to_editarPerfilFragment)
+                    true
+                }
+                R.id.logout -> {
+                    logOut()
+                    true
+                }
+                else -> false
+            }
+        }
+
 
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
@@ -86,10 +114,14 @@ class PerfilFragment : Fragment() {
                 (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
             }
 
-            val logout = binding.logout
             val email = binding.user
             val name = binding.firstName
             val profileImage = binding.profileImage
+            val perfilText = binding.perfilText
+
+            perfilText.setOnClickListener {
+                navController.navigate(R.id.action_perfilFragment_to_editarPerfilFragment)
+            }
 
 
             if (user != null) {
@@ -112,12 +144,21 @@ class PerfilFragment : Fragment() {
                         }
                     }
             }
-            logout.setOnClickListener {
-                auth.signOut()
-                Toast.makeText(this.activity, "Logged Out", Toast.LENGTH_SHORT).show()
-                navController.navigate(R.id.action_perfilFragment_to_signInFragment)
-
-            }
+//            logout.setOnClickListener {
+//                auth.signOut()
+//                Toast.makeText(this.activity, "Logged Out", Toast.LENGTH_SHORT).show()
+//                navController.navigate(R.id.action_perfilFragment_to_signInFragment)
+//
+//            }
         }
     }
+
+
+    fun logOut() {
+        auth.signOut()
+        Toast.makeText(this.activity, "Logged Out", Toast.LENGTH_SHORT).show()
+        navController.navigate(R.id.action_perfilFragment_to_signInFragment)
+    }
+
+
 }

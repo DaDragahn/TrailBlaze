@@ -16,10 +16,10 @@
     <string name="background">background</string>
     <string name="login">Login</string>
     <string name="register">Registar</string>
-    <string name="email">Email Address</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="profileimage">ProfileImage</string>
-    <string name="logout">LOGOUT</string>
+    <string name="logout">Logout</string>
     <string name="trilhos">Meus Trilhos</string>
     <string name="grupos">Grupos</string>
     <string name="fotos">Fotos</string>
@@ -43,6 +43,11 @@
     <string name="notificacoes">Notificações</string>
     <string name="recusar">Recusar</string>
     <string name="aceitar">Aceitar</string>
+    <string name="editar_perfil">Editar Perfil</string>
+    <string name="alterar_foto_de_perfil">Alterar foto de perfil</string>
+    <string name="nome">Nome</string>
+    <string name="apelido">Apelido</string>
+    <string name="definicoes">Definições</string>
 
     <string-array name="modalidades">
         <item>Caminhada</item>
