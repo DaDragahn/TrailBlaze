@@ -301,8 +301,8 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             db.collection("Trails").document(idTrail!!).collection("TrailsCollection").get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
-                        //if(document.id != auth.uid!!)
-                        lobbyArray.add(document.id)
+                        if (document.id != auth.uid!!)
+                            lobbyArray.add(document.id)
                     }
                     addUserMarkers(mapboxMap?.style!!)
                 }
