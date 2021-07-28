@@ -138,7 +138,7 @@ class NotificationsFragment : Fragment() {
                             }
                             db.collection("Invites").document("InviteDocument").collection(onlineId)
                                 .document(id).delete()
-                            val bundle = bundleOf("route" to routeInfo)
+                            val bundle = bundleOf("route" to routeInfo, "idTrail" to idTrail)
 
                             navController.navigate(
                                 R.id.action_notificationsFragment_to_navigationFragment,
