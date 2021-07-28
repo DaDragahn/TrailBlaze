@@ -1,12 +1,15 @@
 package dam.a42363.trailblaze
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -17,11 +20,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.mapbox.api.directions.v5.models.DirectionsRoute
 import dam.a42363.trailblaze.databinding.FragmentEscolherModoBinding
-import dam.a42363.trailblaze.databinding.ItemAmigoBinding
 import dam.a42363.trailblaze.databinding.ItemAmigoConvidarBinding
 import dam.a42363.trailblaze.models.Friends
+import java.sql.Timestamp
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class EscolherModoFragment : Fragment() {
@@ -40,6 +45,7 @@ class EscolherModoFragment : Fragment() {
     private var optimizedRoute: String? = null
     private var feature: String? = null
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,7 +76,9 @@ class EscolherModoFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun inviteAndStartTrail() {
+        var currentDateTime = LocalDateTime.now()
 
         val lobby = db.collection("Trails").document()
 
@@ -82,7 +90,8 @@ class EscolherModoFragment : Fragment() {
                         "idTrail" to lobby.id,
                         "nome" to documentSnapshot.getString("nome"),
                         "photoUrl" to documentSnapshot.getString("photoUrl"),
-                        "idRoute" to feature
+                        "idRoute" to feature,
+                        "time" to currentDateTime
                     )
                     for (id in friendsArray) {
                         db.collection("Invites").document("InviteDocument").collection(id)
@@ -93,12 +102,12 @@ class EscolherModoFragment : Fragment() {
                         "nome" to documentSnapshot.getString("nome"),
                         "LastLocation" to ""
                     )
-                    lobby.collection(onlineId).add(lobbySent)
+                    lobby.collection("TrailsCollection").document(onlineId).set(lobbySent)
                 }
             }
         }
 
-        val bundle = bundleOf("route" to optimizedRoute)
+        val bundle = bundleOf("route" to optimizedRoute, "idTrail" to lobby.id)
 
         navController.navigate(
             R.id.action_escolherModoFragment_to_navigationFragment,

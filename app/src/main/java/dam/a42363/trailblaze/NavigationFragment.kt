@@ -3,25 +3,31 @@ package dam.a42363.trailblaze
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper.getMainLooper
 import android.util.Log
 import android.view.*
-import android.widget.Chronometer
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldPath
+import com.google.firebase.firestore.FirebaseFirestore
 import com.mapbox.android.core.location.LocationEngineCallback
 import com.mapbox.android.core.location.LocationEngineRequest
 import com.mapbox.android.core.location.LocationEngineResult
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.api.directions.v5.models.DirectionsRoute
+import com.mapbox.geojson.Feature
+import com.mapbox.geojson.FeatureCollection
+import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.location.LocationComponent
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
@@ -31,6 +37,9 @@ import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import com.mapbox.navigation.base.trip.model.RouteLegProgress
 import com.mapbox.navigation.base.trip.model.RouteProgress
 import com.mapbox.navigation.core.MapboxNavigation
@@ -58,7 +67,6 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
     private lateinit var auth: FirebaseAuth
 
-
     //    private val mapboxReplayer = MapboxReplayer()
     private lateinit var permissionsManager: PermissionsManager
     private var _binding: FragmentNavigationBinding? = null
@@ -74,11 +82,24 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     private var chronoTime: Long? = null
 
     private lateinit var camera: SurfaceView
-//    private val db = FirebaseFirestore.getInstance()
-//    private val ICON_GEOJSON_SOURCE_ID = "icon-source-id"
+    private val db = FirebaseFirestore.getInstance()
+    private val ICON_GEOJSON_SOURCE_ID = "icon-source-id"
 
     private lateinit var slidingUpPanelLayout: SlidingUpPanelLayout
     private var destroy: Boolean = false
+    private var idTrail: String? = null
+    private val lobbyArray = ArrayList<String>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+                .document(auth.uid!!).delete()
+        }
+
+        callback.isEnabled
+    }
 
     @SuppressLint("LogNotTimber")
     override fun onCreateView(
@@ -117,6 +138,8 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         }
 
         optimizedRoute = DirectionsRoute.fromJson(arguments?.getString("route")!!)
+        idTrail = arguments?.getString("idTrail")
+        Log.v("RecordRoute", idTrail.toString())
         Log.v("RecordRoute", "$optimizedRoute")
 
         binding.chronometer.start()
@@ -171,30 +194,30 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         mapboxNavigation?.startTripSession()
     }
 
-//    private fun initMarkerIconSymbolLayer(loadedMapStyle: Style) {
-//        // Add the marker image to map
-//        loadedMapStyle.addImage(
-//            "icon-image", BitmapFactory.decodeResource(
-//                this.resources, R.drawable.mapbox_marker_icon_default
-//            )
-//        )
-//
-//        // Add the source to the map
-//        loadedMapStyle.addSource(
-//            GeoJsonSource(
-//                ICON_GEOJSON_SOURCE_ID
-//            )
-//        )
-//        loadedMapStyle.addLayer(
-//            SymbolLayer("icon-layer-id", ICON_GEOJSON_SOURCE_ID).withProperties(
-//                PropertyFactory.iconImage("icon-image"),
-//                PropertyFactory.iconSize(1f),
-//                PropertyFactory.iconAllowOverlap(true),
-//                PropertyFactory.iconIgnorePlacement(true),
-//                PropertyFactory.iconOffset(arrayOf(0f, -7f))
-//            )
-//        )
-//    }
+    private fun initMarkerIconSymbolLayer(loadedMapStyle: Style) {
+        // Add the marker image to map
+        loadedMapStyle.addImage(
+            "icon-image", BitmapFactory.decodeResource(
+                this.resources, R.drawable.mapbox_marker_icon_default
+            )
+        )
+
+        // Add the source to the map
+        loadedMapStyle.addSource(
+            GeoJsonSource(
+                ICON_GEOJSON_SOURCE_ID
+            )
+        )
+        loadedMapStyle.addLayer(
+            SymbolLayer("icon-layer-id", ICON_GEOJSON_SOURCE_ID).withProperties(
+                PropertyFactory.iconImage("icon-image"),
+                PropertyFactory.iconSize(1f),
+                PropertyFactory.iconAllowOverlap(true),
+                PropertyFactory.iconIgnorePlacement(true),
+                PropertyFactory.iconOffset(arrayOf(0f, -7f))
+            )
+        )
+    }
 
     @SuppressLint("LogNotTimber", "MissingPermission")
     override fun onMapReady(mapboxMap: MapboxMap) {
@@ -207,7 +230,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             uiSettings.setCompassMargins(0, 200, 50, 0)
             uiSettings.setCompassFadeFacingNorth(false)
             enableLocationComponent(style)
-//            initMarkerIconSymbolLayer(style)
+            initMarkerIconSymbolLayer(style)
             val navigationOptions = MapboxNavigation
                 .defaultNavigationOptionsBuilder(requireContext(), Mapbox.getAccessToken())
 //                .locationEngine(ReplayLocationEngine(mapboxReplayer))
@@ -245,26 +268,46 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             navigationMapRoute?.addRoutes(routes)
             mapboxNavigation!!.setRoutes(routes)
             onStartNavigation()
-//            addUserMarkers(style)
         }
 
     }
 
-//    private fun addUserMarkers(style: Style) {
-//        db.collection("users").document("test").get().addOnSuccessListener { result ->
-//            val iconSource = style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
-//            iconSource?.setGeoJson(
-//                Feature.fromGeometry(
-//                    Point.fromJson(result.getString("location")!!)
-//                )
-//            )
-//        }
-//            .addOnFailureListener { exception ->
-//                Timber.tag("TAG").d(exception, "Error getting documents: ")
-//            }
+    private fun addUserMarkers(style: Style) {
+        val userMarkerList: ArrayList<Feature> = ArrayList()
+        db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+            .whereIn(FieldPath.documentId(), lobbyArray).get().addOnSuccessListener { documents ->
+                for (document in documents) {
+                    userMarkerList.add(
+                        Feature.fromGeometry(
+                            Point.fromJson(document.getString("LastLocation")!!)
+                        )
+                    )
+                }
+                val iconSource = style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
+                iconSource?.setGeoJson(FeatureCollection.fromFeatures(userMarkerList))
+            }
+            .addOnFailureListener { exception ->
+                Timber.tag("TAG").d(exception, "Error getting documents: ")
+            }
 //        val iconSource = style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
-//        iconSource?.setGeoJson(feature)
-//    }
+//        iconSource?.setGeoJson(featureCollection)
+    }
+
+    private fun checkLobby(updates: MutableMap<String, Any>) {
+        if (idTrail != null) {
+            db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+                .document(auth.uid!!).update(updates)
+
+            db.collection("Trails").document(idTrail!!).collection("TrailsCollection").get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        //if(document.id != auth.uid!!)
+                        lobbyArray.add(document.id)
+                    }
+                    addUserMarkers(mapboxMap?.style!!)
+                }
+        }
+    }
 
     override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
         Toast.makeText(
@@ -344,7 +387,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     override fun onStart() {
         super.onStart()
         mapView.onStart()
-//        mapboxNavigation?.registerArrivalObserver(arrivalObserver)
+        mapboxNavigation?.registerArrivalObserver(arrivalObserver)
         mapCamera?.onStart()
     }
 
@@ -366,6 +409,17 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     override fun onPause() {
         super.onPause()
         mapView.onPause()
+    }
+
+    override fun onDestroy() {
+        mapView.onDestroy()
+//        mapboxNavigation?.unregisterRouteProgressObserver(replayProgressObserver)
+        mapboxNavigation?.unregisterArrivalObserver(arrivalObserver);
+        mapboxNavigation?.stopTripSession()
+        mapboxNavigation?.onDestroy()
+        db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+            .document(auth.uid!!).delete()
+        super.onDestroy()
     }
 
     override fun onDestroyView() {
@@ -397,20 +451,13 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             val fragment: NavigationFragment? = fragmentWeakReference.get()
             if (fragment != null) {
                 fragment.updateLocation(result.locations)
-//                Toast.makeText(
-//                    fragment.context,
-//                    fragment.time.toString(),
-//                    Toast.LENGTH_SHORT
-//                ).show()
-                Log.d("TrackingLocation", "Updating!")
-//                val updates: MutableMap<String, Any> =
-//                    HashMap()
-//                val latitude = result.lastLocation!!.latitude
-//                val longitude = result.lastLocation!!.longitude
-//                updates["location"] = Point.fromLngLat(longitude, latitude).toJson()
-//                Log.d("Testing", Point.fromLngLat(longitude, latitude).toJson())
-//                fragment.db.collection("users").document("test").set(updates)
-//                fragment.addUserMarkers(fragment.mapboxMap?.style!!)
+                val updates: MutableMap<String, Any> =
+                    HashMap()
+                val latitude = result.lastLocation!!.latitude
+                val longitude = result.lastLocation!!.longitude
+                updates["LastLocation"] = Point.fromLngLat(longitude, latitude).toJson()
+                fragment.clearVariables()
+                fragment.checkLobby(updates)
             }
         }
 
@@ -418,6 +465,12 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             Timber.i(exception)
         }
 
+    }
+
+    private fun clearVariables() {
+        lobbyArray.clear()
+//        val iconSource = mapboxMap?.style!!.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
+//        iconSource?.setGeoJson(FeatureCollection.fromFeatures(listOf()))
     }
 
     private fun updateLocation(locations: List<Location>) {

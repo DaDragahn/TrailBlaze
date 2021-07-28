@@ -2,11 +2,13 @@ package dam.a42363.trailblaze
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -24,6 +26,7 @@ import dam.a42363.trailblaze.databinding.FragmentNotificationsBinding
 import dam.a42363.trailblaze.databinding.ItemAmigoBinding
 import dam.a42363.trailblaze.databinding.ItemNotificationBinding
 import dam.a42363.trailblaze.models.Invites
+import java.time.LocalDateTime
 
 class NotificationsFragment : Fragment() {
     private var adapter: GetInvitesFirestoreRecyclerAdapter? = null
@@ -36,6 +39,7 @@ class NotificationsFragment : Fragment() {
     private lateinit var onlineId: String
     private lateinit var inviteRef: Query
     private lateinit var inviteListView: RecyclerView
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +48,9 @@ class NotificationsFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         onlineId = auth.currentUser!!.uid
-        inviteRef = db.collection("Invites").document("InviteDocument").collection(onlineId)
+        var currentDateTime = LocalDateTime.now()
+        currentDateTime = currentDateTime.minusHours(1)
+        inviteRef = db.collection("Invites").document("InviteDocument").collection(onlineId).whereGreaterThan("time", currentDateTime)
         locationRef = db.collection("locations")
         inviteListView = binding.inviteListView
         displayAllNotifications()
@@ -127,8 +133,8 @@ class NotificationsFragment : Fragment() {
                                 "LastLocation" to ""
                             )
                             if (idTrail != null) {
-                                db.collection("Trails").document(idTrail).collection(onlineId)
-                                    .add(lobbySent)
+                                db.collection("Trails").document(idTrail).collection("TrailsCollection").document(onlineId)
+                                    .set(lobbySent)
                             }
                             db.collection("Invites").document("InviteDocument").collection(onlineId)
                                 .document(id).delete()
