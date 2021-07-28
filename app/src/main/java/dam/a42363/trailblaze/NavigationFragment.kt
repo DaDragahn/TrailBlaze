@@ -274,21 +274,24 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
     private fun addUserMarkers(style: Style) {
         val userMarkerList: ArrayList<Feature> = ArrayList()
-        db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
-            .whereIn(FieldPath.documentId(), lobbyArray).get().addOnSuccessListener { documents ->
-                for (document in documents) {
-                    userMarkerList.add(
-                        Feature.fromGeometry(
-                            Point.fromJson(document.getString("LastLocation")!!)
+        if (lobbyArray.isNotEmpty()) {
+            db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+                .whereIn(FieldPath.documentId(), lobbyArray).get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        userMarkerList.add(
+                            Feature.fromGeometry(
+                                Point.fromJson(document.getString("LastLocation")!!)
+                            )
                         )
-                    )
+                    }
+                    val iconSource = style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
+                    iconSource?.setGeoJson(FeatureCollection.fromFeatures(userMarkerList))
                 }
-                val iconSource = style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
-                iconSource?.setGeoJson(FeatureCollection.fromFeatures(userMarkerList))
-            }
-            .addOnFailureListener { exception ->
-                Timber.tag("TAG").d(exception, "Error getting documents: ")
-            }
+                .addOnFailureListener { exception ->
+                    Timber.tag("TAG").d(exception, "Error getting documents: ")
+                }
+        }
 //        val iconSource = style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
 //        iconSource?.setGeoJson(featureCollection)
     }

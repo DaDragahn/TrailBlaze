@@ -39,6 +39,7 @@ class NotificationsFragment : Fragment() {
     private lateinit var onlineId: String
     private lateinit var inviteRef: Query
     private lateinit var inviteListView: RecyclerView
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,9 +49,7 @@ class NotificationsFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         onlineId = auth.currentUser!!.uid
-        var currentDateTime = LocalDateTime.now()
-        currentDateTime = currentDateTime.minusHours(1)
-        inviteRef = db.collection("Invites").document("InviteDocument").collection(onlineId).whereGreaterThan("time", currentDateTime)
+
         locationRef = db.collection("locations")
         inviteListView = binding.inviteListView
         displayAllNotifications()
@@ -67,7 +66,13 @@ class NotificationsFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun displayAllNotifications() {
+        var currentDateTime = LocalDateTime.now()
+        currentDateTime = currentDateTime.minusHours(1)
+        inviteRef = db.collection("Invites").document("InviteDocument").collection(onlineId)
+            .whereGreaterThan("time", currentDateTime)
+
         val options = FirestoreRecyclerOptions.Builder<Invites>()
             .setQuery(inviteRef, Invites::class.java).build()
 
@@ -133,7 +138,8 @@ class NotificationsFragment : Fragment() {
                                 "LastLocation" to ""
                             )
                             if (idTrail != null) {
-                                db.collection("Trails").document(idTrail).collection("TrailsCollection").document(onlineId)
+                                db.collection("Trails").document(idTrail)
+                                    .collection("TrailsCollection").document(onlineId)
                                     .set(lobbySent)
                             }
                             db.collection("Invites").document("InviteDocument").collection(onlineId)
