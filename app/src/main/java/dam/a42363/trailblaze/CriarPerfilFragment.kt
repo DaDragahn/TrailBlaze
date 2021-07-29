@@ -1,5 +1,6 @@
 package dam.a42363.trailblaze
 
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dam.a42363.trailblaze.databinding.FragmentCriarPerfilBinding
@@ -73,9 +75,6 @@ class CriarPerfilFragment : Fragment() {
                 db = FirebaseFirestore.getInstance()
                 storage = FirebaseStorage.getInstance()
 
-//                db.collection("users").
-
-
                 val storageRef = storage.reference
 
                 storageRef.child("images/defaultPic.jpg").downloadUrl.addOnSuccessListener {
@@ -84,6 +83,13 @@ class CriarPerfilFragment : Fragment() {
                     updates["nome"] = "$txtFirstName $txtLastName"
                     updates["email"] = email
                     updates["photoUrl"] = it.toString()
+
+                    val profileUpdates = UserProfileChangeRequest.Builder()
+                        .setDisplayName("$txtFirstName $txtLastName")
+                        .setPhotoUri(Uri.parse(it.toString()))
+                        .build()
+
+                    user?.updateProfile(profileUpdates)
 
                     db.collection("users").document(user!!.uid).set(updates)
                     navController.navigate(R.id.action_criarPerfilFragment_to_perfilFragment)

@@ -72,6 +72,14 @@ class PerfilFragment : Fragment() {
             navController.navigate(R.id.action_perfilFragment_to_trailsFragment)
         }
 
+        binding.gruposBtn.setOnClickListener {
+            navController.navigate(R.id.action_perfilFragment_to_gruposFragment)
+        }
+
+        binding.fotosBtn.setOnClickListener {
+            navController.navigate(R.id.action_perfilFragment_to_fotosFragment)
+        }
+
         toolbar = binding.toolbar
 
         toolbar.inflateMenu(R.menu.perfil_menu)
@@ -102,7 +110,6 @@ class PerfilFragment : Fragment() {
             }
         }
 
-
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
 
@@ -117,12 +124,6 @@ class PerfilFragment : Fragment() {
             val email = binding.user
             val name = binding.firstName
             val profileImage = binding.profileImage
-            val perfilText = binding.perfilText
-
-            perfilText.setOnClickListener {
-                navController.navigate(R.id.action_perfilFragment_to_editarPerfilFragment)
-            }
-
 
             if (user != null) {
                 val db = FirebaseFirestore.getInstance()

@@ -5,54 +5,59 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AmigosFragment">
+    tools:context=".AmigosFragment"
+    tools:menu="@menu/amigo_menu">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_gravity="top"
-        android:background="@color/ash_gray"
-        android:elevation="0dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="0dp">
+        android:layout_gravity="start|top"
+        android:background="@color/white"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
 
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/dirBtn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="start|center_vertical"
-                android:layout_marginStart="20dp"
-                android:background="@drawable/ic_arrow_back"
-                app:backgroundTint="@color/trailGreen" />
+        <!--    <androidx.cardview.widget.CardView-->
+        <!--        android:id="@+id/cardView"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="50dp"-->
+        <!--        android:layout_gravity="top"-->
+        <!--        android:elevation="0dp"-->
+        <!--        app:cardBackgroundColor="@color/white"-->
+        <!--        app:cardCornerRadius="0dp"-->
+        <!--        app:cardElevation="0dp">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="20dp"
-                android:text="@string/amigos"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/addAmigos"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical|end"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/ic_3_dots"
-                app:backgroundTint="@color/trailGreen" />
-        </GridLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dirBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="start"
+            android:background="@drawable/ic_arrow_back"
+            app:backgroundTint="@color/trailGreen" />
 
-    </androidx.cardview.widget.CardView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="25dp"
+            android:text="@string/amigos"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!--        <com.google.android.material.button.MaterialButton-->
+        <!--            android:id="@+id/addAmigos"-->
+        <!--            android:layout_width="30dp"-->
+        <!--            android:layout_height="30dp"-->
+        <!--            android:layout_gravity="end"-->
+        <!--            android:layout_marginEnd="20dp"-->
+        <!--            android:background="@drawable/ic_3_dots"-->
+        <!--            app:backgroundTint="@color/trailGreen" />-->
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/amigosListView"

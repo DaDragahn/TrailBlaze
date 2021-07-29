@@ -79,7 +79,6 @@ class NotificationsFragment : Fragment() {
         adapter = GetInvitesFirestoreRecyclerAdapter(options, requireContext())
         adapter!!.startListening()
         inviteListView.adapter = adapter
-
     }
 
     override fun onStop() {

@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_14" default="true" project-jdk-name="14" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_outline_group_add.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_outline_person.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_outline_person_add_alt.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_person.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/search_bar.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_add_amigos.xml" value="0.19808743169398907" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_add_grupos.xml" value="0.22" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_amigos.xml" value="0.22" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_camera.xml" value="0.19672131147540983" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_contribuir.xml" value="0.19808743169398907" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_editar_perfil.xml" value="0.19672131147540983" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_escolher_modo.xml" value="0.19808743169398907" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_explorar.xml" value="0.19808743169398907" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_explorar_list.xml" value="0.2223360655737705" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_fotos.xml" value="0.19808743169398907" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_full_info.xml" value="0.19672131147540983" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_grupos.xml" value="0.19808743169398907" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_guardados.xml" value="0.23155737704918034" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_handler.xml" value="0.23155737704918034" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_login.xml" value="0.19672131147540983" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_navigation.xml" value="0.19672131147540983" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_notifications.xml" value="0.25" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_partilhar.xml" value="0.19672131147540983" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_perfil.xml" value="0.19808743169398907" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_registar.xml" value="0.19672131147540983" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_trails.xml" value="0.19672131147540983" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/item_amigo.xml" value="0.19808743169398907" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/item_amigo_convidar.xml" value="0.19808743169398907" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/item_foto.xml" value="0.19672131147540983" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/item_grupo.xml" value="0.19672131147540983" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/item_route.xml" value="0.19672131147540983" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/menu/amigo_menu.xml" value="0.23157894736842105" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/menu/bottom_menu.xml" value="0.23157894736842105" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/menu/grupo_menu.xml" value="0.23157894736842105" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/menu/perfil_menu.xml" value="0.23157894736842105" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_14_PREVIEW" project-jdk-name="14" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

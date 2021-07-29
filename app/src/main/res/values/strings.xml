@@ -48,6 +48,12 @@
     <string name="nome">Nome</string>
     <string name="apelido">Apelido</string>
     <string name="definicoes">Definições</string>
+    <string name="nome_do_grupo">Nome do Grupo</string>
+    <string name="criar_grupo">Criar Grupo</string>
+    <string name="convidar_amigos">Convidar amigos</string>
+    <string name="adicionar_grupo">Adicionar Grupo</string>
+    <string name="adicionar_amigo">Adicionar Amigo</string>
+    <string name="criar">Criar</string>
 
     <string-array name="modalidades">
         <item>Caminhada</item>

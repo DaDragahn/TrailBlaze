@@ -222,7 +222,11 @@
         android:id="@+id/gruposFragment"
         android:name="dam.a42363.trailblaze.GruposFragment"
         android:label="fragment_grupos"
-        tools:layout="@layout/fragment_grupos" />
+        tools:layout="@layout/fragment_grupos" >
+        <action
+            android:id="@+id/action_gruposFragment_to_addGruposFragment"
+            app:destination="@id/addGruposFragment" />
+    </fragment>
     <fragment
         android:id="@+id/fotosFragment"
         android:name="dam.a42363.trailblaze.FotosFragment"
@@ -253,5 +257,14 @@
         android:id="@+id/editarPerfilFragment"
         android:name="dam.a42363.trailblaze.EditarPerfilFragment"
         android:label="fragment_editar_perfil"
-        tools:layout="@layout/fragment_editar_perfil" />
+        tools:layout="@layout/fragment_editar_perfil" >
+        <action
+            android:id="@+id/action_editarPerfilFragment_to_perfilFragment"
+            app:destination="@id/perfilFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addGruposFragment"
+        android:name="dam.a42363.trailblaze.AddGruposFragment"
+        android:label="fragment_add_grupos"
+        tools:layout="@layout/fragment_add_grupos" />
 </navigation>

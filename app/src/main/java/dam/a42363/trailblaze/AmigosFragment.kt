@@ -3,9 +3,7 @@ package dam.a42363.trailblaze
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -33,29 +31,53 @@ class AmigosFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var onlineId: String
     private lateinit var amigosListView: RecyclerView
+
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        setHasOptionsMenu(true)
+
         _binding = FragmentAmigosBinding.inflate(inflater, container, false)
 
-        binding.addAmigos.setOnClickListener {
-            navController.navigate(R.id.action_amigosFragment_to_addAmigosFragment)
-        }
         amigosListView = binding.amigosListView
+
         auth = FirebaseAuth.getInstance()
         onlineId = auth.currentUser!!.uid
         db = FirebaseFirestore.getInstance()
         friendRef = db.collection("Friends").document("FriendDocument").collection(onlineId)
         userRef = db.collection("users")
         displayAllFriends()
+
+        toolbar = binding.toolbar
+
+        toolbar.inflateMenu(R.menu.amigo_menu)
+
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.amigo_menu, menu)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(view)
+
+        toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.adicionarAmigo -> {
+                    navController.navigate(R.id.action_amigosFragment_to_addAmigosFragment)
+                    true
+                }
+                else -> false
+            }
+        }
 
         if (activity != null && this.activity is MainActivity) {
             (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
