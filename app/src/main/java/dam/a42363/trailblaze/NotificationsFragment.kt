@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,9 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import dam.a42363.trailblaze.databinding.FragmentEscolherModoBinding
 import dam.a42363.trailblaze.databinding.FragmentNotificationsBinding
-import dam.a42363.trailblaze.databinding.ItemAmigoBinding
 import dam.a42363.trailblaze.databinding.ItemNotificationBinding
 import dam.a42363.trailblaze.models.Invites
 import java.time.LocalDateTime
@@ -35,6 +32,7 @@ class NotificationsFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var db: FirebaseFirestore
     private lateinit var locationRef: CollectionReference
+    private lateinit var grupoRef: CollectionReference
     private lateinit var auth: FirebaseAuth
     private lateinit var onlineId: String
     private lateinit var inviteRef: Query
@@ -51,6 +49,7 @@ class NotificationsFragment : Fragment() {
         onlineId = auth.currentUser!!.uid
 
         locationRef = db.collection("locations")
+        grupoRef = db.collection("Groups")
         inviteListView = binding.inviteListView
         displayAllNotifications()
         return binding.root
@@ -92,13 +91,26 @@ class NotificationsFragment : Fragment() {
     inner class GetInvitesViewHolder(val notificationBinding: ItemNotificationBinding) :
         RecyclerView.ViewHolder(notificationBinding.root) {
         @SuppressLint("SetTextI18n")
-        fun setVariables(
+        fun setTrailVariables(
             nome: String,
             photoUrl: String,
             routeName: String,
             ctx: Context
         ) {
             notificationBinding.name.text = "$nome enviou-te um convite para percorrer $routeName"
+            Glide.with(ctx).load(photoUrl)
+                .into(notificationBinding.profileImage)
+        }
+
+        @SuppressLint("SetTextI18n")
+        fun setGroupVariables(
+            nome: String,
+            photoUrl: String,
+            grupoName: String,
+            ctx: Context
+        ) {
+            notificationBinding.name.text =
+                "$nome enviou-te um convite para juntares ao Grupo $grupoName"
             Glide.with(ctx).load(photoUrl)
                 .into(notificationBinding.profileImage)
         }
@@ -115,44 +127,82 @@ class NotificationsFragment : Fragment() {
             position: Int,
             model: Invites
         ) {
+            val idInvite = snapshots.getSnapshot(position).getString("idInvite")
             val id = snapshots.getSnapshot(position).id
             val name = snapshots.getSnapshot(position).getString("nome")
             val photoUrl = snapshots.getSnapshot(position).getString("photoUrl")
-            val idTrail = snapshots.getSnapshot(position).getString("idTrail")
-            val idRoute = snapshots.getSnapshot(position).getString("idRoute")
+            when (snapshots.getSnapshot(position).getString("type")) {
+                "Group" -> {
+                    if (idInvite != null) {
+                        grupoRef.document(idInvite).addSnapshotListener { snapshot, _ ->
+                            if (snapshot != null && snapshot.exists()) {
+                                val data = snapshot.data
+                                val grupoName: String = data?.get("nome") as String
+                                val groupArray: ArrayList<String> =
+                                    data["groupArray"] as ArrayList<String>
+                                if (name != null) {
+                                    if (photoUrl != null) {
+                                        holder.setGroupVariables(name, photoUrl, grupoName, ctx)
+                                    }
+                                }
+                                holder.notificationBinding.acceptBtn.setOnClickListener {
+                                    groupArray.add(onlineId)
 
-            if (idRoute != null) {
-                locationRef.document(idRoute).addSnapshotListener { snapshot, _ ->
-                    if (snapshot != null && snapshot.exists()) {
-                        val routeName = snapshot.getString("nome")!!
-                        val routeInfo = snapshot.getString("route")!!
-                        if (name != null) {
-                            if (photoUrl != null) {
-                                holder.setVariables(name, photoUrl, routeName, ctx)
+                                    db.collection("Groups").document(idInvite)
+                                        .update("groupArray", groupArray)
+                                    db.collection("Invites").document("InviteDocument")
+                                        .collection(onlineId)
+                                        .document(id).delete()
+                                }
+                                holder.notificationBinding.excludeBtn.setOnClickListener {
+                                    db.collection("Invites").document("InviteDocument")
+                                        .collection(onlineId)
+                                        .document(id).delete()
+                                }
                             }
                         }
-                        holder.notificationBinding.acceptBtn.setOnClickListener {
-                            val lobbySent = hashMapOf(
-                                "nome" to auth.currentUser!!.displayName,
-                                "LastLocation" to ""
-                            )
-                            if (idTrail != null) {
-                                db.collection("Trails").document(idTrail)
-                                    .collection("TrailsCollection").document(onlineId)
-                                    .set(lobbySent)
-                            }
-                            db.collection("Invites").document("InviteDocument").collection(onlineId)
-                                .document(id).delete()
-                            val bundle = bundleOf("route" to routeInfo, "idTrail" to idTrail)
+                    }
+                }
+                "Trail" -> {
+                    val idRoute = snapshots.getSnapshot(position).getString("idRoute")
 
-                            navController.navigate(
-                                R.id.action_notificationsFragment_to_navigationFragment,
-                                bundle
-                            )
-                        }
-                        holder.notificationBinding.excludeBtn.setOnClickListener {
-                            db.collection("Invites").document("InviteDocument").collection(onlineId)
-                                .document(id).delete()
+                    if (idRoute != null) {
+                        locationRef.document(idRoute).addSnapshotListener { snapshot, _ ->
+                            if (snapshot != null && snapshot.exists()) {
+                                val routeName = snapshot.getString("nome")!!
+                                val routeInfo = snapshot.getString("route")!!
+                                if (name != null) {
+                                    if (photoUrl != null) {
+                                        holder.setTrailVariables(name, photoUrl, routeName, ctx)
+                                    }
+                                }
+                                holder.notificationBinding.acceptBtn.setOnClickListener {
+                                    val lobbySent = hashMapOf(
+                                        "nome" to auth.currentUser!!.displayName,
+                                        "LastLocation" to ""
+                                    )
+                                    if (idInvite != null) {
+                                        db.collection("Trails").document(idInvite)
+                                            .collection("TrailsCollection").document(onlineId)
+                                            .set(lobbySent)
+                                    }
+                                    db.collection("Invites").document("InviteDocument")
+                                        .collection(onlineId)
+                                        .document(id).delete()
+                                    val bundle =
+                                        bundleOf("route" to routeInfo, "idTrail" to idInvite)
+
+                                    navController.navigate(
+                                        R.id.action_notificationsFragment_to_navigationFragment,
+                                        bundle
+                                    )
+                                }
+                                holder.notificationBinding.excludeBtn.setOnClickListener {
+                                    db.collection("Invites").document("InviteDocument")
+                                        .collection(onlineId)
+                                        .document(id).delete()
+                                }
+                            }
                         }
                     }
                 }

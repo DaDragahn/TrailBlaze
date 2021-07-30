@@ -87,11 +87,12 @@ class EscolherModoFragment : Fragment() {
                 val documentSnapshot = it.result
                 if (documentSnapshot!!.exists()) {
                     val docSent = hashMapOf(
-                        "idTrail" to lobby.id,
+                        "idInvite" to lobby.id,
                         "nome" to documentSnapshot.getString("nome"),
                         "photoUrl" to documentSnapshot.getString("photoUrl"),
                         "idRoute" to feature,
-                        "time" to currentDateTime
+                        "time" to currentDateTime,
+                        "type" to "Trail"
                     )
                     for (id in friendsArray) {
                         db.collection("Invites").document("InviteDocument").collection(id)

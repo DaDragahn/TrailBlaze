@@ -54,7 +54,7 @@
                     tools:text="ISEL" />
 
                 <TextView
-                    android:id="@+id/localidade"
+                    android:id="@+id/membros"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"

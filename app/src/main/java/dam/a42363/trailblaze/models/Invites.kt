@@ -1,14 +1,14 @@
 package dam.a42363.trailblaze.models
 
 class Invites {
-    var idTrail: String? = null
+    var idInvite: String? = null
     var nome: String? = null
     var photoUrl: String? = null
     var idRoute: String? = null
 
     constructor() {}
-    constructor(idTrail: String?, nome: String?, photoUrl: String?, idRoute: String?) {
-        this.idTrail = idTrail
+    constructor(idInvite: String?, nome: String?, photoUrl: String?, idRoute: String?) {
+        this.idInvite = idInvite
         this.nome = nome
         this.photoUrl = photoUrl
         this.idRoute = idRoute
