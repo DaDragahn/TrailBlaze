@@ -63,7 +63,7 @@ class AddGruposFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createGroup() {
-        var currentDateTime = LocalDateTime.now()
+        val currentDateTime = LocalDateTime.now()
 
         if (!groupName?.equals("")!! || groupName != null) {
             val group = db.collection("Groups").document()
@@ -72,16 +72,16 @@ class AddGruposFragment : Fragment() {
                 if (it.isSuccessful) {
                     val documentSnapshot = it.result
                     if (documentSnapshot!!.exists()) {
-                        val docSent = hashMapOf(
-                            "idInvite" to group.id,
-                            "nome" to documentSnapshot.getString("nome"),
-                            "photoUrl" to documentSnapshot.getString("photoUrl"),
-                            "type" to "Group",
-                            "time" to currentDateTime
-                        )
                         for (id in friendsArray) {
-                            db.collection("Invites").document("InviteDocument").collection(id)
-                                .document(onlineId)
+                            val docSent = hashMapOf(
+                                "idInvite" to group.id,
+                                "idReceived" to id,
+                                "nome" to documentSnapshot.getString("nome"),
+                                "photoUrl" to documentSnapshot.getString("photoUrl"),
+                                "type" to "Group",
+                                "time" to currentDateTime
+                            )
+                            db.collection("Invites").document()
                                 .set(docSent)
                         }
                         val groupArray = ArrayList<String>()

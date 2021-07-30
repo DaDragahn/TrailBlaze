@@ -78,7 +78,7 @@ class EscolherModoFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun inviteAndStartTrail() {
-        var currentDateTime = LocalDateTime.now()
+        val currentDateTime = LocalDateTime.now()
 
         val lobby = db.collection("Trails").document()
 
@@ -86,17 +86,17 @@ class EscolherModoFragment : Fragment() {
             if (it.isSuccessful) {
                 val documentSnapshot = it.result
                 if (documentSnapshot!!.exists()) {
-                    val docSent = hashMapOf(
-                        "idInvite" to lobby.id,
-                        "nome" to documentSnapshot.getString("nome"),
-                        "photoUrl" to documentSnapshot.getString("photoUrl"),
-                        "idRoute" to feature,
-                        "time" to currentDateTime,
-                        "type" to "Trail"
-                    )
                     for (id in friendsArray) {
-                        db.collection("Invites").document("InviteDocument").collection(id)
-                            .document(onlineId)
+                        val docSent = hashMapOf(
+                            "idInvite" to lobby.id,
+                            "idReceived" to id,
+                            "nome" to documentSnapshot.getString("nome"),
+                            "photoUrl" to documentSnapshot.getString("photoUrl"),
+                            "idRoute" to feature,
+                            "time" to currentDateTime,
+                            "type" to "Trail"
+                        )
+                        db.collection("Invites").document()
                             .set(docSent)
                     }
                     val lobbySent = hashMapOf(

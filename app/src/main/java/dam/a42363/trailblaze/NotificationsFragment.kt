@@ -69,7 +69,7 @@ class NotificationsFragment : Fragment() {
     private fun displayAllNotifications() {
         var currentDateTime = LocalDateTime.now()
         currentDateTime = currentDateTime.minusHours(1)
-        inviteRef = db.collection("Invites").document("InviteDocument").collection(onlineId)
+        inviteRef = db.collection("Invites")
             .whereGreaterThan("time", currentDateTime)
 
         val options = FirestoreRecyclerOptions.Builder<Invites>()
@@ -127,85 +127,90 @@ class NotificationsFragment : Fragment() {
             position: Int,
             model: Invites
         ) {
-            val idInvite = snapshots.getSnapshot(position).getString("idInvite")
-            val id = snapshots.getSnapshot(position).id
-            val name = snapshots.getSnapshot(position).getString("nome")
-            val photoUrl = snapshots.getSnapshot(position).getString("photoUrl")
-            when (snapshots.getSnapshot(position).getString("type")) {
-                "Group" -> {
-                    if (idInvite != null) {
-                        grupoRef.document(idInvite).addSnapshotListener { snapshot, _ ->
-                            if (snapshot != null && snapshot.exists()) {
-                                val data = snapshot.data
-                                val grupoName: String = data?.get("nome") as String
-                                val groupArray: ArrayList<String> =
-                                    data["groupArray"] as ArrayList<String>
-                                if (name != null) {
-                                    if (photoUrl != null) {
-                                        holder.setGroupVariables(name, photoUrl, grupoName, ctx)
+            val idReceived = snapshots.getSnapshot(position).getString("idReceived")
+            if (idReceived.equals(onlineId)) {
+                val idInvite = snapshots.getSnapshot(position).getString("idInvite")
+                val id = snapshots.getSnapshot(position).id
+                val name = snapshots.getSnapshot(position).getString("nome")
+                val photoUrl = snapshots.getSnapshot(position).getString("photoUrl")
+                when (snapshots.getSnapshot(position).getString("type")) {
+                    "Group" -> {
+                        if (idInvite != null) {
+                            grupoRef.document(idInvite).addSnapshotListener { snapshot, _ ->
+                                if (snapshot != null && snapshot.exists()) {
+                                    val data = snapshot.data
+                                    val grupoName: String = data?.get("nome") as String
+                                    val groupArray: ArrayList<String> =
+                                        data["groupArray"] as ArrayList<String>
+                                    if (name != null) {
+                                        if (photoUrl != null) {
+                                            holder.setGroupVariables(name, photoUrl, grupoName, ctx)
+                                        }
+                                    }
+                                    holder.notificationBinding.acceptBtn.setOnClickListener {
+                                        groupArray.add(onlineId)
+
+                                        db.collection("Groups").document(idInvite)
+                                            .update("groupArray", groupArray)
+                                        db.collection("Invites").document("InviteDocument")
+                                            .collection(onlineId)
+                                            .document(id).delete()
+                                    }
+                                    holder.notificationBinding.excludeBtn.setOnClickListener {
+                                        db.collection("Invites").document("InviteDocument")
+                                            .collection(onlineId)
+                                            .document(id).delete()
                                     }
                                 }
-                                holder.notificationBinding.acceptBtn.setOnClickListener {
-                                    groupArray.add(onlineId)
+                            }
+                        }
+                    }
+                    "Trail" -> {
+                        val idRoute = snapshots.getSnapshot(position).getString("idRoute")
 
-                                    db.collection("Groups").document(idInvite)
-                                        .update("groupArray", groupArray)
-                                    db.collection("Invites").document("InviteDocument")
-                                        .collection(onlineId)
-                                        .document(id).delete()
-                                }
-                                holder.notificationBinding.excludeBtn.setOnClickListener {
-                                    db.collection("Invites").document("InviteDocument")
-                                        .collection(onlineId)
-                                        .document(id).delete()
+                        if (idRoute != null) {
+                            locationRef.document(idRoute).addSnapshotListener { snapshot, _ ->
+                                if (snapshot != null && snapshot.exists()) {
+                                    val routeName = snapshot.getString("nome")!!
+                                    val routeInfo = snapshot.getString("route")!!
+                                    if (name != null) {
+                                        if (photoUrl != null) {
+                                            holder.setTrailVariables(name, photoUrl, routeName, ctx)
+                                        }
+                                    }
+                                    holder.notificationBinding.acceptBtn.setOnClickListener {
+                                        val lobbySent = hashMapOf(
+                                            "nome" to auth.currentUser!!.displayName,
+                                            "LastLocation" to ""
+                                        )
+                                        if (idInvite != null) {
+                                            db.collection("Trails").document(idInvite)
+                                                .collection("TrailsCollection").document(onlineId)
+                                                .set(lobbySent)
+                                        }
+                                        db.collection("Invites").document("InviteDocument")
+                                            .collection(onlineId)
+                                            .document(id).delete()
+                                        val bundle =
+                                            bundleOf("route" to routeInfo, "idTrail" to idInvite)
+
+                                        navController.navigate(
+                                            R.id.action_notificationsFragment_to_navigationFragment,
+                                            bundle
+                                        )
+                                    }
+                                    holder.notificationBinding.excludeBtn.setOnClickListener {
+                                        db.collection("Invites").document("InviteDocument")
+                                            .collection(onlineId)
+                                            .document(id).delete()
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                "Trail" -> {
-                    val idRoute = snapshots.getSnapshot(position).getString("idRoute")
-
-                    if (idRoute != null) {
-                        locationRef.document(idRoute).addSnapshotListener { snapshot, _ ->
-                            if (snapshot != null && snapshot.exists()) {
-                                val routeName = snapshot.getString("nome")!!
-                                val routeInfo = snapshot.getString("route")!!
-                                if (name != null) {
-                                    if (photoUrl != null) {
-                                        holder.setTrailVariables(name, photoUrl, routeName, ctx)
-                                    }
-                                }
-                                holder.notificationBinding.acceptBtn.setOnClickListener {
-                                    val lobbySent = hashMapOf(
-                                        "nome" to auth.currentUser!!.displayName,
-                                        "LastLocation" to ""
-                                    )
-                                    if (idInvite != null) {
-                                        db.collection("Trails").document(idInvite)
-                                            .collection("TrailsCollection").document(onlineId)
-                                            .set(lobbySent)
-                                    }
-                                    db.collection("Invites").document("InviteDocument")
-                                        .collection(onlineId)
-                                        .document(id).delete()
-                                    val bundle =
-                                        bundleOf("route" to routeInfo, "idTrail" to idInvite)
-
-                                    navController.navigate(
-                                        R.id.action_notificationsFragment_to_navigationFragment,
-                                        bundle
-                                    )
-                                }
-                                holder.notificationBinding.excludeBtn.setOnClickListener {
-                                    db.collection("Invites").document("InviteDocument")
-                                        .collection(onlineId)
-                                        .document(id).delete()
-                                }
-                            }
-                        }
-                    }
-                }
+            } else {
+                holder.notificationBinding.cardView.visibility = View.GONE
             }
         }
 
