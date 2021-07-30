@@ -20,6 +20,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dam.a42363.trailblaze.databinding.FragmentEditarPerfilBinding
 import dam.a42363.trailblaze.databinding.FragmentExplorarBinding
+import android.content.Intent
+
+import androidx.core.app.ActivityCompat.startActivityForResult
+import dam.a42363.trailblaze.utils.Constants
+
 
 class EditarPerfilFragment : Fragment() {
 
@@ -65,7 +70,6 @@ class EditarPerfilFragment : Fragment() {
         val profileImage = binding.profileImage
         val save = binding.save
 
-
         if (user != null) {
             db.collection("users").document(user.uid).get()
                 .addOnCompleteListener { task: Task<DocumentSnapshot?> ->
@@ -77,7 +81,6 @@ class EditarPerfilFragment : Fragment() {
 
                             name.setText(fullName?.get(0))
                             lastName.setText(fullName?.get(1))
-//                            email.setText(documentSnapshot.getString("email"))
 
                             if (!documentSnapshot.getString("photoUrl").equals(""))
                                 Glide.with(this).load(documentSnapshot.getString("photoUrl"))
@@ -91,6 +94,11 @@ class EditarPerfilFragment : Fragment() {
                 }
         }
 
+        val selectPhoto = binding.selectPhoto
+
+        selectPhoto.setOnClickListener {
+
+        }
 
         save.setOnClickListener {
             val txtFirstName = name.text.toString()
@@ -123,8 +131,6 @@ class EditarPerfilFragment : Fragment() {
                 }
             }
         }
-
-
     }
 
 }
