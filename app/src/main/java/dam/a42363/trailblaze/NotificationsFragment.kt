@@ -152,13 +152,11 @@ class NotificationsFragment : Fragment() {
 
                                         db.collection("Groups").document(idInvite)
                                             .update("groupArray", groupArray)
-                                        db.collection("Invites").document("InviteDocument")
-                                            .collection(onlineId)
+                                        db.collection("Invites")
                                             .document(id).delete()
                                     }
                                     holder.notificationBinding.excludeBtn.setOnClickListener {
-                                        db.collection("Invites").document("InviteDocument")
-                                            .collection(onlineId)
+                                        db.collection("Invites")
                                             .document(id).delete()
                                     }
                                 }
@@ -188,8 +186,7 @@ class NotificationsFragment : Fragment() {
                                                 .collection("TrailsCollection").document(onlineId)
                                                 .set(lobbySent)
                                         }
-                                        db.collection("Invites").document("InviteDocument")
-                                            .collection(onlineId)
+                                        db.collection("Invites")
                                             .document(id).delete()
                                         val bundle =
                                             bundleOf("route" to routeInfo, "idTrail" to idInvite)
@@ -200,8 +197,7 @@ class NotificationsFragment : Fragment() {
                                         )
                                     }
                                     holder.notificationBinding.excludeBtn.setOnClickListener {
-                                        db.collection("Invites").document("InviteDocument")
-                                            .collection(onlineId)
+                                        db.collection("Invites")
                                             .document(id).delete()
                                     }
                                 }
