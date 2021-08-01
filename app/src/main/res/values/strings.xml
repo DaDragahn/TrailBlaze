@@ -54,6 +54,12 @@
     <string name="adicionar_grupo">Adicionar Grupo</string>
     <string name="adicionar_amigo">Adicionar Amigo</string>
     <string name="criar">Criar</string>
+    <string name="filtros">Filtros</string>
+    <string name="reset">Reset</string>
+    <string name="dificuldade">Dificuldade</string>
+    <string name="facil">Fácil</string>
+    <string name="moderado">Moderado</string>
+    <string name="dificil">Difícil</string>
 
     <string-array name="modalidades">
         <item>Caminhada</item>

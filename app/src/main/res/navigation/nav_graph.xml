@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_explorarFragment_to_escolherModoFragment"
             app:destination="@id/escolherModoFragment" />
+        <action
+            android:id="@+id/action_explorarFragment_to_filtrosFragment"
+            app:destination="@id/filtrosFragment" />
 
     </fragment>
     <fragment
@@ -267,4 +270,9 @@
         android:name="dam.a42363.trailblaze.AddGruposFragment"
         android:label="fragment_add_grupos"
         tools:layout="@layout/fragment_add_grupos" />
+    <fragment
+        android:id="@+id/filtrosFragment"
+        android:name="dam.a42363.trailblaze.FiltrosFragment"
+        android:label="fragment_filtros"
+        tools:layout="@layout/fragment_filtros" />
 </navigation>
