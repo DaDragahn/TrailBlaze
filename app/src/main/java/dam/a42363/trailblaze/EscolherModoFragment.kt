@@ -1,9 +1,9 @@
 package dam.a42363.trailblaze
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,11 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import dam.a42363.trailblaze.databinding.FragmentEscolherModoBinding
 import dam.a42363.trailblaze.databinding.ItemAmigoConvidarBinding
+import dam.a42363.trailblaze.databinding.ItemGrupoBinding
 import dam.a42363.trailblaze.models.Friends
-import java.sql.Timestamp
-import java.time.Instant
+import dam.a42363.trailblaze.models.Grupo
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 
 class EscolherModoFragment : Fragment() {
@@ -34,13 +33,16 @@ class EscolherModoFragment : Fragment() {
     var _binding: FragmentEscolherModoBinding? = null
     private val binding get() = _binding!!
     private lateinit var amigosListView: RecyclerView
+    private lateinit var grupoListView: RecyclerView
     private lateinit var db: FirebaseFirestore
     private lateinit var userRef: CollectionReference
     private lateinit var friendRef: Query
+    private lateinit var grupoRef: Query
     private lateinit var auth: FirebaseAuth
     private lateinit var onlineId: String
     private lateinit var navController: NavController
-    private var adapter: FindFriendsFirestoreRecyclerAdapter? = null
+    private var amigoAdapter: FindFriendsFirestoreRecyclerAdapter? = null
+    private var grupoAdapter: GroupFinderFirestoreRecyclerAdapter? = null
     private val friendsArray = ArrayList<String>()
     private var optimizedRoute: String? = null
     private var feature: String? = null
@@ -53,12 +55,15 @@ class EscolherModoFragment : Fragment() {
 
         _binding = FragmentEscolherModoBinding.inflate(inflater, container, false)
         amigosListView = binding.amigosListView
+        grupoListView = binding.grupoListView
         auth = FirebaseAuth.getInstance()
         onlineId = auth.currentUser!!.uid
         db = FirebaseFirestore.getInstance()
         friendRef = db.collection("Friends").document("FriendDocument").collection(onlineId)
         userRef = db.collection("users")
+        grupoRef = db.collection("Groups")
         displayAllFriends()
+        displayAllGroups()
         binding.start.setOnClickListener {
             inviteAndStartTrail()
         }
@@ -120,17 +125,29 @@ class EscolherModoFragment : Fragment() {
         val options = FirestoreRecyclerOptions.Builder<Friends>()
             .setQuery(friendRef, Friends::class.java).build()
 
-        adapter = FindFriendsFirestoreRecyclerAdapter(options, requireContext())
-        adapter!!.startListening()
-        amigosListView.adapter = adapter
+        amigoAdapter = FindFriendsFirestoreRecyclerAdapter(options, requireContext())
+        amigoAdapter!!.startListening()
+        amigosListView.adapter = amigoAdapter
 
+    }
+
+    private fun displayAllGroups() {
+        val options = FirestoreRecyclerOptions.Builder<Grupo>()
+            .setQuery(grupoRef, Grupo::class.java).build()
+
+        grupoAdapter = GroupFinderFirestoreRecyclerAdapter(options, requireContext())
+        grupoAdapter!!.startListening()
+        grupoListView.adapter = grupoAdapter
     }
 
     override fun onStop() {
         super.onStop()
 
-        if (adapter != null) {
-            adapter!!.stopListening()
+        if (amigoAdapter != null) {
+            amigoAdapter!!.stopListening()
+        }
+        if(grupoAdapter != null){
+            grupoAdapter!!.stopListening()
         }
     }
 
@@ -187,5 +204,100 @@ class EscolherModoFragment : Fragment() {
                 )
             )
         }
+    }
+
+    inner class GroupFinderViewHolder(val grupoBinding: ItemGrupoBinding) :
+        RecyclerView.ViewHolder(grupoBinding.root) {
+        @SuppressLint("SetTextI18n")
+        fun setVariables(nome: String, membros: String, ctx: Context) {
+            grupoBinding.name.text = nome
+            grupoBinding.membros.text = "Membros: $membros"
+        }
+    }
+
+    private inner class GroupFinderFirestoreRecyclerAdapter(
+        options: FirestoreRecyclerOptions<Grupo>,
+        private val ctx: Context
+    ) :
+        FirestoreRecyclerAdapter<Grupo, GroupFinderViewHolder>(options) {
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        override fun onBindViewHolder(
+            holder: GroupFinderViewHolder,
+            position: Int,
+            model: Grupo
+        ) {
+            val data = snapshots.getSnapshot(position).data
+            val groupArray: List<String> = data?.get("groupArray") as List<String>
+            if (groupArray.contains(onlineId)) {
+                val nome: String = data["nome"] as String
+                holder.setVariables(nome, groupArray.size.toString(), ctx)
+                holder.grupoBinding.cardView.setOnClickListener{
+                    binding.decisionCardView.visibility = View.VISIBLE
+                    binding.aceitarBtn.setOnClickListener {
+                        inviteGroupandStartTrail(groupArray)
+                    }
+                    binding.recusarBtn.setOnClickListener {
+                        binding.decisionCardView.visibility = View.GONE
+                    }
+                }
+            } else {
+                holder.grupoBinding.cardView.visibility = View.GONE
+            }
+        }
+
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int
+        ): GroupFinderViewHolder {
+            return GroupFinderViewHolder(
+                ItemGrupoBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent, false
+                )
+            )
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun inviteGroupandStartTrail(groupArray: List<String>) {
+        val currentDateTime = LocalDateTime.now()
+
+        val lobby = db.collection("Trails").document()
+
+        db.collection("users").document(onlineId).get().addOnCompleteListener {
+            if (it.isSuccessful) {
+                val documentSnapshot = it.result
+                if (documentSnapshot!!.exists()) {
+                    for (userID in groupArray) {
+                        if (userID != onlineId) {
+                            val docSent = hashMapOf(
+                                "idInvite" to lobby.id,
+                                "idReceived" to userID,
+                                "nome" to documentSnapshot.getString("nome"),
+                                "photoUrl" to documentSnapshot.getString("photoUrl"),
+                                "idRoute" to feature,
+                                "time" to currentDateTime,
+                                "type" to "Trail"
+                            )
+                            db.collection("Invites").document()
+                                .set(docSent)
+                        }
+                    }
+                    val lobbySent = hashMapOf(
+                        "nome" to documentSnapshot.getString("nome"),
+                        "LastLocation" to ""
+                    )
+                    lobby.collection("TrailsCollection").document(onlineId).set(lobbySent)
+                }
+            }
+        }
+
+        val bundle = bundleOf("route" to optimizedRoute, "idTrail" to lobby.id)
+
+        navController.navigate(
+            R.id.action_escolherModoFragment_to_navigationFragment,
+            bundle
+        )
     }
 }

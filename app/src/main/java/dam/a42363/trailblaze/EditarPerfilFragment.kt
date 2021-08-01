@@ -1,5 +1,6 @@
 package dam.a42363.trailblaze
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
@@ -20,6 +21,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dam.a42363.trailblaze.databinding.FragmentEditarPerfilBinding
 import dam.a42363.trailblaze.databinding.FragmentExplorarBinding
+import android.provider.MediaStore
+
+import android.content.Intent
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
+
 
 class EditarPerfilFragment : Fragment() {
 
@@ -33,6 +41,7 @@ class EditarPerfilFragment : Fragment() {
     private lateinit var navController: NavController
 
 
+    @SuppressLint("LogNotTimber")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,7 +51,16 @@ class EditarPerfilFragment : Fragment() {
         _binding = FragmentEditarPerfilBinding.inflate(inflater, container, false)
 
         db = FirebaseFirestore.getInstance()
-
+        val getImage = registerForActivityResult(
+            ActivityResultContracts.GetContent(),
+            ActivityResultCallback {
+                binding.profileImage.setImageURI(it)
+                Log.d("RecordRoute", "$it")
+            }
+        )
+        binding.alterarFoto.setOnClickListener {
+            getImage.launch("image/*")
+        }
         return binding.root
     }
 

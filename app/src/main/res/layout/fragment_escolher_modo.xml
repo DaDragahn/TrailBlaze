@@ -44,7 +44,7 @@
             </GridLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/routesListView"
+                android:id="@+id/grupoListView"
                 android:layout_width="match_parent"
                 android:layout_height="340dp"
                 android:layout_gravity="top"
@@ -145,7 +145,7 @@
 
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/individualBtn"
+                    android:id="@+id/recusarBtn"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="150dp"
                     android:layout_height="55dp"
@@ -161,7 +161,7 @@
                     tools:ignore="SpUsage" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/acompanhadoBtn"
+                    android:id="@+id/aceitarBtn"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="160dp"
                     android:layout_height="55dp"
