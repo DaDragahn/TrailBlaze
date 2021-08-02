@@ -53,7 +53,8 @@
                     android:layout_height="35dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="30dp"
-                    android:background="@drawable/ic_settings__1_" />
+                    android:background="@drawable/ic_settings__1_"
+                    tools:ignore="TouchTargetSizeCheck" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/lista"
@@ -61,7 +62,8 @@
                     android:layout_height="35dp"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginEnd="20dp"
-                    android:background="@drawable/ic_list" />
+                    android:background="@drawable/ic_list"
+                    tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
 
             </androidx.appcompat.widget.Toolbar>

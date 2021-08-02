@@ -183,6 +183,9 @@
         <action
             android:id="@+id/action_navigationFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_navigationFragment_to_terminarFragment"
+            app:destination="@id/terminarFragment" />
     </fragment>
     <fragment
         android:id="@+id/partilharFragment"
@@ -275,4 +278,9 @@
         android:name="dam.a42363.trailblaze.FiltrosFragment"
         android:label="fragment_filtros"
         tools:layout="@layout/fragment_filtros" />
+    <fragment
+        android:id="@+id/terminarFragment"
+        android:name="dam.a42363.trailblaze.TerminarFragment"
+        android:label="fragment_terminar"
+        tools:layout="@layout/fragment_terminar" />
 </navigation>

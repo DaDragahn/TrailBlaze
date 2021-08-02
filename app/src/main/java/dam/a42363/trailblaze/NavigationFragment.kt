@@ -174,6 +174,10 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 )
             }
         }
+
+        binding.terminarBtn.setOnClickListener {
+            navController.navigate(R.id.action_navigationFragment_to_terminarFragment)
+        }
     }
 
     private fun allPermissionGranted() =

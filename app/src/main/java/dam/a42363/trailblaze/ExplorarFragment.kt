@@ -146,6 +146,11 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             navController.navigate(R.id.action_explorarFragment_to_explorarListFragment, bundle)
 
         }
+
+        binding.filtro.setOnClickListener {
+
+            navController.navigate(R.id.action_explorarFragment_to_filtrosFragment)
+        }
     }
 
     override fun onMapReady(mapboxMap: MapboxMap) {
@@ -298,7 +303,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                             }
 
                             binding.acompanhadoBtn.setOnClickListener {
-                                val bundle = bundleOf("route" to route,"feature" to feature.id())
+                                val bundle = bundleOf("route" to route, "feature" to feature.id())
                                 navController.navigate(
                                     R.id.action_explorarFragment_to_escolherModoFragment,
                                     bundle

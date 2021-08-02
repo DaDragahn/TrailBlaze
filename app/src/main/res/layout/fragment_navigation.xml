@@ -14,6 +14,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/terminarCardView"
+            android:layout_width="350dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/dirt_white"
+            android:visibility="gone"
+            app:cardCornerRadius="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:text="@string/chegou_ao_final_do_seu_percurso"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="50dp"
+                android:orientation="horizontal">
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/terminarBtn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="150dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:text="@string/terminar"
+                    android:textColor="@color/trailGreen"
+                    android:textSize="13sp"
+                    app:backgroundTint="@color/white"
+                    app:cornerRadius="10dp"
+                    app:strokeColor="@color/trailGreen"
+                    app:strokeWidth="1dp" />
+
+            </GridLayout>
+
+        </androidx.cardview.widget.CardView>
+
         <com.mapbox.mapboxsdk.maps.MapView
             android:id="@+id/mapView"
             android:layout_width="match_parent"
@@ -84,7 +129,10 @@
             android:background="@drawable/ic_arrow_ios_upward_outline"
             android:contentDescription="arrowUp"
             tools:ignore="HardcodedText" />
+
+
     </GridLayout>
+
 
     <!--    <androidx.camera.view.PreviewView-->
     <!--        android:layout_width="match_parent"-->

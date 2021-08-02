@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".TerminarFragment">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nomePercurso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Nome:"
+            android:textColor="@color/trailGreen"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/distanciaPercurso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Distância:"
+            android:textColor="@color/trailGreen"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+
+        <TextView
+            android:id="@+id/tempoPercurso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Tempo:"
+            android:textColor="@color/trailGreen"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp" />
+
+    </GridLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

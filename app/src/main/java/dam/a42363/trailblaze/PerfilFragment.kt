@@ -145,12 +145,6 @@ class PerfilFragment : Fragment() {
                         }
                     }
             }
-//            logout.setOnClickListener {
-//                auth.signOut()
-//                Toast.makeText(this.activity, "Logged Out", Toast.LENGTH_SHORT).show()
-//                navController.navigate(R.id.action_perfilFragment_to_signInFragment)
-//
-//            }
         }
     }
 

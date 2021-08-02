@@ -60,6 +60,13 @@
     <string name="facil">Fácil</string>
     <string name="moderado">Moderado</string>
     <string name="dificil">Difícil</string>
+    <string name="modalidade">Modalidade</string>
+    <string name="caminhada">Caminhada</string>
+    <string name="corrida">Corrida</string>
+    <string name="ciclismo">Ciclismo</string>
+    <string name="aplicar">Aplicar</string>
+    <string name="chegou_ao_final_do_seu_percurso">Chegou ao final do seu Percurso</string>
+    <string name="terminar">Terminar</string>
 
     <string-array name="modalidades">
         <item>Caminhada</item>

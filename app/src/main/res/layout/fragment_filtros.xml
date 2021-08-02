@@ -52,8 +52,8 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/selectPhoto"
-            android:layout_width="250dp"
+            android:id="@+id/dificuldade"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginStart="20dp"
@@ -72,7 +72,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/facil"
-                android:layout_width="110dp"
+                android:layout_width="115dp"
                 android:layout_height="40dp"
                 android:layout_gravity="start"
                 android:background="@drawable/buttons"
@@ -83,7 +83,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/moderado"
-                android:layout_width="110dp"
+                android:layout_width="115dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="15dp"
@@ -96,7 +96,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/dificil"
-                android:layout_width="110dp"
+                android:layout_width="115dp"
                 android:layout_height="40dp"
                 android:layout_gravity="end"
                 android:background="@drawable/buttons"
@@ -107,6 +107,76 @@
 
         </GridLayout>
 
+        <View
+            android:layout_width="380dp"
+            android:layout_height="2dp"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@color/trailGreen" />
+
+        <TextView
+            android:id="@+id/modalidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/modalidade"
+            android:textColor="@color/trailGreen"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/caminhada"
+                android:layout_width="115dp"
+                android:layout_height="40dp"
+                android:layout_gravity="start"
+                android:background="@drawable/buttons"
+                android:backgroundTint="@color/trailGreen"
+                android:text="@string/caminhada"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/corrida"
+                android:layout_width="115dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/buttons"
+                android:backgroundTint="@color/trailGreen"
+                android:text="@string/corrida"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ciclismo"
+                android:layout_width="115dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:background="@drawable/buttons"
+                android:backgroundTint="@color/trailGreen"
+                android:text="@string/ciclismo"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </GridLayout>
+
+        <View
+            android:layout_width="380dp"
+            android:layout_height="2dp"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@color/trailGreen" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/aplicarBtn"
             android:layout_width="150dp"
@@ -115,10 +185,11 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/buttons"
             android:backgroundTint="@color/trailGreen"
-            android:text="@string/dificil"
+            android:text="@string/aplicar"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
     </GridLayout>
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>
