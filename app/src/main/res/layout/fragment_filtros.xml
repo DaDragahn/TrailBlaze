@@ -187,7 +187,8 @@
             android:backgroundTint="@color/trailGreen"
             android:text="@string/aplicar"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            app:backgroundTint="@color/trailGreen" />
 
     </GridLayout>
 

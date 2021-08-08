@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,6 +25,13 @@
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
+        <View
+            android:layout_width="380dp"
+            android:layout_height="2dp"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@color/trailGreen" />
+
         <TextView
             android:id="@+id/distanciaPercurso"
             android:layout_width="wrap_content"
@@ -37,6 +45,12 @@
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
+        <View
+            android:layout_width="380dp"
+            android:layout_height="2dp"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@color/trailGreen" />
 
         <TextView
             android:id="@+id/tempoPercurso"
@@ -51,11 +65,62 @@
             android:textStyle="bold"
             tools:ignore="HardcodedText" />
 
-        <RatingBar
+        <View
+            android:layout_width="380dp"
+            android:layout_height="2dp"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@color/trailGreen" />
+
+        <TextView
+            android:id="@+id/questionTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp" />
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="O que achou do Percurso?"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:progressBackgroundTint="@color/ash_gray_alpha"
+            android:progressTint="@color/ratingGold"
+            android:secondaryProgressTint="@color/ratingGold" />
+
+        <TextView
+            android:id="@+id/messageTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="380dp"
+            android:layout_height="2dp"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@color/trailGreen" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/finalizarBtn"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/buttons"
+            android:backgroundTint="@color/trailGreen"
+            android:text="@string/finalizar"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:backgroundTint="@color/trailGreen" />
+
 
     </GridLayout>
 

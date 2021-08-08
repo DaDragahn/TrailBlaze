@@ -23,4 +23,5 @@
     <color name="y_white">#A6FFFFFF</color>
     <color name="faded_green">#523F9E00</color>
     <color name="transparent">#00000000</color>
+    <color name="ratingGold">#FDCC0D</color>
 </resources>

@@ -102,6 +102,10 @@ class PerfilFragment : Fragment() {
                     navController.navigate(R.id.action_perfilFragment_to_editarPerfilFragment)
                     true
                 }
+                R.id.defenicoes -> {
+                    navController.navigate(R.id.action_perfilFragment_to_terminarFragment)
+                    true
+                }
                 R.id.logout -> {
                     logOut()
                     true

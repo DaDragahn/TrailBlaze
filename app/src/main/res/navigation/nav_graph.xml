@@ -94,6 +94,9 @@
         <action
             android:id="@+id/action_perfilFragment_to_editarPerfilFragment"
             app:destination="@id/editarPerfilFragment" />
+        <action
+            android:id="@+id/action_perfilFragment_to_terminarFragment"
+            app:destination="@id/terminarFragment" />
 
     </fragment>
     <fragment
