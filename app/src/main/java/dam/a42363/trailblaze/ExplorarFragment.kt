@@ -1,7 +1,9 @@
 package dam.a42363.trailblaze
 
+import android.R.attr
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -48,6 +51,23 @@ import dam.a42363.trailblaze.databinding.FragmentExplorarBinding
 import java.util.*
 
 
+import android.content.Intent
+import android.graphics.Color
+import com.mapbox.api.geocoding.v5.models.CarmenFeature
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceAutocompleteFragment
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceSelectionListener
+import com.mapbox.mapboxsdk.camera.CameraPosition
+
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+
+import android.R.attr.data
+
+import android.app.Activity
+import timber.log.Timber
+
+
 class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     MapboxMap.OnMapClickListener {
 
@@ -65,10 +85,13 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     private var locationComponent: LocationComponent? = null
 
     private lateinit var cardView: CardView
-
+    private lateinit var center: GeoLocation
     private lateinit var db: FirebaseFirestore
     private lateinit var navController: NavController
     private var doubleBackToExitPressedOnce = false
+
+    private val REQUEST_CODE_AUTOCOMPLETE = 1
+    private val TAG = "PlaceAutocompleteFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +106,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 .show()
 
             Handler(Looper.getMainLooper()).postDelayed(
-                Runnable { doubleBackToExitPressedOnce = false },
+                { doubleBackToExitPressedOnce = false },
                 2000
             )
         }
@@ -91,6 +114,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         backCallback.isEnabled
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("UseCompatLoadingForColorStateLists")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -110,15 +134,17 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         db = FirebaseFirestore.getInstance()
 
         binding.iniciarBtn.backgroundTintList =
-            view?.resources?.getColorStateList(R.color.trailGreen)
+            view?.resources?.getColorStateList(
+                R.color.trailGreen,
+                requireActivity().applicationContext.theme
+            )
 
         binding.dirBtn.backgroundTintList =
-            view?.resources?.getColorStateList(R.color.orange)
-
-
-        // Inflate the layout for this fragment
+            view?.resources?.getColorStateList(
+                R.color.orange,
+                requireActivity().applicationContext.theme
+            )
         return binding.root
-//        inflater.inflate(R.layout.fragment_explorar, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -136,9 +162,8 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
         binding.lista.setOnClickListener {
             val local = Point.fromLngLat(
-                locationComponent?.lastKnownLocation!!.longitude,
-                locationComponent?.lastKnownLocation!!
-                    .latitude
+                center.longitude,
+                center.latitude
             )
             val bundle = bundleOf(
                 "local" to local.toJson()
@@ -161,22 +186,72 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             uiSettings.setCompassFadeFacingNorth(false)
             enableLocationComponent(style)
             initMarkerIconSymbolLayer(style)
-            Log.d(
-                "TESTE",
-                locationComponent?.lastKnownLocation?.latitude.toString()
-            )
-            checkGeoQuery(style)
+            checkGeoQuery()
+            initSearchFab()
             mapboxMap.addOnMapClickListener(this)
         }
     }
 
-    private fun checkGeoQuery(style: Style) {
+    private fun initSearchFab() {
+        binding.searchView.setOnSearchClickListener {
+            val placeOptions = PlaceOptions.builder()
+                .backgroundColor(Color.parseColor("#EEEEEE"))
+                .limit(10)
+                .build(PlaceOptions.MODE_CARDS)
+
+            val intent: Intent = PlaceAutocomplete.IntentBuilder()
+                .accessToken(
+                    (if (Mapbox.getAccessToken() != null) Mapbox.getAccessToken() else getString(
+                        R.string.mapbox_access_token
+                    )).toString()
+                )
+                .placeOptions(
+                    placeOptions
+                )
+                .build(requireActivity())
+            binding.searchView.clearFocus()
+            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode === Activity.RESULT_OK && requestCode === REQUEST_CODE_AUTOCOMPLETE) {
+
+            // Retrieve selected location's CarmenFeature
+            val selectedCarmenFeature = PlaceAutocomplete.getPlace(data)
+
+            // Create a new FeatureCollection and add a new Feature to it using selectedCarmenFeature above.
+            // Then retrieve and update the source designated for showing a selected location's symbol layer icon
+
+
+            // Move map camera to the selected location
+            binding.searchView.setQuery("${selectedCarmenFeature.text()}", false)
+            binding.searchView.clearFocus()
+            center = GeoLocation(
+                (selectedCarmenFeature.geometry() as Point?)!!.latitude(),
+                (selectedCarmenFeature.geometry() as Point?)!!.longitude()
+            )
+
+            mapboxMap.animateCamera(
+                CameraUpdateFactory.newCameraPosition(
+                    CameraPosition.Builder()
+                        .target(
+                            LatLng(
+                                (selectedCarmenFeature.geometry() as Point?)!!.latitude(),
+                                (selectedCarmenFeature.geometry() as Point?)!!.longitude()
+                            )
+                        )
+                        .zoom(14.0)
+                        .build()
+                ), 4000
+            )
+            checkGeoQuery()
+        }
+    }
+
+    private fun checkGeoQuery() {
         val markerList: MutableList<Feature> = ArrayList()
-        val center = GeoLocation(
-            locationComponent?.lastKnownLocation!!.latitude,
-            locationComponent!!.lastKnownLocation!!
-                .longitude
-        )
         val radiusInM = (2 * 1000).toDouble()
         val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
@@ -341,11 +416,6 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 ).build()
             )
 
-            Log.d(
-                "TESTE",
-                locationComponent?.lastKnownLocation?.latitude.toString()
-            )
-
             // Enable to make component visible
             locationComponent!!.isLocationComponentEnabled = true
 
@@ -365,7 +435,21 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                     null
                 )
                 locationComponent!!.zoomWhileTracking(15.0)
+
+                center = GeoLocation(
+                    locationComponent?.lastKnownLocation!!.latitude,
+                    locationComponent!!.lastKnownLocation!!
+                        .longitude
+                )
+
+                checkGeoQuery()
             }
+
+            center = GeoLocation(
+                locationComponent?.lastKnownLocation!!.latitude,
+                locationComponent!!.lastKnownLocation!!
+                    .longitude
+            )
         } else {
             permissionsManager = PermissionsManager(this)
 

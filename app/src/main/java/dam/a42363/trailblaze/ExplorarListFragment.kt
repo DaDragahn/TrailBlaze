@@ -132,9 +132,11 @@ class ExplorarListFragment : Fragment() {
                         }
                     }
                 }
-                val query = db.collection("locations")
-                    .whereIn(FieldPath.documentId(), matchingDocs)
-                displayUserTrails(query)
+                if (matchingDocs.isNotEmpty()) {
+                    val query = db.collection("locations")
+                        .whereIn(FieldPath.documentId(), matchingDocs)
+                    displayUserTrails(query)
+                }
             }
     }
 
