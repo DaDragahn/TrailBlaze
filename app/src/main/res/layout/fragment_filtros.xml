@@ -45,7 +45,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -63,49 +62,102 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <GridLayout
+        <com.google.android.material.chip.ChipGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            app:singleLine="true">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/facil"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/facilChp"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="115dp"
-                android:layout_height="40dp"
-                android:layout_gravity="start"
-                android:background="@drawable/buttons"
-                android:backgroundTint="@color/trailGreen"
+                android:layout_height="50dp"
                 android:text="@string/facil"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textAlignment="center"
+                android:textColor="@color/chip_text"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@color/chip_selector"
+                app:chipStrokeColor="@color/chip_stroke_color"
+                app:chipStrokeWidth="2dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/moderado"
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/moderadoChp"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="115dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/buttons"
-                android:backgroundTint="@color/trailGreen"
+                android:layout_height="50dp"
                 android:text="@string/moderado"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textAlignment="center"
+                android:textColor="@color/chip_text"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@color/chip_selector"
+                app:chipStrokeColor="@color/chip_stroke_color"
+                app:chipStrokeWidth="2dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/dificil"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/dificilChp"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="115dp"
-                android:layout_height="40dp"
-                android:layout_gravity="end"
-                android:background="@drawable/buttons"
-                android:backgroundTint="@color/trailGreen"
+                android:layout_height="50dp"
                 android:text="@string/dificil"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textAlignment="center"
+                android:textColor="@color/chip_text"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@color/chip_selector"
+                app:chipStrokeColor="@color/chip_stroke_color"
+                app:chipStrokeWidth="2dp" />
 
-        </GridLayout>
+        </com.google.android.material.chip.ChipGroup>
+
+
+        <!--            <com.google.android.material.button.MaterialButton-->
+        <!--                android:id="@+id/facilBtn"-->
+        <!--                style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
+        <!--                android:layout_width="115dp"-->
+        <!--                android:layout_height="50dp"-->
+        <!--                android:layout_gravity="start"-->
+        <!--                android:text="@string/facil"-->
+        <!--                android:textColor="@color/black"-->
+        <!--                android:textSize="12sp"-->
+        <!--                app:backgroundTint="@color/white"-->
+        <!--                app:cornerRadius="10dp"-->
+        <!--                app:strokeColor="@color/black"-->
+        <!--                app:strokeWidth="1dp" />-->
+
+        <!--            <com.google.android.material.button.MaterialButton-->
+        <!--                android:id="@+id/moderadoBtn"-->
+        <!--                style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
+        <!--                android:layout_width="115dp"-->
+        <!--                android:layout_height="50dp"-->
+        <!--                android:layout_gravity="center"-->
+        <!--                android:layout_marginStart="15dp"-->
+        <!--                android:layout_marginEnd="15dp"-->
+        <!--                android:text="@string/moderado"-->
+        <!--                android:textColor="@color/trailGreen"-->
+        <!--                android:textSize="12sp"-->
+        <!--                app:backgroundTint="@color/white"-->
+        <!--                app:cornerRadius="10dp"-->
+        <!--                app:strokeColor="@color/trailGreen"-->
+        <!--                app:strokeWidth="1dp" />-->
+
+        <!--            <com.google.android.material.button.MaterialButton-->
+        <!--                android:id="@+id/dificilBtn"-->
+        <!--                style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
+        <!--                android:layout_width="115dp"-->
+        <!--                android:layout_height="50dp"-->
+        <!--                android:layout_gravity="end"-->
+        <!--                android:text="@string/dificil"-->
+        <!--                android:textColor="@color/trailGreen"-->
+        <!--                android:textSize="12sp"-->
+        <!--                app:backgroundTint="@color/white"-->
+        <!--                app:cornerRadius="10dp"-->
+        <!--                app:strokeColor="@color/trailGreen"-->
+        <!--                app:strokeWidth="1dp" />-->
 
         <View
             android:layout_width="380dp"
@@ -126,49 +178,93 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <GridLayout
+
+        <com.google.android.material.chip.ChipGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            app:singleLine="true">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/caminhada"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/caminhadaChp"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="115dp"
-                android:layout_height="40dp"
-                android:layout_gravity="start"
-                android:background="@drawable/buttons"
-                android:backgroundTint="@color/trailGreen"
+                android:layout_height="50dp"
                 android:text="@string/caminhada"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textAlignment="center"
+                android:textColor="@color/chip_text"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@color/chip_selector"
+                app:chipStrokeColor="@color/chip_stroke_color"
+                app:chipStrokeWidth="2dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/corrida"
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/corridaChp"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="115dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/buttons"
-                android:backgroundTint="@color/trailGreen"
+                android:layout_height="50dp"
                 android:text="@string/corrida"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textAlignment="center"
+                android:textColor="@color/chip_text"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@color/chip_selector"
+                app:chipStrokeColor="@color/chip_stroke_color"
+                app:chipStrokeWidth="2dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/ciclismo"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/ciclismoChp"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="115dp"
-                android:layout_height="40dp"
-                android:layout_gravity="end"
-                android:background="@drawable/buttons"
-                android:backgroundTint="@color/trailGreen"
+                android:layout_height="50dp"
                 android:text="@string/ciclismo"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textAlignment="center"
+                android:textColor="@color/chip_text"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@color/chip_selector"
+                app:chipStrokeColor="@color/chip_stroke_color"
+                app:chipStrokeWidth="2dp" />
 
-        </GridLayout>
+        </com.google.android.material.chip.ChipGroup>
+
+        <!--            <com.google.android.material.button.MaterialButton-->
+        <!--                android:id="@+id/caminhadaBtn"-->
+        <!--                android:layout_width="115dp"-->
+        <!--                android:layout_height="40dp"-->
+        <!--                android:layout_gravity="start"-->
+        <!--                android:background="@drawable/buttons"-->
+        <!--                android:backgroundTint="@color/trailGreen"-->
+        <!--                android:text="@string/caminhada"-->
+        <!--                android:textColor="@color/white"-->
+        <!--                android:textSize="12sp" />-->
+
+        <!--            <com.google.android.material.button.MaterialButton-->
+        <!--                android:id="@+id/corridaBtn"-->
+        <!--                android:layout_width="115dp"-->
+        <!--                android:layout_height="40dp"-->
+        <!--                android:layout_gravity="center"-->
+        <!--                android:layout_marginStart="15dp"-->
+        <!--                android:layout_marginEnd="15dp"-->
+        <!--                android:background="@drawable/buttons"-->
+        <!--                android:backgroundTint="@color/trailGreen"-->
+        <!--                android:text="@string/corrida"-->
+        <!--                android:textColor="@color/white"-->
+        <!--                android:textSize="12sp" />-->
+
+        <!--            <com.google.android.material.button.MaterialButton-->
+        <!--                android:id="@+id/ciclismoBtn"-->
+        <!--                android:layout_width="115dp"-->
+        <!--                android:layout_height="40dp"-->
+        <!--                android:layout_gravity="end"-->
+        <!--                android:background="@drawable/buttons"-->
+        <!--                android:backgroundTint="@color/trailGreen"-->
+        <!--                android:text="@string/ciclismo"-->
+        <!--                android:textColor="@color/white"-->
+        <!--                android:textSize="12sp" />-->
 
         <View
             android:layout_width="380dp"

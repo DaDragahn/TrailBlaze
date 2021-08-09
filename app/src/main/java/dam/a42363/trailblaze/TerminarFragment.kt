@@ -50,30 +50,33 @@ class TerminarFragment : Fragment() {
 
         val message = binding.messageTxt
 
-        ratingBar.setOnClickListener {
+        ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
 
-            if (ratingBar.rating <= 1.0) {
+            if (rating == 0f) {
+                message.text = ""
+            }
+
+            if (rating > 0.0 && rating <= 1.0) {
                 message.text = "Bummer"
             }
 
-            if (ratingBar.rating <= 2.0 && ratingBar.rating > 1.0) {
+            if (rating <= 2.0 && rating > 1.0) {
                 message.text = "Could be better"
             }
 
-            if (ratingBar.rating <= 3.0 && ratingBar.rating > 2.0) {
+            if (rating <= 3.0 && rating > 2.0) {
                 message.text = "Not Bad"
             }
 
-            if (ratingBar.rating <= 4.0 && ratingBar.rating > 3.0) {
+            if (rating <= 4.0 && rating > 3.0) {
                 message.text = "Nice Experience"
             }
 
-            if (ratingBar.rating <= 5.0 && ratingBar.rating > 4.0) {
+            if (rating <= 5.0 && rating > 4.0) {
                 message.text = "Loved it!!"
             }
 
         }
-
 
     }
 
