@@ -1,6 +1,5 @@
 package dam.a42363.trailblaze
 
-import android.R.attr
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import android.os.Build
@@ -288,19 +287,30 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                     }
                 }
                 for (docSnap in matchingDocs) {
+                    var check = true
                     val activeRoute = DirectionsRoute.fromJson(docSnap.getString("route")!!)
                     val optimizedRoute =
                         LineString.fromPolyline(activeRoute.geometry()!!, Constants.PRECISION_6)
                     val lat = optimizedRoute.coordinates().first().latitude()
                     val lng = optimizedRoute.coordinates().first().longitude()
                     val marker = Point.fromLngLat(lng, lat)
-                    markerList.add(
-                        Feature.fromGeometry(
-                            Point.fromLngLat(marker.longitude(), marker.latitude()),
-                            null,
-                            docSnap.id
+                    if ((activity as MainActivity).modalidadeArray.isNotEmpty()) {
+                        if (!(activity as MainActivity).modalidadeArray.contains(docSnap.getString("modalidade")))
+                            check = false
+                    }
+                    if ((activity as MainActivity).dificuldadeArray.isNotEmpty()) {
+                        if (!(activity as MainActivity).dificuldadeArray.contains(docSnap.getString("dificuldade")))
+                            check = false
+                    }
+                    if (check) {
+                        markerList.add(
+                            Feature.fromGeometry(
+                                Point.fromLngLat(marker.longitude(), marker.latitude()),
+                                null,
+                                docSnap.id
+                            )
                         )
-                    )
+                    }
                 }
                 mapboxMap.getStyle {
                     val iconSource = it.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURSE_ID)

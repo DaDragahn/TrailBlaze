@@ -13,6 +13,8 @@ class MainActivity : AppCompatActivity() {
     var bottomNavigationView: BottomNavigationView? = null
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+    internal var dificuldadeArray = ArrayList<String>()
+    internal var modalidadeArray = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -280,7 +280,11 @@
         android:id="@+id/filtrosFragment"
         android:name="dam.a42363.trailblaze.FiltrosFragment"
         android:label="fragment_filtros"
-        tools:layout="@layout/fragment_filtros" />
+        tools:layout="@layout/fragment_filtros" >
+        <action
+            android:id="@+id/action_filtrosFragment_to_explorarFragment"
+            app:destination="@id/explorarFragment" />
+    </fragment>
     <fragment
         android:id="@+id/terminarFragment"
         android:name="dam.a42363.trailblaze.TerminarFragment"
