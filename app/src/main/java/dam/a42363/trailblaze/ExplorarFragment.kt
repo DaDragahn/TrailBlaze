@@ -64,6 +64,7 @@ import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import android.R.attr.data
 
 import android.app.Activity
+import com.google.firebase.storage.FirebaseStorage
 import timber.log.Timber
 
 
@@ -143,6 +144,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 R.color.orange,
                 requireActivity().applicationContext.theme
             )
+
         return binding.root
     }
 

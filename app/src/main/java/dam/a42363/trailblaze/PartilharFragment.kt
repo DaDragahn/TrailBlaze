@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -16,6 +17,9 @@ import com.firebase.geofire.GeoLocation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ListResult
+import com.google.firebase.storage.UploadTask
 import com.mapbox.api.directions.v5.DirectionsCriteria
 import com.mapbox.api.directions.v5.MapboxDirections
 import com.mapbox.api.directions.v5.models.DirectionsResponse
@@ -33,10 +37,16 @@ import com.mapbox.geojson.LineString
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
 import dam.a42363.trailblaze.databinding.FragmentPartilharBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
+import java.lang.Exception
 import java.util.*
 
 
@@ -220,29 +230,48 @@ class PartilharFragment : Fragment() {
         }
     }
 
-    private fun savedRouteOnDatabase() {
-
-        val hash = GeoFireUtils.getGeoHashForLocation(
-            GeoLocation(
-                origin.latitude(),
-                origin.longitude()
+    private fun savedRouteOnDatabase() = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val hash = GeoFireUtils.getGeoHashForLocation(
+                GeoLocation(
+                    origin.latitude(),
+                    origin.longitude()
+                )
             )
-        )
-        val updates: MutableMap<String, Any> =
-            HashMap()
-        updates["nome"] = binding.nomeTextView.text.toString()
-        updates["autor"] = user.displayName.toString()
-        updates["uid"] = user.uid
-        updates["descricao"] = binding.descricaoTextView.text.toString()
-        updates["dificuldade"] = binding.dificuldadeTextView.text.toString()
-        updates["distancia"] = binding.distanciaTextView.text.toString()
-        updates["geohash"] = hash
-        updates["localidade"] = binding.partidaFimTextView.text.toString()
+            val updates: MutableMap<String, Any> =
+                HashMap()
+            updates["nome"] = binding.nomeTextView.text.toString()
+            updates["autor"] = user.displayName.toString()
+            updates["uid"] = user.uid
+            updates["descricao"] = binding.descricaoTextView.text.toString()
+            updates["dificuldade"] = binding.dificuldadeTextView.text.toString()
+            updates["distancia"] = binding.distanciaTextView.text.toString()
+            updates["geohash"] = hash
+            updates["localidade"] = binding.partidaFimTextView.text.toString()
 //        updates["modalidade"] = binding.modalidadeTextView.text.toString()
-        updates["modalidade"] = binding.autoCompleteTextView.text.toString()
-        updates["route"] = currentRoute?.toJson()!!
-        db.collection("locations").add(updates).addOnSuccessListener {
-            navController.navigate(R.id.action_partilharFragment_to_explorarFragment)
+            updates["modalidade"] = binding.autoCompleteTextView.text.toString()
+            updates["route"] = currentRoute?.toJson()!!
+            val doc = db.collection("locations").document()
+            doc.set(updates).await()
+            val storage = FirebaseStorage.getInstance()
+            val listRef =
+                storage.reference.child("images/pZZuijWOgcgZtudjmxtoiAdxNW02/locations/Temp")
+
+            val list = listRef.listAll().await()
+            list?.items?.forEach { item ->
+                val userRefImagesRef =
+                    storage.reference.child("images/${auth.currentUser?.uid}/locations/${doc.id}/${item.name}")
+                userRefImagesRef.putFile(item.downloadUrl.result).await()
+            }
+            listRef.delete().await()
+
+            withContext(Dispatchers.Main) {
+                navController.navigate(R.id.action_partilharFragment_to_explorarFragment)
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+            }
         }
     }
 }

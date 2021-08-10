@@ -127,7 +127,8 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             if (allPermissionGranted()) {
                 Toast.makeText(requireContext(), "We have Permission", Toast.LENGTH_SHORT)
                     .show()
-                navController.navigate(R.id.action_contribuirFragment_to_cameraFragment)
+                val bundle = bundleOf("idTrail" to "Temp")
+                navController.navigate(R.id.action_contribuirFragment_to_cameraFragment, bundle)
 
             } else {
                 ActivityCompat.requestPermissions(
