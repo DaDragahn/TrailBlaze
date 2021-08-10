@@ -2,37 +2,39 @@ package dam.a42363.trailblaze
 
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import dam.a42363.trailblaze.databinding.FragmentCameraBinding
 import dam.a42363.trailblaze.utils.Constants
 import java.io.File
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment : Fragment() {
+    private var idTrail: String? = null
+    private lateinit var storageRef: StorageReference
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = _binding!!
 
     private var imageCapture: ImageCapture? = null
     private lateinit var outputDirectory: File
-
+    private lateinit var auth: FirebaseAuth
     private lateinit var cameraExecutor: ExecutorService
 
     override fun onCreateView(
@@ -43,7 +45,9 @@ class CameraFragment : Fragment() {
         _binding = FragmentCameraBinding.inflate(inflater, container, false)
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
-
+        auth = FirebaseAuth.getInstance()
+        storageRef = FirebaseStorage.getInstance().reference
+        idTrail = arguments?.getString("idTrail")
         startCamera()
 
         binding.cameraBtn.setOnClickListener {
@@ -85,9 +89,19 @@ class CameraFragment : Fragment() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
-                    val msg = "Photo Saved"
 
-                    Toast.makeText(requireContext(), "$msg $savedUri", Toast.LENGTH_SHORT).show()
+                    val userRefImagesRef =
+                        storageRef.child("images/${auth.currentUser?.uid}/locations/${idTrail}/${photoFile.name}")
+                    val uploadTask: UploadTask = userRefImagesRef.putFile(savedUri)
+                    uploadTask.addOnFailureListener {
+                        Log.d(Constants.TAG, "onError: ${it.message}", it)
+                    }
+                        .addOnSuccessListener {   // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                            val msg = "Photo Saved"
+
+                            Toast.makeText(requireContext(), "$msg $savedUri", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                 }
 
                 override fun onError(exception: ImageCaptureException) {

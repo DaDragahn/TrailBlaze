@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -52,6 +53,7 @@ import dam.a42363.trailblaze.databinding.FragmentNavigationBinding
 import dam.a42363.trailblaze.utils.Constants
 import timber.log.Timber
 import java.lang.ref.WeakReference
+import kotlin.properties.Delegates
 
 
 class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
@@ -68,6 +70,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     private lateinit var auth: FirebaseAuth
 
     //    private val mapboxReplayer = MapboxReplayer()
+    private var check by Delegates.notNull<Boolean>()
     private lateinit var permissionsManager: PermissionsManager
     private var _binding: FragmentNavigationBinding? = null
     private lateinit var optimizedRoute: DirectionsRoute
@@ -139,6 +142,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
         optimizedRoute = DirectionsRoute.fromJson(arguments?.getString("route")!!)
         idTrail = arguments?.getString("idTrail")
+        check = arguments?.getBoolean("individual")!!
         Log.v("RecordRoute", idTrail.toString())
         Log.v("RecordRoute", "$optimizedRoute")
 
@@ -164,7 +168,8 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             if (allPermissionGranted()) {
                 Toast.makeText(requireContext(), "We have Permission", Toast.LENGTH_SHORT)
                     .show()
-                navController.navigate(R.id.action_navigationFragment_to_cameraFragment)
+                val bundle = bundleOf("idTrail" to idTrail)
+                navController.navigate(R.id.action_navigationFragment_to_cameraFragment, bundle)
 
             } else {
                 ActivityCompat.requestPermissions(
@@ -301,18 +306,20 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     }
 
     private fun checkLobby(updates: MutableMap<String, Any>) {
-        if (idTrail != null) {
-            db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
-                .document(auth.uid!!).update(updates)
+        if (check == null && !check) {
+            if (idTrail != null) {
+                db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+                    .document(auth.uid!!).update(updates)
 
-            db.collection("Trails").document(idTrail!!).collection("TrailsCollection").get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        if (document.id != auth.uid!!)
-                            lobbyArray.add(document.id)
+                db.collection("Trails").document(idTrail!!).collection("TrailsCollection").get()
+                    .addOnSuccessListener { result ->
+                        for (document in result) {
+                            if (document.id != auth.uid!!)
+                                lobbyArray.add(document.id)
+                        }
+                        addUserMarkers(mapboxMap?.style!!)
                     }
-                    addUserMarkers(mapboxMap?.style!!)
-                }
+            }
         }
     }
 

@@ -299,7 +299,12 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                             check = false
                     }
                     if ((activity as MainActivity).dificuldadeArray.isNotEmpty()) {
-                        if (!(activity as MainActivity).dificuldadeArray.contains(docSnap.getString("dificuldade")))
+                        if (!(activity as MainActivity).dificuldadeArray.contains(
+                                docSnap.getString(
+                                    "dificuldade"
+                                )
+                            )
+                        )
                             check = false
                     }
                     if (check) {
@@ -380,7 +385,11 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                             binding.decisionCardView.visibility = View.VISIBLE
 
                             binding.individualBtn.setOnClickListener {
-                                val bundle = bundleOf("route" to route)
+                                val bundle = bundleOf(
+                                    "route" to route,
+                                    "idTrail" to feature.id(),
+                                    "individual" to true
+                                )
                                 navController.navigate(
                                     R.id.action_explorarFragment_to_navigationFragment,
                                     bundle
@@ -394,8 +403,6 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                                     bundle
                                 )
                             }
-
-
                         }
                     }
                 }
