@@ -229,7 +229,7 @@ class PartilharFragment : Fragment() {
                 })
         }
     }
-
+//
     private fun savedRouteOnDatabase() = CoroutineScope(Dispatchers.IO).launch {
         try {
             val hash = GeoFireUtils.getGeoHashForLocation(
