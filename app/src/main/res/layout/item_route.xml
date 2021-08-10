@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:background="@drawable/trail_logo_big" />
+                android:background="@drawable/default_placeholder" />
 
             <GridLayout
                 android:layout_width="match_parent"
@@ -47,8 +47,7 @@
                     android:maxLines="1"
                     android:textColor="@color/trailGreen"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    tools:text="Bulbasaur" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/localidade"

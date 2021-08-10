@@ -1,6 +1,7 @@
 package dam.a42363.trailblaze
 
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper.getMainLooper
@@ -12,6 +13,8 @@ import android.widget.Chronometer
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -36,6 +39,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import dam.a42363.trailblaze.databinding.FragmentContribuirBinding
+import dam.a42363.trailblaze.utils.Constants
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
@@ -117,6 +121,23 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         chronometerHolder = binding.chronometerHolder
         chronometer = binding.chronometer
 
+
+        binding.cameraBtn.setOnClickListener {
+
+            if (allPermissionGranted()) {
+                Toast.makeText(requireContext(), "We have Permission", Toast.LENGTH_SHORT)
+                    .show()
+                navController.navigate(R.id.action_contribuirFragment_to_cameraFragment)
+
+            } else {
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    Constants.REQUIRED_PERMISSIONS,
+                    Constants.REQUEST_CODE
+                )
+            }
+        }
+
         recordButton.setOnClickListener {
             isRecording = true
             isPlaying = true
@@ -183,6 +204,14 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
         return binding.root
     }
+
+    private fun allPermissionGranted() =
+        Constants.REQUIRED_PERMISSIONS.all {
+            ContextCompat.checkSelfPermission(
+                requireActivity().baseContext,
+                it
+            ) == PackageManager.PERMISSION_GRANTED
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

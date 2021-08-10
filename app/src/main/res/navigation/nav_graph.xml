@@ -68,6 +68,9 @@
         <action
             android:id="@+id/action_contribuirFragment_to_partilharFragment"
             app:destination="@id/partilharFragment" />
+        <action
+            android:id="@+id/action_contribuirFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
 
     </fragment>
     <fragment

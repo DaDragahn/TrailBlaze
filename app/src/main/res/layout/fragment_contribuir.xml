@@ -22,11 +22,24 @@
             android:layout_height="43dp"
             android:layout_gravity="end|bottom"
             android:layout_marginEnd="19dp"
-            android:layout_marginBottom="150dp"
+            android:layout_marginBottom="200dp"
             android:clickable="true"
             android:contentDescription="@string/center"
             android:focusable="true"
             android:src="@drawable/ic_sharp_my_location"
+            app:fabCustomSize="43dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/cameraBtn"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="19dp"
+            android:layout_marginBottom="150dp"
+            android:clickable="true"
+            android:contentDescription="@string/center"
+            android:focusable="true"
+            android:src="@drawable/ic_camera_filled"
             app:fabCustomSize="43dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

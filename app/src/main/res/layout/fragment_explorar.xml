@@ -157,7 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:background="@drawable/trail_logo_big"
+                android:background="@drawable/default_placeholder"
                 android:scaleType="fitXY"
                 android:theme="@style/cardViewCorners" />
 
