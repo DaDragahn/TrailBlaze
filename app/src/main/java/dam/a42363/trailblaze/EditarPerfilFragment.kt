@@ -161,7 +161,6 @@ class EditarPerfilFragment : Fragment() {
                 } else {
                     val updates: MutableMap<String, Any> = HashMap()
                     updates["nome"] = "$txtFirstName $txtLastName"
-//                    updates["email"] = email
                     updates["photoUrl"] = photoUrl
 
                     val profileUpdates = UserProfileChangeRequest.Builder()
