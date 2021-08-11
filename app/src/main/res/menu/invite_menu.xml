@@ -6,4 +6,25 @@
         android:icon="@drawable/ic_outline_person_add_alt"
         android:title="Convidar Amigo"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/sair"
+        android:icon="@drawable/ic_3_dots"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/editarFoto"
+                android:icon="@drawable/ic_edit_image"
+                android:title="Editar Foto"
+                app:showAsAction="ifRoom" />
+
+            <item
+                android:id="@+id/leave"
+                android:icon="@drawable/ic_leave"
+                android:title="Sair do Grupo"
+                app:showAsAction="ifRoom" />
+        </menu>
+
+    </item>
 </menu>
