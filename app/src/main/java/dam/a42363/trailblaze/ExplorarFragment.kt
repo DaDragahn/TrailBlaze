@@ -252,7 +252,9 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     }
 
     private fun checkGeoQuery() {
-        val markerList: MutableList<Feature> = ArrayList()
+        val caminhadaMarkerList: MutableList<Feature> = ArrayList()
+        val corridaMarkerList: MutableList<Feature> = ArrayList()
+        val bmxMarkerList: MutableList<Feature> = ArrayList()
         val radiusInM = (2 * 1000).toDouble()
         val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
@@ -310,7 +312,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                             check = false
                     }
                     if (check) {
-                        markerList.add(
+                        caminhadaMarkerList.add(
                             Feature.fromGeometry(
                                 Point.fromLngLat(marker.longitude(), marker.latitude()),
                                 null,
@@ -321,7 +323,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 }
                 mapboxMap.getStyle {
                     val iconSource = it.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURSE_ID)
-                    iconSource?.setGeoJson(FeatureCollection.fromFeatures(markerList))
+                    iconSource?.setGeoJson(FeatureCollection.fromFeatures(caminhadaMarkerList))
                 }
             }
     }

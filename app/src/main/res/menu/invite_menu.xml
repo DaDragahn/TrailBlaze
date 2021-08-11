@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="invite"
+        android:id="@+id/invite"
         android:icon="@drawable/ic_outline_person_add_alt"
         android:title="Convidar Amigo"
         app:showAsAction="always" />

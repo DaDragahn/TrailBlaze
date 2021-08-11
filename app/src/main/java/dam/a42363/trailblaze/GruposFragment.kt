@@ -3,6 +3,7 @@ package dam.a42363.trailblaze
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -115,6 +116,10 @@ class GruposFragment : Fragment() {
             if (groupArray.contains(onlineId)) {
                 val nome: String = data["nome"] as String
                 holder.setVariables(nome, groupArray.size.toString(), ctx)
+                holder.grupoBinding.cardView.setOnClickListener {
+                    val bundle = bundleOf("groupID" to snapshots.getSnapshot(position).id)
+                    navController.navigate(R.id.action_gruposFragment_to_grupoFragment,bundle)
+                }
             } else {
                 holder.grupoBinding.cardView.visibility = View.GONE
             }

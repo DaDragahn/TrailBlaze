@@ -20,7 +20,6 @@ import android.R.attr.bitmap
 import android.content.ContentValues
 import android.util.Log
 import androidx.core.net.toUri
-import com.bumptech.glide.Glide
 
 
 class ImageShareFragment : Fragment() {
@@ -41,41 +40,28 @@ class ImageShareFragment : Fragment() {
 
         _binding = FragmentImageShareBinding.inflate(inflater, container, false)
         val url = arguments?.getString("url")
-
+        Log.d("RecordRoute", "${url?.toUri()}")
         toolbar = binding.toolbar
         fullImage = binding.fullImage
-
-        Glide.with(this).load(url).into(fullImage)
 
         toolbar.inflateMenu(R.menu.share_menu)
 
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.shareBtn -> {
-
-
-//                    val uri = Uri.parse(url?.toUri().toString())
-
-                    if (url != null) {
-                        Log.d("TAG", url.toUri().toString())
-                    }
-
                     val shareIntent: Intent = Intent().apply {
-                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                         action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_STREAM, url?.toUri())
+                        putExtra(Intent.EXTRA_STREAM, "file://" + url?.toUri())
                         type = "image/*"
+                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                     }
-                    startActivity(Intent.createChooser(shareIntent, "Share"))
-
-
+                    startActivity(Intent.createChooser(shareIntent, "Teste"))
+//
+//
 //                    val intent = Intent(Intent.ACTION_SEND)
-//                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//                    intent.type = "image/jpg"
-//                    intent.putExtra(Intent.EXTRA_TEXT, "Teste")
-//                    if (url != null) {
-//                        intent.putExtra(Intent.EXTRA_STREAM, url.toUri())
-//                    }
+//                    intent.type = "image/png"
+//                    intent.putExtra(Intent.EXTRA_STREAM, uri)
+//                    intent.putExtra(Intent.EXTRA_TEXT, " ")
 //                    startActivity(Intent.createChooser(intent, "Share"))
 
                     true
