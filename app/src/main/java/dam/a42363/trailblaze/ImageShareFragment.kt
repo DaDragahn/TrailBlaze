@@ -18,6 +18,7 @@ import dam.a42363.trailblaze.databinding.FragmentPerfilBinding
 import android.graphics.Bitmap
 import android.R.attr.bitmap
 import android.content.ContentValues
+import android.util.Log
 
 
 class ImageShareFragment : Fragment() {
@@ -33,10 +34,11 @@ class ImageShareFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
 
         _binding = FragmentImageShareBinding.inflate(inflater, container, false)
+        val url = arguments?.getString("url")
 
         toolbar = binding.toolbar
         fullImage = binding.fullImage

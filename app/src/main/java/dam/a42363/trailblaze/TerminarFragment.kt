@@ -139,10 +139,9 @@ class TerminarFragment : Fragment() {
             val rvFotos = binding.fotosListView
 
             withContext(Dispatchers.Main) {
-                val imageAdapter = ImageAdapter(imageUrls)
+                val imageAdapter = ImageAdapter(imageUrls, navController, true)
                 rvFotos.apply {
                     adapter = imageAdapter
-//                    layoutManager = GridLayoutManager(requireContext(), 2)
                 }
 
             }
