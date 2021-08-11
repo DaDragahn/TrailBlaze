@@ -91,39 +91,6 @@ class TerminarFragment : Fragment() {
             }
         }
 
-        val shareBtn = binding.shareBtn
-
-        shareBtn.setOnClickListener {
-
-            navController.navigate(R.id.action_terminarFragment_to_imageShareFragment)
-
-
-//            val i = Intent(Intent.ACTION_SEND)
-//            i.type = "text/plain"
-//            val sharebody = "look all Programmings"
-//            val subject = "http://www.youtube.com/avadhtutor/pla..."
-//            i.putExtra(Intent.EXTRA_SUBJECT, sharebody)
-//            i.putExtra(Intent.EXTRA_TEXT, subject)
-//            startActivity(Intent.createChooser(i, "TrailBlaze"))
-
-//            val fullImage = binding.fullImage
-//
-//            val bitmap = fullImage.getDrawable().bitmap
-//
-//            val bitmapPath: String =
-//                MediaStore.Images.Media.inserImage(getContentResolver(), bitmap, "title", null)
-//
-//            val uri = Uri.parse(bitmapPath)
-//
-//            val intent = Intent(Intent.ACTION_SEND)
-//            intent.type = "image/png"
-//            intent.putExtra(Intent.EXTRA_STREAM, uri)
-//            intent.putExtra(Intent.EXTRA_TEXT, " ")
-//            startActivity(Intent.createChooser(intent, "Share"))
-
-        }
-
-
     }
 
     private fun listFiles() = CoroutineScope(Dispatchers.IO).launch {

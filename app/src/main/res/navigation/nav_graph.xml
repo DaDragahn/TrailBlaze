@@ -238,6 +238,9 @@
         <action
             android:id="@+id/action_gruposFragment_to_addGruposFragment"
             app:destination="@id/addGruposFragment" />
+        <action
+            android:id="@+id/action_gruposFragment_to_grupoFragment"
+            app:destination="@id/grupoFragment" />
     </fragment>
     <fragment
         android:id="@+id/fotosFragment"
@@ -302,4 +305,9 @@
         android:name="dam.a42363.trailblaze.ImageShareFragment"
         android:label="fragment_image_share"
         tools:layout="@layout/fragment_image_share" />
+    <fragment
+        android:id="@+id/grupoFragment"
+        android:name="dam.a42363.trailblaze.GrupoFragment"
+        android:label="fragment_grupo"
+        tools:layout="@layout/fragment_grupo" />
 </navigation>

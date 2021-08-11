@@ -110,7 +110,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fotosListView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="250dp"
             android:layout_gravity="top"
             android:layout_marginTop="10dp"
             android:padding="10dp"
@@ -120,22 +120,10 @@
             app:spanCount="2"
             tools:listitem="@layout/item_foto" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/shareBtn"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/buttons"
-            android:backgroundTint="@color/trailGreen"
-            android:text="@string/partilhar"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            app:backgroundTint="@color/trailGreen" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/finalizarBtn"
-            android:layout_width="150dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="20dp"
