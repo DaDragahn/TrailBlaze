@@ -1,7 +1,9 @@
 package dam.a42363.trailblaze
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -93,14 +95,19 @@ class TerminarFragment : Fragment() {
 
         shareBtn.setOnClickListener {
 
-            val i = Intent(Intent.ACTION_SEND)
-            i.type = "text/plain"
-            val sharebody = "look all Programmings"
-            val subject = "http://www.youtube.com/avadhtutor/pla..."
-            i.putExtra(Intent.EXTRA_SUBJECT, sharebody)
-            i.putExtra(Intent.EXTRA_TEXT, subject)
-            startActivity(Intent.createChooser(i, "TrailBlaze"))
+            navController.navigate(R.id.action_terminarFragment_to_imageShareFragment)
 
+
+//            val i = Intent(Intent.ACTION_SEND)
+//            i.type = "text/plain"
+//            val sharebody = "look all Programmings"
+//            val subject = "http://www.youtube.com/avadhtutor/pla..."
+//            i.putExtra(Intent.EXTRA_SUBJECT, sharebody)
+//            i.putExtra(Intent.EXTRA_TEXT, subject)
+//            startActivity(Intent.createChooser(i, "TrailBlaze"))
+
+//            val fullImage = binding.fullImage
+//
 //            val bitmap = fullImage.getDrawable().bitmap
 //
 //            val bitmapPath: String =

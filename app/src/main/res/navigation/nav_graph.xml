@@ -292,5 +292,14 @@
         android:id="@+id/terminarFragment"
         android:name="dam.a42363.trailblaze.TerminarFragment"
         android:label="fragment_terminar"
-        tools:layout="@layout/fragment_terminar" />
+        tools:layout="@layout/fragment_terminar" >
+        <action
+            android:id="@+id/action_terminarFragment_to_imageShareFragment"
+            app:destination="@id/imageShareFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageShareFragment"
+        android:name="dam.a42363.trailblaze.ImageShareFragment"
+        android:label="fragment_image_share"
+        tools:layout="@layout/fragment_image_share" />
 </navigation>
