@@ -31,16 +31,21 @@ import java.util.*
 class AddAmigosFragment : Fragment() {
 
     private var adapter: FindFriendsFirestoreRecyclerAdapter? = null
+
     private var _binding: FragmentAddAmigosBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var searchView: SearchView
     private lateinit var searchViewList: RecyclerView
+
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+
     private lateinit var friendRequestRef: CollectionReference
     private lateinit var friendRef: CollectionReference
 
     private var senderUserId: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,9 +55,11 @@ class AddAmigosFragment : Fragment() {
         searchView = binding.searchView
 
         searchViewList = binding.amigosListView
+
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         senderUserId = auth.uid
+
         friendRequestRef = FirebaseFirestore.getInstance().collection("FriendRequests")
         friendRef = FirebaseFirestore.getInstance().collection("Friends")
 
@@ -143,10 +150,12 @@ class AddAmigosFragment : Fragment() {
         val docSent = hashMapOf(
             "date" to currentDate
         )
-        friendRef.document("FriendDocument").collection("$senderUserId").document(receivedUserId).set(docSent)
+        friendRef.document("FriendDocument").collection("$senderUserId").document(receivedUserId)
+            .set(docSent)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    friendRef.document("FriendDocument").collection(receivedUserId).document("$senderUserId")
+                    friendRef.document("FriendDocument").collection(receivedUserId)
+                        .document("$senderUserId")
                         .set(docSent).addOnCompleteListener { task2 ->
                             if (task2.isSuccessful) {
                                 friendRequestRef.document("$senderUserId")

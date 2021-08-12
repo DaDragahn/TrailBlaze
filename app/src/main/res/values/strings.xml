@@ -69,6 +69,7 @@
     <string name="terminar">Terminar</string>
     <string name="finalizar">Finalizar</string>
     <string name="share">Share</string>
+    <string name="membros">Membros:</string>
 
     <string-array name="modalidades">
         <item>Caminhada</item>

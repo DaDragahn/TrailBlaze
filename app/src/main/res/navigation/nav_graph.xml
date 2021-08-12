@@ -309,5 +309,14 @@
         android:id="@+id/grupoFragment"
         android:name="dam.a42363.trailblaze.GrupoFragment"
         android:label="fragment_grupo"
-        tools:layout="@layout/fragment_grupo" />
+        tools:layout="@layout/fragment_grupo" >
+        <action
+            android:id="@+id/action_grupoFragment_to_addAmigosGrupoFragment"
+            app:destination="@id/addAmigosGrupoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAmigosGrupoFragment"
+        android:name="dam.a42363.trailblaze.AddAmigosGrupoFragment"
+        android:label="fragment_add_amigos_grupo"
+        tools:layout="@layout/fragment_add_amigos_grupo" />
 </navigation>

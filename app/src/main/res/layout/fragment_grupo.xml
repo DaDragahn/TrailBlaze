@@ -16,11 +16,11 @@
         android:background="@color/white">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/cancel"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="start"
-            android:background="@drawable/ic_cross"
+            android:id="@+id/dirBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="start|center_vertical"
+            android:background="@drawable/ic_arrow_back"
             app:backgroundTint="@color/trailGreen" />
 
         <TextView
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
-                android:text="Membros:"
+                android:text="@string/membros"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
