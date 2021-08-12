@@ -71,6 +71,8 @@ import timber.log.Timber
 class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     MapboxMap.OnMapClickListener {
 
+    private lateinit var mainDificuldadeArray: ArrayList<String>
+    private lateinit var mainModalidadeArray: ArrayList<String>
     var _binding: FragmentExplorarBinding? = null
     private val binding get() = _binding!!
 
@@ -130,7 +132,8 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         mapView.getMapAsync(this)
 
         cardView = binding.cardViewInfo
-
+        mainModalidadeArray = (activity as MainActivity).modalidadeArray
+        mainDificuldadeArray = (activity as MainActivity).dificuldadeArray
         db = FirebaseFirestore.getInstance()
 
         binding.iniciarBtn.backgroundTintList =
@@ -298,12 +301,12 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                     val lat = optimizedRoute.coordinates().first().latitude()
                     val lng = optimizedRoute.coordinates().first().longitude()
                     val marker = Point.fromLngLat(lng, lat)
-                    if ((activity as MainActivity).modalidadeArray.isNotEmpty()) {
-                        if (!(activity as MainActivity).modalidadeArray.contains(docSnap.getString("modalidade")))
+                    if (mainModalidadeArray.isNotEmpty()) {
+                        if (!mainModalidadeArray.contains(docSnap.getString("modalidade")))
                             check = false
                     }
-                    if ((activity as MainActivity).dificuldadeArray.isNotEmpty()) {
-                        if (!(activity as MainActivity).dificuldadeArray.contains(
+                    if (mainDificuldadeArray.isNotEmpty()) {
+                        if (!mainDificuldadeArray.contains(
                                 docSnap.getString(
                                     "dificuldade"
                                 )

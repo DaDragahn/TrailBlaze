@@ -313,6 +313,9 @@
         <action
             android:id="@+id/action_grupoFragment_to_addAmigosGrupoFragment"
             app:destination="@id/addAmigosGrupoFragment" />
+        <action
+            android:id="@+id/action_grupoFragment_to_gruposFragment"
+            app:destination="@id/gruposFragment" />
     </fragment>
     <fragment
         android:id="@+id/addAmigosGrupoFragment"

@@ -16,13 +16,14 @@ class AddAmigosGrupoFragment : Fragment() {
     private var _binding: FragmentAddAmigosGrupoBinding? = null
     private val binding get() = _binding!!
 
+    private var groupId: String? = null
     private lateinit var searchView: SearchView
     private lateinit var searchViewList: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
 
         _binding = FragmentAddAmigosGrupoBinding.inflate(inflater, container, false)
@@ -30,7 +31,7 @@ class AddAmigosGrupoFragment : Fragment() {
         searchView = binding.searchView
 
         searchViewList = binding.amigosListView
-
+        groupId = arguments?.getString("groupId")
         return binding.root
     }
 

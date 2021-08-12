@@ -1,7 +1,6 @@
 package dam.a42363.trailblaze
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,11 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -30,7 +31,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.InputStream
-import java.io.ByteArrayOutputStream
 
 class GrupoFragment : Fragment() {
 
@@ -46,7 +46,6 @@ class GrupoFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var img: ByteArray
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
-    private lateinit var fullImage: AppCompatImageView
 
     var _binding: FragmentGrupoBinding? = null
     private val binding get() = _binding!!
@@ -85,6 +84,7 @@ class GrupoFragment : Fragment() {
                 .addOnSuccessListener {   // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                     Log.d("RecordRoute", it.metadata.toString())
                     userRefImagesRef.downloadUrl.addOnSuccessListener { uri ->
+                        binding.groupImage.setImageURI(uri)
                         val photoUrl = "$uri"
                         val updates: MutableMap<String, Any> = HashMap()
                         updates["photoUrl"] = photoUrl
@@ -100,18 +100,16 @@ class GrupoFragment : Fragment() {
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.invite -> {
-
-
+                    val bundle = bundleOf("groupId" to groupId)
+                    navController.navigate(R.id.action_grupoFragment_to_addAmigosGrupoFragment,bundle)
                     true
                 }
                 R.id.leave -> {
-
                     leaveGroup()
                     true
                 }
 
                 R.id.editarFoto -> {
-
                     getImage.launch("image/*")
                     true
                 }
@@ -122,7 +120,7 @@ class GrupoFragment : Fragment() {
         db.collection("Groups").document(groupId!!).get().addOnSuccessListener {
             val photoUrl = it.getString("photoUrl").toString()
             if (photoUrl != "")
-                Glide.with(this).load(photoUrl)
+                Glide.with(this).load(photoUrl).override(SIZE_ORIGINAL, SIZE_ORIGINAL)
                     .into(binding.groupImage)
         }
         displayGroupMembers()
