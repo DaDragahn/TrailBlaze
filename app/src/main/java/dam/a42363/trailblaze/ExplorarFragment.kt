@@ -335,7 +335,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         // Add the marker image to map
         style.addImage(
             "icon-image", BitmapFactory.decodeResource(
-                this.resources, R.drawable.mapbox_marker_icon_default
+                this.resources, R.drawable.cycling_icon_2
             )
         )
         // Add the source to the map

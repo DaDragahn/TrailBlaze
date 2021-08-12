@@ -77,7 +77,7 @@
     </androidx.cardview.widget.CardView>
 
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbarStyle="outsideOverlay"
@@ -86,128 +86,128 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <AbsoluteLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewInfo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="790dp"
+            android:layout_gravity="bottom"
+            android:layout_y="221dp"
+            android:background="@drawable/cardview_info"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewInfo"
+            <GridLayout
                 android:layout_width="match_parent"
-                android:layout_height="790dp"
-                android:layout_gravity="bottom"
-                android:layout_y="221dp"
-                android:background="@drawable/cardview_info"
-                app:layout_constraintBottom_toBottomOf="parent">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <GridLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/nome"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_gravity="start"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="25dp"
+                    android:textColor="@color/trailGreen"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/nome"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="25dp"
-                        android:textColor="@color/trailGreen"
-                        android:textSize="25sp"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/localidade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
 
-                    <TextView
-                        android:id="@+id/localidade"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/modalidade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
 
-                    <TextView
-                        android:id="@+id/modalidade"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/autor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
 
-                    <TextView
-                        android:id="@+id/autor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_gravity="top"
-                        android:layout_marginTop="5dp"
-                        android:background="@android:color/darker_gray" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/darker_gray" />
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_marginStart="10dp"
-                        android:text="@string/descricao"
-                        android:textColor="@color/trailGreen"
-                        android:textSize="25sp"
-                        android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/descricao"
+                    android:textColor="@color/trailGreen"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/descricao"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:autoSizeTextType="uniform"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/descricao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:autoSizeTextType="uniform"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
 
-                    <TextView
-                        android:id="@+id/dificuldade"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/dificuldade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_gravity="bottom"
-                        android:layout_marginTop="5dp"
-                        android:background="@android:color/darker_gray" />
-                </GridLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/darker_gray" />
+            </GridLayout>
 
-            </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/shapeableImageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="250dp"
-                android:layout_gravity="top|center"
-                android:layout_x="1dp"
-                android:layout_y="0dp"
-                android:background="@drawable/default_placeholder"
-                android:scaleType="fitCenter" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/shapeableImageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:layout_gravity="top|center"
+            android:layout_x="1dp"
+            android:layout_y="0dp"
+            android:background="@drawable/default_placeholder"
+            android:scaleType="fitCenter" />
 
-        </AbsoluteLayout>
+        <com.mapbox.mapboxsdk.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:mapbox_cameraZoom="15" />
 
-    </ScrollView>
+
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/iniciarBtn"
