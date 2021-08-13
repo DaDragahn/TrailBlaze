@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.Target
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -94,9 +96,11 @@ class GruposFragment : Fragment() {
 
     inner class GroupFinderViewHolder(val grupoBinding: ItemGrupoBinding) :
         RecyclerView.ViewHolder(grupoBinding.root) {
-        fun setVariables(nome: String, membros: String, ctx: Context) {
+        fun setVariables(nome: String, photoUrl: String, membros: String, ctx: Context) {
             grupoBinding.name.text = nome
             grupoBinding.membros.text = "Membros: $membros"
+            Glide.with(ctx).load(photoUrl).override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .into(grupoBinding.image)
         }
     }
 
@@ -115,10 +119,11 @@ class GruposFragment : Fragment() {
             val groupArray: List<String> = data?.get("groupArray") as List<String>
             if (groupArray.contains(onlineId)) {
                 val nome: String = data["nome"] as String
-                holder.setVariables(nome, groupArray.size.toString(), ctx)
+                val photoUrl = data["photoUrl"].toString()
+                holder.setVariables(nome, photoUrl, groupArray.size.toString(), ctx)
                 holder.grupoBinding.cardView.setOnClickListener {
                     val bundle = bundleOf("groupID" to snapshots.getSnapshot(position).id)
-                    navController.navigate(R.id.action_gruposFragment_to_grupoFragment,bundle)
+                    navController.navigate(R.id.action_gruposFragment_to_grupoFragment, bundle)
                 }
             } else {
                 holder.grupoBinding.cardView.visibility = View.GONE

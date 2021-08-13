@@ -1,66 +1,50 @@
 package dam.a42363.trailblaze
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.cardview.widget.CardView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.firebase.geofire.GeoFireUtils
-import com.firebase.geofire.GeoLocation
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
-import com.mapbox.android.core.permissions.PermissionsListener
-import com.mapbox.android.core.permissions.PermissionsManager
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.core.constants.Constants
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.LineString
-import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.location.LocationComponent
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
-import com.mapbox.mapboxsdk.location.modes.CameraMode
-import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
-import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
-import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
+import com.mapbox.mapboxsdk.style.layers.LineLayer
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import dam.a42363.trailblaze.databinding.FragmentFullInfoBinding
-import java.util.ArrayList
+import java.util.*
 
-class FullInfoFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
-    MapboxMap.OnMapClickListener {
+class FullInfoFragment : Fragment(), OnMapReadyCallback {
 
+    private lateinit var optimizedRoute: LineString
+    private lateinit var activeRoute: DirectionsRoute
     private val ICON_GEOJSON_SOURSE_ID = "icon-source-id"
     private val ICON_GEOJSON_LAYER_ID = "icon-layer-id"
+    private val ROUTE_COLOR = "#3bb2d0"
+    private val POLYLINE_WIDTH = 5f
 
     private lateinit var mainDificuldadeArray: ArrayList<String>
     private lateinit var mainModalidadeArray: ArrayList<String>
 
     private lateinit var mapView: MapView
     private lateinit var mapboxMap: MapboxMap
-    private lateinit var locationComponent: LocationComponent
-    private lateinit var permissionsManager: PermissionsManager
-    private lateinit var center: GeoLocation
 
     lateinit var navController: NavController
     private var _binding: FragmentFullInfoBinding? = null
@@ -88,7 +72,6 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         mapView = binding.mapView
 
         mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
 
         mainModalidadeArray = (activity as MainActivity).modalidadeArray
         mainDificuldadeArray = (activity as MainActivity).dificuldadeArray
@@ -114,16 +97,17 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         db.collection("locations").document("$feature").get().addOnCompleteListener {
             if (it.isSuccessful) {
                 val document = it.result
-                val route = document?.getString("route")
-
-
+                activeRoute = DirectionsRoute.fromJson(document?.getString("route"))
+                optimizedRoute =
+                    LineString.fromPolyline(activeRoute.geometry()!!, Constants.PRECISION_6)
                 binding.nome.text = document?.getString("nome")
                 binding.localidade.text = document?.getString("localidade")
                 binding.dificuldade.text =
                     "Dificuldade: ${document?.getString("dificuldade")}"
                 binding.modalidade.text = document?.getString("modalidade")
-                binding.autor.text = document?.getString("autor");
+                binding.autor.text = document?.getString("autor")
                 binding.descricao.text = document?.getString("descricao")
+                mapView.getMapAsync(this)
             }
         }
 
@@ -131,53 +115,20 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
     override fun onMapReady(mapboxMap: MapboxMap) {
         this.mapboxMap = mapboxMap
+        val origin = optimizedRoute.coordinates().first()
+        val position = CameraPosition.Builder()
+            .target(LatLng(origin.latitude(), origin.longitude()))
+            .zoom(13.0)
+            .build()
+        mapboxMap.cameraPosition = position
         mapboxMap.setStyle(Style.OUTDOORS) { style ->
             val uiSettings = mapboxMap.uiSettings
-            uiSettings.setCompassMargins(0, 200, 50, 0)
-            uiSettings.setCompassFadeFacingNorth(false)
-            enableLocationComponent(style)
+            uiSettings.setAllGesturesEnabled(false)
             initMarkerIconSymbolLayer(style)
-            checkGeoQuery()
-            mapboxMap.addOnMapClickListener(this)
-        }
-    }
+            initOptimizedRouteLineLayer(style)
+            val source = style.getSourceAs<GeoJsonSource>("route-source-id")
 
-    @SuppressWarnings("MissingPermission")
-    private fun enableLocationComponent(style: Style) {
-
-        // Check if permissions are enabled and if not request
-        if (PermissionsManager.areLocationPermissionsGranted(requireContext())) {
-
-            // Get an instance of the component
-            locationComponent = mapboxMap.locationComponent
-
-            // Activate with a built LocationComponentActivationOptions object
-            locationComponent!!.activateLocationComponent(
-                LocationComponentActivationOptions.builder(
-                    requireContext(),
-                    style
-                ).build()
-            )
-
-            // Enable to make component visible
-            locationComponent!!.isLocationComponentEnabled = true
-
-            // Set the component's camera mode
-            locationComponent!!.cameraMode = CameraMode.TRACKING
-
-            // Set the component's render mode
-            locationComponent!!.renderMode = RenderMode.COMPASS
-
-            center = GeoLocation(
-                locationComponent?.lastKnownLocation!!.latitude,
-                locationComponent!!.lastKnownLocation!!
-                    .longitude
-            )
-        } else {
-            permissionsManager = PermissionsManager(this)
-
-            permissionsManager?.requestLocationPermissions(requireActivity())
-
+            source?.setGeoJson(optimizedRoute)
         }
     }
 
@@ -185,9 +136,12 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         // Add the marker image to map
         style.addImage(
             "icon-image", BitmapFactory.decodeResource(
-                this.resources, R.drawable.cycling_icon_2
+                this.resources, R.drawable.mapbox_marker_icon_default
             )
         )
+        val markerList: MutableList<Feature> = ArrayList()
+        markerList.add(Feature.fromGeometry(optimizedRoute.coordinates().first()))
+        markerList.add(Feature.fromGeometry(optimizedRoute.coordinates().last()))
         // Add the source to the map
         style.addSource(
             GeoJsonSource(
@@ -202,110 +156,20 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 PropertyFactory.iconIgnorePlacement(true)
             )
         )
+        val iconSource =
+            style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURSE_ID)
+        iconSource?.setGeoJson(FeatureCollection.fromFeatures(markerList))
     }
 
-
-    private fun checkGeoQuery() {
-        val caminhadaMarkerList: MutableList<Feature> = ArrayList()
-        val corridaMarkerList: MutableList<Feature> = ArrayList()
-        val bmxMarkerList: MutableList<Feature> = ArrayList()
-        val radiusInM = (2 * 1000).toDouble()
-        val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
-        val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
-        for (b in bounds) {
-            val q = db.collection("locations")
-                .orderBy("geohash")
-                .startAt(b.startHash)
-                .endAt(b.endHash)
-            tasks.add(q.get())
-        }
-
-        // Collect all the query results together into a single list
-        Tasks.whenAllComplete(tasks)
-            .addOnCompleteListener {
-                val matchingDocs: MutableList<DocumentSnapshot> =
-                    ArrayList()
-                for (task in tasks) {
-                    val snap = task.result
-                    for (doc in snap!!.documents) {
-                        val activeRoute = DirectionsRoute.fromJson(doc.getString("route")!!)
-                        val optimizedRoute =
-                            LineString.fromPolyline(activeRoute.geometry()!!, Constants.PRECISION_6)
-                        val lat = optimizedRoute.coordinates().first().latitude()
-                        val lng = optimizedRoute.coordinates().first().longitude()
-
-                        // We have to filter out a few false positives due to GeoHash
-                        // accuracy, but most will match
-                        val docLocation = GeoLocation(lat, lng)
-                        val distanceInM =
-                            GeoFireUtils.getDistanceBetween(docLocation, center)
-                        if (distanceInM <= radiusInM) {
-                            matchingDocs.add(doc)
-                        }
-                    }
-                }
-                for (docSnap in matchingDocs) {
-                    var check = true
-                    val activeRoute = DirectionsRoute.fromJson(docSnap.getString("route")!!)
-                    val optimizedRoute =
-                        LineString.fromPolyline(activeRoute.geometry()!!, Constants.PRECISION_6)
-                    val lat = optimizedRoute.coordinates().first().latitude()
-                    val lng = optimizedRoute.coordinates().first().longitude()
-                    val marker = Point.fromLngLat(lng, lat)
-                    if (mainModalidadeArray.isNotEmpty()) {
-                        if (!mainModalidadeArray.contains(docSnap.getString("modalidade")))
-                            check = false
-                    }
-                    if (mainDificuldadeArray.isNotEmpty()) {
-                        if (!mainDificuldadeArray.contains(
-                                docSnap.getString(
-                                    "dificuldade"
-                                )
-                            )
-                        )
-                            check = false
-                    }
-                    if (check) {
-                        caminhadaMarkerList.add(
-                            Feature.fromGeometry(
-                                Point.fromLngLat(marker.longitude(), marker.latitude()),
-                                null,
-                                docSnap.id
-                            )
-                        )
-                    }
-                }
-                mapboxMap.getStyle {
-                    val iconSource = it.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURSE_ID)
-                    iconSource?.setGeoJson(FeatureCollection.fromFeatures(caminhadaMarkerList))
-                }
-            }
-    }
-
-    override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onPermissionResult(granted: Boolean) {
-        if (granted) {
-            mapboxMap.setStyle(Style.OUTDOORS) { style ->
-                val uiSettings = mapboxMap.uiSettings
-                uiSettings.setCompassMargins(0, 300, 50, 0)
-                uiSettings.setCompassFadeFacingNorth(false)
-                enableLocationComponent(style)
-            }
-        } else {
-            Toast.makeText(
-                requireContext(),
-                R.string.user_location_permission_not_granted,
-                Toast.LENGTH_LONG
-            ).show()
-            requireActivity().finish()
-        }
-    }
-
-    override fun onMapClick(point: LatLng): Boolean {
-        TODO("Not yet implemented")
+    private fun initOptimizedRouteLineLayer(loadedMapStyle: Style) {
+        loadedMapStyle.addSource(GeoJsonSource("route-source-id"))
+        loadedMapStyle.addLayerBelow(
+            LineLayer("route-layer-id", "route-source-id")
+                .withProperties(
+                    PropertyFactory.lineColor(Color.parseColor(ROUTE_COLOR)),
+                    PropertyFactory.lineWidth(POLYLINE_WIDTH)
+                ), "icon-layer-id"
+        )
     }
 
     override fun onStart() {

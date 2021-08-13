@@ -73,6 +73,7 @@ class GrupoFragment : Fragment() {
         val getImage = registerForActivityResult(
             ActivityResultContracts.GetContent()
         ) {
+            binding.groupImage.setImageURI(it)
             val iStream: InputStream? = requireActivity().contentResolver.openInputStream(it)
             img = iStream?.readBytes()!!
 
@@ -84,7 +85,6 @@ class GrupoFragment : Fragment() {
                 .addOnSuccessListener {   // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                     Log.d("RecordRoute", it.metadata.toString())
                     userRefImagesRef.downloadUrl.addOnSuccessListener { uri ->
-                        binding.groupImage.setImageURI(uri)
                         val photoUrl = "$uri"
                         val updates: MutableMap<String, Any> = HashMap()
                         updates["photoUrl"] = photoUrl
