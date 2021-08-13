@@ -52,20 +52,14 @@ import java.util.*
 
 import android.content.Intent
 import android.graphics.Color
-import com.mapbox.api.geocoding.v5.models.CarmenFeature
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
-import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceAutocompleteFragment
-import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceSelectionListener
 import com.mapbox.mapboxsdk.camera.CameraPosition
 
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 
-import android.R.attr.data
-
 import android.app.Activity
-import com.google.firebase.storage.FirebaseStorage
-import timber.log.Timber
+import com.mapbox.mapboxsdk.style.expressions.Expression.*
 
 
 class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
@@ -82,7 +76,11 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     private var permissionsManager: PermissionsManager? = null
 
     private val ICON_GEOJSON_SOURSE_ID = "icon-source-id"
+    private val HIKING_ICON_ID = "hiking-icon-id"
+    private val CYCLING_ICON_ID = "cycling-icon-id"
+    private val RUNNING_ICON_ID = "running-icon-id"
     private val ICON_GEOJSON_LAYER_ID = "icon-layer-id"
+    private val ICON_PROPERTY = "ICON_PROPERTY"
 
     private var locationComponent: LocationComponent? = null
 
@@ -255,9 +253,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     }
 
     private fun checkGeoQuery() {
-        val caminhadaMarkerList: MutableList<Feature> = ArrayList()
-        val corridaMarkerList: MutableList<Feature> = ArrayList()
-        val bmxMarkerList: MutableList<Feature> = ArrayList()
+        val markerList: MutableList<Feature> = ArrayList()
         val radiusInM = (2 * 1000).toDouble()
         val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
@@ -315,18 +311,43 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                             check = false
                     }
                     if (check) {
-                        caminhadaMarkerList.add(
-                            Feature.fromGeometry(
-                                Point.fromLngLat(marker.longitude(), marker.latitude()),
-                                null,
-                                docSnap.id
-                            )
-                        )
+                        when (docSnap.getString("modalidade")) {
+                            "Caminhada" -> {
+                                val fet = Feature.fromGeometry(
+                                    Point.fromLngLat(marker.longitude(), marker.latitude()),
+                                    null,
+                                    docSnap.id
+                                )
+                                fet.addStringProperty(ICON_PROPERTY, HIKING_ICON_ID)
+                                markerList.add(fet)
+                            }
+                            "Corrida" -> {
+                                val fet = Feature.fromGeometry(
+                                    Point.fromLngLat(marker.longitude(), marker.latitude()),
+                                    null,
+                                    docSnap.id
+                                )
+                                fet.addStringProperty(ICON_PROPERTY, RUNNING_ICON_ID)
+                                markerList.add(fet)
+                            }
+                            "Ciclismo" -> {
+                                val fet = Feature.fromGeometry(
+                                    Point.fromLngLat(marker.longitude(), marker.latitude()),
+                                    null,
+                                    docSnap.id
+                                )
+                                fet.addStringProperty(ICON_PROPERTY, CYCLING_ICON_ID)
+                                markerList.add(fet)
+                            }
+//                            else -> {
+//                                Log.d("RecordRoute", "Nothing found")
+//                            }
+                        }
                     }
                 }
                 mapboxMap.getStyle {
                     val iconSource = it.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURSE_ID)
-                    iconSource?.setGeoJson(FeatureCollection.fromFeatures(caminhadaMarkerList))
+                    iconSource?.setGeoJson(FeatureCollection.fromFeatures(markerList))
                 }
             }
     }
@@ -334,8 +355,18 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     private fun initMarkerIconSymbolLayer(style: Style) {
         // Add the marker image to map
         style.addImage(
-            "icon-image", BitmapFactory.decodeResource(
-                this.resources, R.drawable.cycling_icon_2
+            CYCLING_ICON_ID, BitmapFactory.decodeResource(
+                this.resources, R.drawable.cycling_icon
+            )
+        )
+        style.addImage(
+            RUNNING_ICON_ID, BitmapFactory.decodeResource(
+                this.resources, R.drawable.running_icon
+            )
+        )
+        style.addImage(
+            HIKING_ICON_ID, BitmapFactory.decodeResource(
+                this.resources, R.drawable.hiking_icon
             )
         )
         // Add the source to the map
@@ -344,9 +375,17 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 ICON_GEOJSON_SOURSE_ID
             )
         )
+
         style.addLayer(
             SymbolLayer(ICON_GEOJSON_LAYER_ID, ICON_GEOJSON_SOURSE_ID).withProperties(
-                PropertyFactory.iconImage("icon-image"),
+                PropertyFactory.iconImage(
+                    match(
+                        get(ICON_PROPERTY), literal(RUNNING_ICON_ID),
+                        stop(RUNNING_ICON_ID, RUNNING_ICON_ID),
+                        stop(HIKING_ICON_ID, HIKING_ICON_ID),
+                        stop(CYCLING_ICON_ID, CYCLING_ICON_ID)
+                    )
+                ),
                 PropertyFactory.iconSize(1f),
                 PropertyFactory.iconAllowOverlap(true),
                 PropertyFactory.iconIgnorePlacement(true)
@@ -366,53 +405,57 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         if (featuresList.isNotEmpty()) {
             for (feature in featuresList) {
                 Log.v("Geoquery", feature.toJson())
-                db.collection("locations").document("${feature.id()}").get().addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        val document = it.result
-                        val route = document?.getString("route")
+                db.collection("locations").document("${feature.id()}").get()
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            val document = it.result
+                            val route = document?.getString("route")
 
-                        binding.nome.text = document?.getString("nome")
-                        binding.localidade.text = document?.getString("localidade")
-                        binding.distancia.text = "Distância: ${document?.getString("distancia")}"
-                        binding.dificuldade.text =
-                            "Dificuldade: ${document?.getString("dificuldade")}"
+                            binding.nome.text = document?.getString("nome")
+                            binding.localidade.text = document?.getString("localidade")
+                            binding.distancia.text =
+                                "Distância: ${document?.getString("distancia")}"
+                            binding.dificuldade.text =
+                                "Dificuldade: ${document?.getString("dificuldade")}"
 
-                        (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
-                        cardView.visibility = View.VISIBLE
+                            (activity as MainActivity).bottomNavigationView?.visibility =
+                                View.GONE
+                            cardView.visibility = View.VISIBLE
 
-                        binding.dirBtn.setOnClickListener {
-                            val bundle = bundleOf("feature" to feature.id())
-                            navController.navigate(
-                                R.id.action_explorarFragment_to_fullInfoFragment,
-                                bundle
-                            )
-                        }
-                        binding.iniciarBtn.setOnClickListener {
-
-                            binding.decisionCardView.visibility = View.VISIBLE
-
-                            binding.individualBtn.setOnClickListener {
-                                val bundle = bundleOf(
-                                    "route" to route,
-                                    "idTrail" to feature.id(),
-                                    "individual" to true
-                                )
+                            binding.dirBtn.setOnClickListener {
+                                val bundle = bundleOf("feature" to feature.id())
                                 navController.navigate(
-                                    R.id.action_explorarFragment_to_navigationFragment,
+                                    R.id.action_explorarFragment_to_fullInfoFragment,
                                     bundle
                                 )
                             }
+                            binding.iniciarBtn.setOnClickListener {
 
-                            binding.acompanhadoBtn.setOnClickListener {
-                                val bundle = bundleOf("route" to route, "feature" to feature.id())
-                                navController.navigate(
-                                    R.id.action_explorarFragment_to_escolherModoFragment,
-                                    bundle
-                                )
+                                binding.decisionCardView.visibility = View.VISIBLE
+
+                                binding.individualBtn.setOnClickListener {
+                                    val bundle = bundleOf(
+                                        "route" to route,
+                                        "idTrail" to feature.id(),
+                                        "individual" to true
+                                    )
+                                    navController.navigate(
+                                        R.id.action_explorarFragment_to_navigationFragment,
+                                        bundle
+                                    )
+                                }
+
+                                binding.acompanhadoBtn.setOnClickListener {
+                                    val bundle =
+                                        bundleOf("route" to route, "feature" to feature.id())
+                                    navController.navigate(
+                                        R.id.action_explorarFragment_to_escolherModoFragment,
+                                        bundle
+                                    )
+                                }
                             }
                         }
                     }
-                }
             }
             return true
         }

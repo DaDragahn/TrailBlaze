@@ -67,10 +67,7 @@ class NotificationsFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun displayAllNotifications() {
-        var currentDateTime = LocalDateTime.now()
-        currentDateTime = currentDateTime.minusHours(1)
         inviteRef = db.collection("Invites")
-            .whereGreaterThan("time", currentDateTime)
 
         val options = FirestoreRecyclerOptions.Builder<Invites>()
             .setQuery(inviteRef, Invites::class.java).build()
@@ -122,6 +119,7 @@ class NotificationsFragment : Fragment() {
     ) :
         FirestoreRecyclerAdapter<Invites, GetInvitesViewHolder>(options) {
 
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun onBindViewHolder(
             holder: GetInvitesViewHolder,
             position: Int,
@@ -164,44 +162,61 @@ class NotificationsFragment : Fragment() {
                         }
                     }
                     "Trail" -> {
-                        val idRoute = snapshots.getSnapshot(position).getString("idRoute")
+                        var currentDateTime = LocalDateTime.now()
+                        currentDateTime = currentDateTime.minusHours(1)
+                        val time: LocalDateTime =
+                            LocalDateTime.parse(snapshots.getSnapshot(position).getString("time"))
+                        if (time.isBefore(currentDateTime)) {
+                            val idRoute = snapshots.getSnapshot(position).getString("idRoute")
 
-                        if (idRoute != null) {
-                            locationRef.document(idRoute).addSnapshotListener { snapshot, _ ->
-                                if (snapshot != null && snapshot.exists()) {
-                                    val routeName = snapshot.getString("nome")!!
-                                    val routeInfo = snapshot.getString("route")!!
-                                    if (name != null) {
-                                        if (photoUrl != null) {
-                                            holder.setTrailVariables(name, photoUrl, routeName, ctx)
+                            if (idRoute != null) {
+                                locationRef.document(idRoute).addSnapshotListener { snapshot, _ ->
+                                    if (snapshot != null && snapshot.exists()) {
+                                        val routeName = snapshot.getString("nome")!!
+                                        val routeInfo = snapshot.getString("route")!!
+                                        if (name != null) {
+                                            if (photoUrl != null) {
+                                                holder.setTrailVariables(
+                                                    name,
+                                                    photoUrl,
+                                                    routeName,
+                                                    ctx
+                                                )
+                                            }
                                         }
-                                    }
-                                    holder.notificationBinding.acceptBtn.setOnClickListener {
-                                        val lobbySent = hashMapOf(
-                                            "nome" to auth.currentUser!!.displayName,
-                                            "LastLocation" to ""
-                                        )
-                                        if (idInvite != null) {
-                                            db.collection("Trails").document(idInvite)
-                                                .collection("TrailsCollection").document(onlineId)
-                                                .set(lobbySent)
-                                        }
-                                        db.collection("Invites")
-                                            .document(id).delete()
-                                        val bundle =
-                                            bundleOf("route" to routeInfo, "idTrail" to idInvite)
+                                        holder.notificationBinding.acceptBtn.setOnClickListener {
+                                            val lobbySent = hashMapOf(
+                                                "nome" to auth.currentUser!!.displayName,
+                                                "LastLocation" to ""
+                                            )
+                                            if (idInvite != null) {
+                                                db.collection("Trails").document(idInvite)
+                                                    .collection("TrailsCollection")
+                                                    .document(onlineId)
+                                                    .set(lobbySent)
+                                            }
+                                            db.collection("Invites")
+                                                .document(id).delete()
+                                            val bundle =
+                                                bundleOf(
+                                                    "route" to routeInfo,
+                                                    "idTrail" to idInvite
+                                                )
 
-                                        navController.navigate(
-                                            R.id.action_notificationsFragment_to_navigationFragment,
-                                            bundle
-                                        )
-                                    }
-                                    holder.notificationBinding.excludeBtn.setOnClickListener {
-                                        db.collection("Invites")
-                                            .document(id).delete()
+                                            navController.navigate(
+                                                R.id.action_notificationsFragment_to_navigationFragment,
+                                                bundle
+                                            )
+                                        }
+                                        holder.notificationBinding.excludeBtn.setOnClickListener {
+                                            db.collection("Invites")
+                                                .document(id).delete()
+                                        }
                                     }
                                 }
                             }
+                        } else {
+                            holder.notificationBinding.cardView.visibility = View.GONE
                         }
                     }
                 }
