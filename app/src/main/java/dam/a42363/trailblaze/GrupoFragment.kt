@@ -101,7 +101,10 @@ class GrupoFragment : Fragment() {
             when (it.itemId) {
                 R.id.invite -> {
                     val bundle = bundleOf("groupId" to groupId)
-                    navController.navigate(R.id.action_grupoFragment_to_addAmigosGrupoFragment,bundle)
+                    navController.navigate(
+                        R.id.action_grupoFragment_to_addAmigosGrupoFragment,
+                        bundle
+                    )
                     true
                 }
                 R.id.leave -> {

@@ -85,6 +85,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     private var locationComponent: LocationComponent? = null
 
     private lateinit var cardView: CardView
+
     private lateinit var center: GeoLocation
     private lateinit var db: FirebaseFirestore
     private lateinit var navController: NavController
@@ -130,8 +131,10 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         mapView.getMapAsync(this)
 
         cardView = binding.cardViewInfo
+
         mainModalidadeArray = (activity as MainActivity).modalidadeArray
         mainDificuldadeArray = (activity as MainActivity).dificuldadeArray
+
         db = FirebaseFirestore.getInstance()
 
         binding.iniciarBtn.backgroundTintList =
