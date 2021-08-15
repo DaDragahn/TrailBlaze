@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:id="@+id/editarPerfil"
-        android:title="@string/editar_perfil"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/defenicoes"
-        android:title="@string/definicoes"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/logout"
-        android:title="@string/logout"
-        app:showAsAction="never" />
+        android:id="@+id/sair"
+        android:icon="@drawable/ic_3_dots"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/editarPerfil"
+                android:icon="@drawable/ic_edit_person"
+                android:title="@string/editar_perfil"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/defenicoes"
+                android:icon="@drawable/ic_settings"
+                android:title="@string/definicoes"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/ic_leave"
+                android:title="@string/logout"
+                app:showAsAction="ifRoom" />
+        </menu>
+
+    </item>
 </menu>
