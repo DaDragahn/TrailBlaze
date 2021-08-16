@@ -302,6 +302,9 @@
         <action
             android:id="@+id/action_terminarFragment_to_imageShareFragment"
             app:destination="@id/imageShareFragment" />
+        <action
+            android:id="@+id/action_terminarFragment_to_explorarFragment"
+            app:destination="@id/explorarFragment" />
     </fragment>
     <fragment
         android:id="@+id/imageShareFragment"

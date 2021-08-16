@@ -9,7 +9,9 @@ import android.os.Bundle
 import android.os.Looper.getMainLooper
 import android.os.SystemClock
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.app.ActivityCompat
@@ -80,13 +82,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
     private val DEFAULT_INTERVAL_IN_MILLISECONDS = 2000L
     private val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
-    private val time = System.currentTimeMillis()
 
-    private var CAMERA_PERMISSION_CODE = 100
-
-    private var chronoTime: Long? = null
-
-    private lateinit var camera: SurfaceView
     private val db = FirebaseFirestore.getInstance()
     private val ICON_GEOJSON_SOURCE_ID = "icon-source-id"
 
@@ -192,10 +188,12 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 )
             }
         }
-
         binding.terminarBtn.setOnClickListener {
+            val chronoText = binding.chronometer.text
             binding.chronometer.stop()
-            navController.navigate(R.id.action_navigationFragment_to_terminarFragment)
+            val bundle =
+                bundleOf("idTrail" to idTrail, "time" to chronoText)
+            navController.navigate(R.id.action_navigationFragment_to_terminarFragment, bundle)
         }
     }
 
@@ -513,7 +511,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         }
 
         override fun onFinalDestinationArrival(routeProgress: RouteProgress) {
-            binding.terminarCardView.visibility = View.VISIBLE
+            binding.terminarCardView.visibility
         }
     }
 

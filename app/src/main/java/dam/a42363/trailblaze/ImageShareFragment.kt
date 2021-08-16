@@ -49,7 +49,7 @@ class ImageShareFragment : Fragment() {
                         Images.Media.insertImage(
                             requireActivity().contentResolver,
                             resource,
-                            "",
+                            Uri.parse(url).path,
                             null
                         )
                     val screenshotUri = Uri.parse(path)
@@ -65,10 +65,11 @@ class ImageShareFragment : Fragment() {
                                 val shareIntent: Intent = Intent().apply {
                                     action = Intent.ACTION_SEND
                                     putExtra(Intent.EXTRA_STREAM, screenshotUri)
+                                    putExtra(Intent.EXTRA_TEXT,"Acabei de percorrer um percurso no TrailBlaze!")
                                     type = "image/*"
                                     flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                                 }
-                                startActivity(Intent.createChooser(shareIntent, "Teste"))
+                                startActivity(Intent.createChooser(shareIntent, "Partilhar com"))
 
                                 true
                             }
