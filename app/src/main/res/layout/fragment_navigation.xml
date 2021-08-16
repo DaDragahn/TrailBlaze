@@ -15,6 +15,71 @@
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/sairCardView"
+            android:layout_width="350dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/dirt_white"
+            android:visibility="gone"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:text="@string/quer_mesmo_sair_deste_percurso"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="50dp"
+                android:columnCount="2"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/voltarBtn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="150dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/voltar"
+                    android:textColor="@color/trailGreen"
+                    android:textSize="13dip"
+                    app:backgroundTint="@color/white"
+                    app:cornerRadius="10dp"
+                    app:strokeColor="@color/trailGreen"
+                    app:strokeWidth="1dp"
+                    tools:ignore="SpUsage" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sairBtn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="150dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="15dp"
+                    android:text="@string/sair"
+                    android:textColor="@color/trailGreen"
+                    android:textSize="13dip"
+                    app:backgroundTint="@color/white"
+                    app:cornerRadius="10dp"
+                    app:strokeColor="@color/trailGreen"
+                    app:strokeWidth="1dp"
+                    tools:ignore="SpUsage" />
+
+            </GridLayout>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
             android:id="@+id/terminarCardView"
             android:layout_width="350dp"
             android:layout_height="200dp"

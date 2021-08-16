@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -33,6 +34,8 @@ import java.util.*
 
 class FullInfoFragment : Fragment(), OnMapReadyCallback {
 
+    private var route: String? = null
+    private var feature: String? = null
     private lateinit var optimizedRoute: LineString
     private lateinit var activeRoute: DirectionsRoute
     private val ICON_GEOJSON_SOURSE_ID = "icon-source-id"
@@ -78,8 +81,33 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
 
         binding.iniciarBtn.backgroundTintList =
             view?.resources?.getColorStateList(R.color.trailGreen)
+        feature = arguments?.getString("feature")
+        route = arguments?.getString("route")
+        binding.iniciarBtn.setOnClickListener {
 
-        // Inflate the layout for this fragment
+            binding.decisionCardView.visibility = View.VISIBLE
+
+            binding.individualBtn.setOnClickListener {
+                val bundle = bundleOf(
+                    "route" to route,
+                    "idTrail" to feature,
+                    "individual" to true
+                )
+                navController.navigate(
+                    R.id.action_fullInfoFragment_to_navigationFragment,
+                    bundle
+                )
+            }
+
+            binding.acompanhadoBtn.setOnClickListener {
+                val bundle =
+                    bundleOf("route" to route, "feature" to feature)
+                navController.navigate(
+                    R.id.action_fullInfoFragment_to_escolherModoFragment,
+                    bundle
+                )
+            }
+        }
         return binding.root
     }
 
@@ -92,12 +120,11 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
 
         db = FirebaseFirestore.getInstance()
 
-        val feature = arguments?.get("feature")
 
         db.collection("locations").document("$feature").get().addOnCompleteListener {
             if (it.isSuccessful) {
                 val document = it.result
-                activeRoute = DirectionsRoute.fromJson(document?.getString("route"))
+                activeRoute = DirectionsRoute.fromJson(route)
                 optimizedRoute =
                     LineString.fromPolyline(activeRoute.geometry()!!, Constants.PRECISION_6)
                 binding.nome.text = document?.getString("nome")

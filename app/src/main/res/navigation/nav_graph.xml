@@ -192,6 +192,9 @@
         <action
             android:id="@+id/action_navigationFragment_to_terminarFragment"
             app:destination="@id/terminarFragment" />
+        <action
+            android:id="@+id/action_navigationFragment_to_explorarFragment"
+            app:destination="@id/explorarFragment" />
     </fragment>
     <fragment
         android:id="@+id/partilharFragment"

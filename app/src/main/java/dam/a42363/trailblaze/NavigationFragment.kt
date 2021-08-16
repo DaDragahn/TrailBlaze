@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper.getMainLooper
+import android.os.SystemClock
 import android.util.Log
 import android.view.*
 import android.widget.Toast
@@ -58,6 +59,7 @@ import kotlin.properties.Delegates
 
 class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
+    private var timeWhenStopped: Long = 0
     private lateinit var mapView: MapView
     private var mapboxMap: MapboxMap? = null
     private var mapCamera: NavigationCamera? = null
@@ -97,8 +99,15 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         super.onCreate(savedInstanceState)
 
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
-                .document(auth.uid!!).delete()
+            binding.sairCardView.visibility = View.VISIBLE
+            binding.sairBtn.setOnClickListener {
+                db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+                    .document(auth.uid!!).delete()
+                navController.navigate(R.id.action_navigationFragment_to_explorarFragment)
+            }
+            binding.voltarBtn.setOnClickListener {
+                binding.sairCardView.visibility = View.GONE
+            }
         }
 
         callback.isEnabled
@@ -111,6 +120,8 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     ): View {
         Mapbox.getInstance(requireContext(), getString(R.string.mapbox_access_token))
         if (_binding != null) {
+            binding.chronometer.base = SystemClock.elapsedRealtime() + timeWhenStopped
+            binding.chronometer.start()
             return binding.root
         }
         _binding = FragmentNavigationBinding.inflate(inflater, container, false)
@@ -166,8 +177,10 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         binding.cameraBtn.setOnClickListener {
 
             if (allPermissionGranted()) {
-                Toast.makeText(requireContext(), "We have Permission", Toast.LENGTH_SHORT)
-                    .show()
+//                Toast.makeText(requireContext(), "We have Permission", Toast.LENGTH_SHORT)
+//                    .show()
+                timeWhenStopped = binding.chronometer.base - SystemClock.elapsedRealtime()
+                binding.chronometer.stop()
                 val bundle = bundleOf("idTrail" to idTrail)
                 navController.navigate(R.id.action_navigationFragment_to_cameraFragment, bundle)
 
@@ -181,6 +194,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         }
 
         binding.terminarBtn.setOnClickListener {
+            binding.chronometer.stop()
             navController.navigate(R.id.action_navigationFragment_to_terminarFragment)
         }
     }
@@ -499,12 +513,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         }
 
         override fun onFinalDestinationArrival(routeProgress: RouteProgress) {
-            Toast.makeText(
-                requireContext(),
-                "You have arrived at your destination!",
-                Toast.LENGTH_LONG
-            ).show()
-            binding.chronometer.stop()
+            binding.terminarCardView.visibility = View.VISIBLE
         }
     }
 

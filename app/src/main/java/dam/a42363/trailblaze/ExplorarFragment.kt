@@ -1,12 +1,15 @@
 package dam.a42363.trailblaze
 
+
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +37,8 @@ import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.LineString
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.camera.CameraPosition
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponent
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
@@ -43,23 +48,14 @@ import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
+import com.mapbox.mapboxsdk.style.expressions.Expression.*
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import dam.a42363.trailblaze.databinding.FragmentExplorarBinding
 import java.util.*
-
-
-import android.content.Intent
-import android.graphics.Color
-import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
-import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
-import com.mapbox.mapboxsdk.camera.CameraPosition
-
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
-
-import android.app.Activity
-import com.mapbox.mapboxsdk.style.expressions.Expression.*
 
 
 class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
@@ -396,7 +392,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         )
     }
 
-    @SuppressLint("LogNotTimber", "SetTextI18n")
+    @SuppressLint("SetTextI18n")
     override fun onMapClick(point: LatLng): Boolean {
         val screenPoint = mapboxMap.projection.toScreenLocation(point)
 //        Toast.makeText(
@@ -407,7 +403,6 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             mapboxMap.queryRenderedFeatures(screenPoint, ICON_GEOJSON_LAYER_ID)
         if (featuresList.isNotEmpty()) {
             for (feature in featuresList) {
-                Log.v("Geoquery", feature.toJson())
                 db.collection("locations").document("${feature.id()}").get()
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
@@ -426,7 +421,8 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                             cardView.visibility = View.VISIBLE
 
                             binding.dirBtn.setOnClickListener {
-                                val bundle = bundleOf("feature" to feature.id())
+                                val bundle = bundleOf("feature" to feature.id(),
+                                "route" to route)
                                 navController.navigate(
                                     R.id.action_explorarFragment_to_fullInfoFragment,
                                     bundle
