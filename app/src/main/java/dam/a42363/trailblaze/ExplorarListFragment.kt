@@ -67,9 +67,9 @@ class ExplorarListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if (_binding != null) {
-            return binding.root
-        }
+//        if (_binding != null) {
+//            return binding.root
+//        }
         _binding = FragmentExplorarListBinding.inflate(inflater, container, false)
 
         binding.lista.setOnClickListener {
@@ -175,7 +175,8 @@ class ExplorarListFragment : Fragment() {
             holder.setVariables(name, author, localidade)
             holder.routeBinding.cardView.setOnClickListener {
                 val bundle = bundleOf(
-                    "feature" to snapshots.getSnapshot(position).id
+                    "feature" to snapshots.getSnapshot(position).id,
+                    "route" to snapshots.getSnapshot(position).getString("route")
                 )
                 routeInfoList.clear()
 

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -30,6 +31,11 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import dam.a42363.trailblaze.databinding.FragmentFullInfoBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class FullInfoFragment : Fragment(), OnMapReadyCallback {
@@ -108,6 +114,9 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
                 )
             }
         }
+        binding.ratingBar.isFocusable = false
+        db = FirebaseFirestore.getInstance()
+        setRating()
         return binding.root
     }
 
@@ -117,9 +126,6 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
         navController = Navigation.findNavController(view)
 
         cardView.setBackgroundResource(R.drawable.cardview_info)
-
-        db = FirebaseFirestore.getInstance()
-
 
         db.collection("locations").document("$feature").get().addOnCompleteListener {
             if (it.isSuccessful) {
@@ -138,6 +144,33 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setRating() = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val ratingsArray = mutableListOf<Float>()
+            val ratings =
+                db.collection("Rating").document("RatingDocument").collection("$feature").get()
+                    .await()
+            for (rating in ratings.documents) {
+                rating.getString("rating")?.let { ratingsArray.add(it.toFloat()) }
+            }
+            withContext(Dispatchers.Main) {
+                if (ratingsArray.isEmpty()) {
+                    binding.reviewTextView.text = "Reviews: Nenhum"
+                    binding.ratingBar.visibility = View.GONE
+                } else {
+                    val average = ratingsArray.average().toFloat()
+                    binding.reviewTextView.text = "Reviews: $average"
+                    binding.ratingBar.rating = average
+                }
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onMapReady(mapboxMap: MapboxMap) {

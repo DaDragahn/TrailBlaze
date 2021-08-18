@@ -198,6 +198,7 @@
                         app:mapbox_cameraZoom="16" />
 
                     <TextView
+                        android:id="@+id/reviewTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
@@ -212,6 +213,7 @@
                         android:id="@+id/ratingBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:isIndicator="true"
                         style="@style/Widget.AppCompat.RatingBar.Indicator"
                         android:layout_gravity="top"
                         android:layout_marginStart="10dp"
