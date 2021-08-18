@@ -121,7 +121,7 @@ class TerminarFragment : Fragment() {
 
             withContext(Dispatchers.Main) {
                 val imageAdapter =
-                    ImageAdapter(imageUrls, mutableListOf(), navController, false)
+                    ImageAdapter(imageUrls, mutableListOf(),mutableListOf(), navController, true)
                 rvFotos.apply {
                     adapter = imageAdapter
                 }

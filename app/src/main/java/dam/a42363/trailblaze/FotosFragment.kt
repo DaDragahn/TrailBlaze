@@ -73,6 +73,7 @@ class FotosFragment : Fragment() {
             val images = storage.child("images/${onlineId}/locations").listAll().await()
             val imageUrls = mutableListOf<String>()
             val imagePaths = mutableListOf<String>()
+            val imageName = mutableListOf<String>()
             for (image in images.prefixes) {
                 for (doc in loc.documents) {
                     val routeName = doc.getString("nome")
@@ -81,11 +82,12 @@ class FotosFragment : Fragment() {
                         val url = inside.items[0].downloadUrl.await()
                         imagePaths.add(image.path)
                         imageUrls.add(url.toString())
+                        imageName.add(routeName!!)
                     }
                 }
             }
             withContext(Dispatchers.Main) {
-                val imageAdapter = ImageAdapter(imageUrls, imagePaths, navController, false)
+                val imageAdapter = ImageAdapter(imageUrls, imagePaths, imageName, navController, false)
                 fotosListView.apply {
                     adapter = imageAdapter
                 }
