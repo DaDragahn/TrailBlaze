@@ -118,7 +118,7 @@
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
-            tools:listitem="@layout/item_foto" />
+            tools:listitem="@layout/item_foto_collection" />
 
 
         <com.google.android.material.button.MaterialButton

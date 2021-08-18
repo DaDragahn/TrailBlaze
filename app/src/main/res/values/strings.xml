@@ -73,6 +73,7 @@
     <string name="quer_mesmo_sair_deste_percurso">Quer mesmo sair deste Percurso?</string>
     <string name="sair">Sair</string>
     <string name="voltar">Voltar</string>
+    <string name="reviews">Reviews: </string>
 
     <string-array name="modalidades">
         <item>Caminhada</item>

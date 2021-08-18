@@ -37,6 +37,11 @@ class ImageShareFragment : Fragment() {
         _binding = FragmentImageShareBinding.inflate(inflater, container, false)
         val url = arguments?.getString("url")
         //Log.d("RecordRoute", url.toString())
+
+        toolbar = binding.toolbar
+        toolbar.inflateMenu(R.menu.share_menu)
+
+
         Glide.with(this)
             .asBitmap()
             .load(url)
@@ -52,12 +57,12 @@ class ImageShareFragment : Fragment() {
                             Uri.parse(url).path,
                             null
                         )
+
                     val screenshotUri = Uri.parse(path)
-                    toolbar = binding.toolbar
+
                     fullImage = binding.fullImage
 
                     fullImage.setImageBitmap(resource)
-                    toolbar.inflateMenu(R.menu.share_menu)
 
                     toolbar.setOnMenuItemClickListener {
                         when (it.itemId) {
@@ -65,7 +70,10 @@ class ImageShareFragment : Fragment() {
                                 val shareIntent: Intent = Intent().apply {
                                     action = Intent.ACTION_SEND
                                     putExtra(Intent.EXTRA_STREAM, screenshotUri)
-                                    putExtra(Intent.EXTRA_TEXT,"Acabei de percorrer um percurso no TrailBlaze!")
+                                    putExtra(
+                                        Intent.EXTRA_TEXT,
+                                        "Acabei de percorrer um percurso no TrailBlaze!"
+                                    )
                                     type = "image/*"
                                     flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                                 }

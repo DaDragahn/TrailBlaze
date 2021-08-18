@@ -249,7 +249,11 @@
         android:id="@+id/fotosFragment"
         android:name="dam.a42363.trailblaze.FotosFragment"
         android:label="fragment_fotos"
-        tools:layout="@layout/fragment_fotos" />
+        tools:layout="@layout/fragment_fotos" >
+        <action
+            android:id="@+id/action_fotosFragment_to_routeFotosFragment"
+            app:destination="@id/routeFotosFragment" />
+    </fragment>
     <fragment
         android:id="@+id/escolherModoFragment"
         android:name="dam.a42363.trailblaze.EscolherModoFragment"
@@ -328,4 +332,9 @@
         android:name="dam.a42363.trailblaze.AddAmigosGrupoFragment"
         android:label="fragment_add_amigos_grupo"
         tools:layout="@layout/fragment_add_amigos_grupo" />
+    <fragment
+        android:id="@+id/routeFotosFragment"
+        android:name="dam.a42363.trailblaze.RouteFotosFragment"
+        android:label="fragment_route_fotos"
+        tools:layout="@layout/fragment_route_fotos" />
 </navigation>
