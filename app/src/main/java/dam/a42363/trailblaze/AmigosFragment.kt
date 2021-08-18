@@ -82,6 +82,10 @@ class AmigosFragment : Fragment() {
         if (activity != null && this.activity is MainActivity) {
             (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
         }
+
+        binding.backBtn.setOnClickListener {
+            navController.popBackStack()
+        }
     }
 
     private fun displayAllFriends() {

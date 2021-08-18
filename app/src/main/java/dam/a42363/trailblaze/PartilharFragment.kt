@@ -3,13 +3,12 @@ package dam.a42363.trailblaze
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.firebase.geofire.GeoFireUtils
@@ -18,8 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ListResult
-import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.StorageReference
 import com.mapbox.api.directions.v5.DirectionsCriteria
 import com.mapbox.api.directions.v5.MapboxDirections
 import com.mapbox.api.directions.v5.models.DirectionsResponse
@@ -27,9 +25,6 @@ import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.api.geocoding.v5.GeocodingCriteria
 import com.mapbox.api.geocoding.v5.MapboxGeocoding
 import com.mapbox.api.geocoding.v5.models.GeocodingResponse
-import com.mapbox.api.matching.v5.MapboxMapMatching
-import com.mapbox.api.matching.v5.models.MapMatchingResponse
-import com.mapbox.core.constants.Constants
 import com.mapbox.core.exceptions.ServicesException
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
@@ -37,21 +32,17 @@ import com.mapbox.geojson.LineString
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
 import dam.a42363.trailblaze.databinding.FragmentPartilharBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
-import java.lang.Exception
 import java.util.*
 
 
 class PartilharFragment : Fragment() {
 
+    private lateinit var storageRef: StorageReference
+    private var idTrail: String? = null
     private lateinit var navController: NavController
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
@@ -65,12 +56,12 @@ class PartilharFragment : Fragment() {
     private lateinit var destination: Point
     private val TAG = "TrackingLocation"
     private var routeJson: String? = null
+    private var isDestroy: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            Log.d("tag", "back button pressed")    // Handle the back button event
         }
 
         callback.isEnabled
@@ -83,16 +74,16 @@ class PartilharFragment : Fragment() {
 
         _binding = FragmentPartilharBinding.inflate(inflater, container, false)
 
-
-
-
         routeJson = arguments?.getString("routeCoordinates")
+        idTrail = arguments?.getString("idTrail")
         routeCoordinates = FeatureCollection.fromJson(routeJson!!)
-        Log.d(TAG, "$routeJson")
         drawLines(routeCoordinates!!)
+
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser!!
+        storageRef = FirebaseStorage.getInstance().reference
+
         binding.excludeBtn.setOnClickListener {
             navController.navigate(R.id.action_partilharFragment_to_explorarFragment)
         }
@@ -106,8 +97,11 @@ class PartilharFragment : Fragment() {
         super.onResume()
 
         val modalidades = resources.getStringArray(R.array.modalidades)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, modalidades)
-        binding.autoCompleteTextView.setAdapter(arrayAdapter)
+        val dificuldade = resources.getStringArray(R.array.dificuldade)
+        val modalidadeArrayAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, modalidades)
+        val dificuldadeArrayAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, dificuldade)
+        binding.modalidadesTextView.setAdapter(modalidadeArrayAdapter)
+        binding.dificuldadeTextView.setAdapter(dificuldadeArrayAdapter)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -229,49 +223,57 @@ class PartilharFragment : Fragment() {
                 })
         }
     }
-//
-    private fun savedRouteOnDatabase() = CoroutineScope(Dispatchers.IO).launch {
-        try {
-            val hash = GeoFireUtils.getGeoHashForLocation(
-                GeoLocation(
-                    origin.latitude(),
-                    origin.longitude()
-                )
+
+    //
+    private fun savedRouteOnDatabase() {
+        val hash = GeoFireUtils.getGeoHashForLocation(
+            GeoLocation(
+                origin.latitude(),
+                origin.longitude()
             )
-            val updates: MutableMap<String, Any> =
-                HashMap()
-            updates["nome"] = binding.nomeTextView.text.toString()
-            updates["autor"] = user.displayName.toString()
-            updates["uid"] = user.uid
-            updates["descricao"] = binding.descricaoTextView.text.toString()
-            updates["dificuldade"] = binding.dificuldadeTextView.text.toString()
-            updates["distancia"] = binding.distanciaTextView.text.toString()
-            updates["geohash"] = hash
-            updates["localidade"] = binding.partidaFimTextView.text.toString()
-//        updates["modalidade"] = binding.modalidadeTextView.text.toString()
-            updates["modalidade"] = binding.autoCompleteTextView.text.toString()
-            updates["route"] = currentRoute?.toJson()!!
-            val doc = db.collection("locations").document()
-            doc.set(updates).await()
-            val storage = FirebaseStorage.getInstance()
-            val listRef =
-                storage.reference.child("images/pZZuijWOgcgZtudjmxtoiAdxNW02/locations/Temp")
-
-            val list = listRef.listAll().await()
-            list?.items?.forEach { item ->
-                val userRefImagesRef =
-                    storage.reference.child("images/${auth.currentUser?.uid}/locations/${doc.id}/${item.name}")
-                userRefImagesRef.putFile(item.downloadUrl.result).await()
-            }
-            listRef.delete().await()
-
-            withContext(Dispatchers.Main) {
+        )
+        val updates: MutableMap<String, Any> =
+            HashMap()
+        updates["nome"] = binding.nomeTextView.text.toString()
+        updates["autor"] = user.displayName.toString()
+        updates["uid"] = user.uid
+        updates["descricao"] = binding.descricaoTextView.text.toString()
+        updates["dificuldade"] = binding.dificuldadeTextView.text.toString()
+        updates["distancia"] = binding.distanciaTextView.text.toString()
+        updates["geohash"] = hash
+        updates["localidade"] = binding.partidaFimTextView.text.toString()
+        updates["modalidade"] = binding.modalidadesTextView.text.toString()
+        updates["route"] = currentRoute?.toJson()!!
+        val doc = db.collection("locations").document(idTrail!!)
+        doc.set(updates).addOnCompleteListener {
+            if (it.isSuccessful) {
+                isDestroy = false
                 navController.navigate(R.id.action_partilharFragment_to_explorarFragment)
             }
-        } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
-            }
         }
+    }
+
+    override fun onDestroyView() {
+        if (isDestroy) {
+            storageRef.child("images/${auth.currentUser?.uid}/locations/${idTrail}").listAll()
+                .addOnSuccessListener {
+                    it.items.forEach { ref ->
+                        ref.delete()
+                    }
+                }
+        }
+        super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        if (isDestroy) {
+            storageRef.child("images/${auth.currentUser?.uid}/locations/${idTrail}").listAll()
+                .addOnSuccessListener {
+                    it.items.forEach { ref ->
+                        ref.delete()
+                    }
+                }
+        }
+        super.onDestroy()
     }
 }

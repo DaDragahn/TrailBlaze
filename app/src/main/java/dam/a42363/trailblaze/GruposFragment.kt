@@ -64,6 +64,10 @@ class GruposFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
+        binding.backBtn.setOnClickListener {
+            navController.popBackStack()
+        }
+
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.adicionarGrupo -> {

@@ -34,6 +34,10 @@ class FiltrosFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
+        binding.cancel.setOnClickListener {
+            navController.popBackStack()
+        }
+
         if (activity != null && this.activity is MainActivity) {
             (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
         }

@@ -22,6 +22,8 @@ import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.mapbox.android.core.location.*
 import com.mapbox.android.core.permissions.PermissionsListener
 import com.mapbox.android.core.permissions.PermissionsManager
@@ -44,6 +46,8 @@ import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
+    private lateinit var storageRef: StorageReference
+    private lateinit var idTrail: String
     private var _binding: FragmentContribuirBinding? = null
     private val binding get() = _binding!!
 
@@ -54,7 +58,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
     private lateinit var locationComponent: LocationComponent
     private var locationEngine: LocationEngine? = null
-    private val DEFAULT_INTERVAL_IN_MILLISECONDS = 30000L
+    private val DEFAULT_INTERVAL_IN_MILLISECONDS = 3000L
     private val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
 
     private lateinit var db: FirebaseFirestore
@@ -72,6 +76,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     private var timeWhenStopped: Long = 0
     var isRecording: Boolean = false
     var isPlaying: Boolean = false
+    var isDestroy: Boolean = true
     var routeCoordinates: ArrayList<Point> = ArrayList()
 //    var numberExample = 0.001
 
@@ -104,7 +109,15 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-
+        if (_binding != null) {
+            isPlaying = true
+            isDestroy = true
+            pauseButton.visibility = View.VISIBLE
+            playButton.visibility = View.GONE
+            chronometer.base = SystemClock.elapsedRealtime() + timeWhenStopped
+            chronometer.start()
+            return binding.root
+        }
         Mapbox.getInstance(requireContext(), getString(R.string.mapbox_access_token))
         _binding = FragmentContribuirBinding.inflate(inflater, container, false)
 
@@ -114,6 +127,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         mapView.getMapAsync(this)
 
         db = FirebaseFirestore.getInstance()
+        storageRef = FirebaseStorage.getInstance().reference
         recordButton = binding.recordBtn
         playButton = binding.playBtn
         pauseButton = binding.pauseBtn
@@ -121,13 +135,16 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         chronometerHolder = binding.chronometerHolder
         chronometer = binding.chronometer
 
+        idTrail = db.collection("locations").document().id
 
         binding.cameraBtn.setOnClickListener {
 
             if (allPermissionGranted()) {
-                Toast.makeText(requireContext(), "We have Permission", Toast.LENGTH_SHORT)
-                    .show()
-                val bundle = bundleOf("idTrail" to "Temp")
+                timeWhenStopped = binding.chronometer.base - SystemClock.elapsedRealtime()
+                binding.chronometer.stop()
+                isPlaying = false
+                isDestroy = false
+                val bundle = bundleOf("idTrail" to idTrail)
                 navController.navigate(R.id.action_contribuirFragment_to_cameraFragment, bundle)
 
             } else {
@@ -142,7 +159,8 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         recordButton.setOnClickListener {
             isRecording = true
             isPlaying = true
-            recordButton.visibility = View.INVISIBLE
+            binding.cameraBtn.visibility = View.VISIBLE
+            recordButton.visibility = View.GONE
             pauseButton.visibility = View.VISIBLE
             stopButton.visibility = View.VISIBLE
             chronometerHolder.visibility = View.VISIBLE
@@ -161,7 +179,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         pauseButton.setOnClickListener {
             isPlaying = false
             playButton.visibility = View.VISIBLE
-            pauseButton.visibility = View.INVISIBLE
+            pauseButton.visibility = View.GONE
             timeWhenStopped = chronometer.base - SystemClock.elapsedRealtime()
             chronometer.stop()
         }
@@ -169,7 +187,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         playButton.setOnClickListener {
             isPlaying = true
             pauseButton.visibility = View.VISIBLE
-            playButton.visibility = View.INVISIBLE
+            playButton.visibility = View.GONE
             chronometer.base = SystemClock.elapsedRealtime() + timeWhenStopped
             chronometer.start()
         }
@@ -197,8 +215,9 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             locationEngine?.removeLocationUpdates(callback)
 
             val bundle = bundleOf(
-                "routeCoordinates" to featureJson
+                "routeCoordinates" to featureJson, "idTrail" to idTrail
             )
+            isDestroy = false
             navController.navigate(R.id.action_contribuirFragment_to_partilharFragment, bundle)
         }
 
@@ -327,15 +346,6 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 if (fragment.isRecording && fragment.isPlaying) {
                     val latitude = result.lastLocation!!.latitude
                     val longitude = result.lastLocation!!.longitude
-//                    Toast.makeText(
-//                        fragment.context,
-//                        String.format(
-//                            fragment.getString(R.string.new_location),
-//                            latitude.toString(),
-//                            longitude.toString()
-//                        ),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
 
                     fragment.routeCoordinates.add(
                         Point.fromLngLat(
@@ -391,9 +401,24 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         locationEngine?.removeLocationUpdates(callback)
         mapView.onDestroy()
 //        numberExample = 0.00001
-        routeCoordinates.clear()
+        if (isDestroy) {
+            storageRef.child("images/${auth.currentUser?.uid}/locations/${idTrail}").listAll().addOnSuccessListener {
+                it.items.forEach {ref ->
+                    ref.delete()
+                }
+            }
+        }
     }
-
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        if (isDestroy) {
+//            storageRef.child("images/${auth.currentUser?.uid}/locations/${idTrail}").listAll().addOnSuccessListener {
+//                it.items.forEach {ref ->
+//                    ref.delete()
+//                }
+//            }
+//        }
+//    }
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()

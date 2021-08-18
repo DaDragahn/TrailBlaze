@@ -135,6 +135,10 @@ class GrupoFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
+        binding.backBtn.setOnClickListener {
+            navController.popBackStack()
+        }
+
         if (activity != null && this.activity is MainActivity) {
             (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
         }

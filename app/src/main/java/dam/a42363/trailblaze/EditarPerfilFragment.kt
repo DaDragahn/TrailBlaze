@@ -82,6 +82,10 @@ class EditarPerfilFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
+        binding.cancel.setOnClickListener {
+            navController.popBackStack()
+        }
+
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
 

@@ -40,6 +40,7 @@
             android:contentDescription="@string/center"
             android:focusable="true"
             android:src="@drawable/ic_camera_filled"
+            android:visibility="gone"
             app:fabCustomSize="43dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -81,7 +82,7 @@
             android:contentDescription="@string/record"
             android:foregroundGravity="center"
             android:src="@drawable/ic_record_stop"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:backgroundTint="@color/trailGreen"
             app:borderWidth="3dp"
             app:fabCustomSize="48dp"
@@ -115,7 +116,7 @@
             android:contentDescription="@string/record"
             android:foregroundGravity="center"
             android:src="@drawable/ic_pause_circle"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:backgroundTint="@color/trailGreen"
             app:borderWidth="3dp"
             app:fabCustomSize="50.5dp"
@@ -133,7 +134,7 @@
             android:contentDescription="@string/record"
             android:foregroundGravity="center"
             android:src="@drawable/ic_play_circle"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:backgroundTint="@color/trailGreen"
             app:borderWidth="3dp"
             app:fabCustomSize="50.5dp"
@@ -147,7 +148,7 @@
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="70dp"
             android:backgroundTint="@color/faded_green"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:cardCornerRadius="50dp"
             app:cardElevation="0dp">
 

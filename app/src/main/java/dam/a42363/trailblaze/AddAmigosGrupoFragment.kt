@@ -12,6 +12,8 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -46,6 +48,8 @@ class AddAmigosGrupoFragment : Fragment() {
     private lateinit var onlineId: String
     private lateinit var userRef: CollectionReference
 
+    private lateinit var navController: NavController
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -76,6 +80,16 @@ class AddAmigosGrupoFragment : Fragment() {
 //        })
         searchPeople("test")
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        navController = Navigation.findNavController(view)
+
+        binding.backBtn.setOnClickListener {
+            navController.popBackStack()
+        }
     }
 
     private fun searchPeople(newText: String) = CoroutineScope(Dispatchers.IO).launch {

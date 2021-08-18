@@ -80,4 +80,11 @@
         <item>Corrida</item>
     </string-array>
 
+    <string-array name="dificuldade">
+        <item>Fácil</item>
+        <item>Moderado</item>
+        <item>Dificil</item>
+    </string-array>
+
+
 </resources>
