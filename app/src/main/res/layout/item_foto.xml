@@ -5,12 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.skydoves.transformationlayout.TransformationLayout
-        android:id="@+id/transformationLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:transformation_duration="550">
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
@@ -34,7 +28,5 @@
 
 
         </com.google.android.material.card.MaterialCardView>
-
-    </com.skydoves.transformationlayout.TransformationLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -108,11 +108,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:text="Distância:"
+                        android:text="@string/distancia"
                         android:textColor="@color/trailGreen"
                         android:textSize="15sp"
-                        android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/distanciaTextView"

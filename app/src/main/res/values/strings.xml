@@ -74,6 +74,9 @@
     <string name="sair">Sair</string>
     <string name="voltar">Voltar</string>
     <string name="reviews">Reviews: </string>
+    <string name="distancia">Distância:</string>
+    <string name="dificuldade_">Dificuldade:</string>
+    <string name="modalidade_">Modalidade:</string>
 
     <string-array name="modalidades">
         <item>Caminhada</item>

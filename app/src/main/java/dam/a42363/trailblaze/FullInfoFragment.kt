@@ -135,10 +135,9 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
                     LineString.fromPolyline(activeRoute.geometry()!!, Constants.PRECISION_6)
                 binding.nome.text = document?.getString("nome")
                 binding.localidade.text = document?.getString("localidade")
-                binding.dificuldade.text =
-                    "Dificuldade: ${document?.getString("dificuldade")}"
+                binding.dificuldade.text = "${document?.getString("dificuldade")}"
                 binding.modalidade.text = document?.getString("modalidade")
-                binding.autor.text = document?.getString("autor")
+//                binding.autor.text = document?.getString("autor")
                 binding.descricao.text = document?.getString("descricao")
                 mapView.getMapAsync(this)
             }
