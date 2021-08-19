@@ -97,9 +97,6 @@
         <action
             android:id="@+id/action_perfilFragment_to_editarPerfilFragment"
             app:destination="@id/editarPerfilFragment" />
-        <action
-            android:id="@+id/action_perfilFragment_to_terminarFragment"
-            app:destination="@id/terminarFragment" />
 
     </fragment>
     <fragment
@@ -204,6 +201,9 @@
         <action
             android:id="@+id/action_partilharFragment_to_explorarFragment"
             app:destination="@id/explorarFragment" />
+        <action
+            android:id="@+id/action_partilharFragment_to_listarImagensPartilharFragment"
+            app:destination="@id/listarImagensPartilharFragment" />
     </fragment>
     <fragment
         android:id="@+id/amigosFragment"
@@ -337,4 +337,9 @@
         android:name="dam.a42363.trailblaze.RouteFotosFragment"
         android:label="fragment_route_fotos"
         tools:layout="@layout/fragment_route_fotos" />
+    <fragment
+        android:id="@+id/listarImagensPartilharFragment"
+        android:name="dam.a42363.trailblaze.ListarImagensPartilharFragment"
+        android:label="fragment_listar_imagens_partilhar"
+        tools:layout="@layout/fragment_listar_imagens_partilhar" />
 </navigation>
