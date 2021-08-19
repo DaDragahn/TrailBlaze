@@ -125,6 +125,10 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
+        if (activity != null && this.activity is MainActivity) {
+            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+        }
+
         cardView.setBackgroundResource(R.drawable.cardview_info)
 
         db.collection("locations").document("$feature").get().addOnCompleteListener {

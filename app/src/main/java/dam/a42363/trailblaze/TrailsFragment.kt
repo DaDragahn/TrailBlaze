@@ -1,12 +1,12 @@
 package dam.a42363.trailblaze
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -16,8 +16,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import dam.a42363.trailblaze.databinding.FragmentTrailsBinding
-import dam.a42363.trailblaze.databinding.ItemRouteBinding
+import dam.a42363.trailblaze.databinding.ItemRouteRatingBinding
 import dam.a42363.trailblaze.models.RouteInfo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 
 class TrailsFragment : Fragment() {
@@ -68,12 +73,37 @@ class TrailsFragment : Fragment() {
         trailsListView.adapter = adapter
     }
 
-    inner class FindTrailsViewHolder(val routeBinding: ItemRouteBinding) :
+    inner class FindTrailsViewHolder(val routeBinding: ItemRouteRatingBinding) :
         RecyclerView.ViewHolder(routeBinding.root) {
         fun setVariables(nome: String, author: String, localidade: String) {
             routeBinding.name.text = nome
             routeBinding.author.text = author
             routeBinding.localidade.text = localidade
+        }
+
+        @SuppressLint("SetTextI18n")
+        fun setRating(id: String) = CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val ratingsArray = mutableListOf<Float>()
+                val ratings =
+                    db.collection("Rating").document("RatingDocument").collection(id).get()
+                        .await()
+                for (rating in ratings.documents) {
+                    rating.getString("rating")?.let { ratingsArray.add(it.toFloat()) }
+                }
+                withContext(Dispatchers.Main) {
+                    if (ratingsArray.isNotEmpty()) {
+                        val average = ratingsArray.average().toFloat()
+                        routeBinding.ratingBar.rating = average
+                    }
+                    routeBinding.reviewCount.text = "(${ratingsArray.size})"
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+                }
+            }
+
         }
     }
 
@@ -89,9 +119,10 @@ class TrailsFragment : Fragment() {
             model: RouteInfo
         ) {
             val name = snapshots.getSnapshot(position).getString("nome")!!
-            val author = snapshots.getSnapshot(position).getString("autor")!!
+            val author = snapshots.getSnapshot(position).getString("distancia")!!
             val localidade = snapshots.getSnapshot(position).getString("localidade")!!
-            holder.setVariables(name,author,localidade)
+            holder.setRating(snapshots.getSnapshot(position).id)
+            holder.setVariables(name, author, localidade)
             holder.routeBinding.cardView.setOnClickListener{
                 Toast.makeText(requireContext(),snapshots.getSnapshot(position).id,Toast.LENGTH_LONG).show()
             }
@@ -102,7 +133,7 @@ class TrailsFragment : Fragment() {
             viewType: Int
         ): FindTrailsViewHolder {
             return FindTrailsViewHolder(
-                ItemRouteBinding.inflate(
+                ItemRouteRatingBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent, false
                 )

@@ -65,8 +65,16 @@ class TerminarFragment : Fragment() {
             binding.distanciaPercurso.text =
                 "Distância: ${it?.getString("distancia")}"
         }
+
         val ratingBar = binding.ratingBar
         val finalizarBtn = binding.finalizarBtn
+
+        db.collection("Rating").document("RatingDocument").collection(idTrail!!).document(user!!)
+            .get().addOnSuccessListener {
+            if (!it.getString("rating").isNullOrBlank()) {
+                ratingBar.rating = it.getString("rating")?.toFloat()!!
+            }
+        }
 
         finalizarBtn.setOnClickListener {
             val msg = ratingBar.rating.toString()
@@ -121,7 +129,7 @@ class TerminarFragment : Fragment() {
 
             withContext(Dispatchers.Main) {
                 val imageAdapter =
-                    ImageAdapter(imageUrls, mutableListOf(),mutableListOf(), navController, true)
+                    ImageAdapter(imageUrls, mutableListOf(), mutableListOf(), navController, true)
                 rvFotos.apply {
                     adapter = imageAdapter
                 }

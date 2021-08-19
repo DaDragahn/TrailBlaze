@@ -1,5 +1,6 @@
 package dam.a42363.trailblaze
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -28,8 +29,13 @@ import com.mapbox.core.constants.Constants
 import com.mapbox.geojson.LineString
 import com.mapbox.geojson.Point
 import dam.a42363.trailblaze.databinding.FragmentExplorarListBinding
-import dam.a42363.trailblaze.databinding.ItemRouteBinding
+import dam.a42363.trailblaze.databinding.ItemRouteRatingBinding
 import dam.a42363.trailblaze.models.RouteInfo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class ExplorarListFragment : Fragment() {
     private lateinit var navController: NavController
@@ -140,6 +146,7 @@ class ExplorarListFragment : Fragment() {
             }
     }
 
+
     private fun displayUserTrails(query: Query) {
         val options = FirestoreRecyclerOptions.Builder<RouteInfo>()
             .setQuery(query, RouteInfo::class.java).build()
@@ -149,12 +156,37 @@ class ExplorarListFragment : Fragment() {
         routesListView.adapter = adapter
     }
 
-    inner class FindTrailsViewHolder(val routeBinding: ItemRouteBinding) :
+    inner class FindTrailsViewHolder(val routeBinding: ItemRouteRatingBinding) :
         RecyclerView.ViewHolder(routeBinding.root) {
         fun setVariables(nome: String, author: String, localidade: String) {
             routeBinding.name.text = nome
             routeBinding.author.text = author
             routeBinding.localidade.text = localidade
+        }
+
+        @SuppressLint("SetTextI18n")
+        fun setRating(id: String) = CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val ratingsArray = mutableListOf<Float>()
+                val ratings =
+                    db.collection("Rating").document("RatingDocument").collection(id).get()
+                        .await()
+                for (rating in ratings.documents) {
+                    rating.getString("rating")?.let { ratingsArray.add(it.toFloat()) }
+                }
+                withContext(Dispatchers.Main) {
+                    if (ratingsArray.isNotEmpty()) {
+                        val average = ratingsArray.average().toFloat()
+                        routeBinding.ratingBar.rating = average
+                    }
+                    routeBinding.reviewCount.text = "(${ratingsArray.size})"
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+                }
+            }
+
         }
     }
 
@@ -170,8 +202,9 @@ class ExplorarListFragment : Fragment() {
             model: RouteInfo
         ) {
             val name = snapshots.getSnapshot(position).getString("nome")!!
-            val author = snapshots.getSnapshot(position).getString("autor")!!
+            val author = snapshots.getSnapshot(position).getString("distancia")!!
             val localidade = snapshots.getSnapshot(position).getString("localidade")!!
+            holder.setRating(snapshots.getSnapshot(position).id)
             holder.setVariables(name, author, localidade)
             holder.routeBinding.cardView.setOnClickListener {
                 val bundle = bundleOf(
@@ -192,7 +225,7 @@ class ExplorarListFragment : Fragment() {
             viewType: Int
         ): FindTrailsViewHolder {
             return FindTrailsViewHolder(
-                ItemRouteBinding.inflate(
+                ItemRouteRatingBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent, false
                 )
