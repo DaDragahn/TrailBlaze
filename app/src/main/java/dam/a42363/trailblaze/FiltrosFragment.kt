@@ -33,7 +33,7 @@ class FiltrosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
-
+        setClicked()
         binding.cancel.setOnClickListener {
             navController.popBackStack()
         }
@@ -76,6 +76,38 @@ class FiltrosFragment : Fragment() {
             modalidadeArray.clear()
             dificuldadeArray.clear()
             setUnchecked()
+        }
+    }
+
+    private fun setClicked() {
+        if ((activity as MainActivity).dificuldadeArray.isNotEmpty()) {
+            if ((activity as MainActivity).dificuldadeArray.contains("Fácil")) {
+                binding.facilChp.isChecked = true
+                dificuldadeArray.add("Fácil")
+            }
+            if ((activity as MainActivity).dificuldadeArray.contains("Moderado")) {
+                binding.moderadoChp.isChecked = true
+                dificuldadeArray.add("Moderado")
+            }
+            if ((activity as MainActivity).dificuldadeArray.contains("Dificil")) {
+                binding.dificilChp.isChecked = true
+                dificuldadeArray.add("Dificil")
+            }
+        }
+
+        if ((activity as MainActivity).modalidadeArray.isNotEmpty()) {
+            if ((activity as MainActivity).modalidadeArray.contains("Caminhada")) {
+                binding.caminhadaChp.isChecked = true
+                modalidadeArray.add("Caminhada")
+            }
+            if ((activity as MainActivity).modalidadeArray.contains("Corrida")) {
+                binding.corridaChp.isChecked = true
+                modalidadeArray.add("Corrida")
+            }
+            if ((activity as MainActivity).modalidadeArray.contains("Ciclismo")) {
+                binding.ciclismoChp.isChecked = true
+                modalidadeArray.add("Ciclismo")
+            }
         }
     }
 
