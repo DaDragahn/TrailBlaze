@@ -28,11 +28,11 @@
         android:layout_gravity="bottom"
         android:background="@drawable/round_navbar"
         android:elevation="10dp"
+        android:visibility="gone"
         app:elevation="10dp"
         app:itemIconTint="@color/selector_color"
         app:itemTextColor="@color/selector_color"
         app:labelVisibilityMode="labeled"
-        android:visibility="gone"
         app:menu="@menu/bottom_menu" />
 
 </RelativeLayout>

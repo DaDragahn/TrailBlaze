@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -18,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
+import dam.a42363.trailblaze.databinding.FragmentHandlerBinding
 import dam.a42363.trailblaze.utils.SampleMethods
 
 class HandlerFragment : Fragment() {
@@ -27,6 +27,9 @@ class HandlerFragment : Fragment() {
 
     private lateinit var progressBar: ProgressBar
     private lateinit var requestPermissionLauncher : ActivityResultLauncher<String>
+
+    var _binding: FragmentHandlerBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,11 +56,7 @@ class HandlerFragment : Fragment() {
                         }
                     }, 3000)
                 } else {
-                    Toast.makeText(
-                        requireActivity().applicationContext,
-                        "Permission Denied",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    activity?.finish()
                 }
             }
     }
@@ -65,9 +64,10 @@ class HandlerFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_handler, container, false)
+    ): View {
+        _binding = FragmentHandlerBinding.inflate(inflater, container, false)
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

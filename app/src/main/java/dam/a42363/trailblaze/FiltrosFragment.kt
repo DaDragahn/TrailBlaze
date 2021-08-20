@@ -73,12 +73,19 @@ class FiltrosFragment : Fragment() {
         }
 
         binding.reset.setOnClickListener {
-            (activity as MainActivity).modalidadeArray.clear()
-            (activity as MainActivity).dificuldadeArray.clear()
-            navController.navigate(
-                R.id.action_filtrosFragment_to_explorarFragment
-            )
+            modalidadeArray.clear()
+            dificuldadeArray.clear()
+            setUnchecked()
         }
+    }
+
+    private fun setUnchecked() {
+        binding.facilChp.isChecked = false
+        binding.moderadoChp.isChecked = false
+        binding.dificilChp.isChecked = false
+        binding.caminhadaChp.isChecked = false
+        binding.corridaChp.isChecked = false
+        binding.ciclismoChp.isChecked = false
     }
 
     private fun changeModalidadeArray(checked: Boolean, modalidade: String) {
