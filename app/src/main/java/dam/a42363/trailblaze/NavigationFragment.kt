@@ -101,9 +101,9 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                     .document(auth.uid!!).delete()
                 navController.navigate(R.id.action_navigationFragment_to_explorarFragment)
             }
-            binding.voltarBtn.setOnClickListener {
-                binding.sairCardView.visibility = View.GONE
-            }
+//            binding.voltarBtn.setOnClickListener {
+//                binding.sairCardView.visibility = View.GONE
+//            }
         }
 
         callback.isEnabled
@@ -192,6 +192,14 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 )
             }
         }
+        binding.voltarBtn.setOnClickListener {
+            val chronoText = binding.chronometer.text
+            binding.chronometer.stop()
+            val bundle =
+                bundleOf("idTrail" to idTrail, "time" to chronoText)
+            navController.navigate(R.id.action_navigationFragment_to_terminarFragment, bundle)
+        }
+
         binding.terminarBtn.setOnClickListener {
             val chronoText = binding.chronometer.text
             binding.chronometer.stop()

@@ -2,19 +2,23 @@ package dam.a42363.trailblaze
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore.Images
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dam.a42363.trailblaze.databinding.FragmentImageShareBinding
 import java.lang.Exception
 
@@ -26,6 +30,8 @@ class ImageShareFragment : Fragment() {
 
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var fullImage: AppCompatImageView
+
+    private lateinit var rotateLeftBtn: FloatingActionButton
 
     var _binding: FragmentImageShareBinding? = null
     private val binding get() = _binding!!
@@ -41,11 +47,11 @@ class ImageShareFragment : Fragment() {
         toolbar = binding.toolbar
         toolbar.inflateMenu(R.menu.share_menu)
 
-
         Glide.with(this)
             .asBitmap()
             .load(url)
             .into(object : CustomTarget<Bitmap>() {
+                @RequiresApi(Build.VERSION_CODES.Q)
                 override fun onResourceReady(
                     resource: Bitmap,
                     transition: Transition<in Bitmap>?
@@ -63,6 +69,7 @@ class ImageShareFragment : Fragment() {
                     fullImage = binding.fullImage
 
                     fullImage.setImageBitmap(resource)
+
 
                     toolbar.setOnMenuItemClickListener {
                         when (it.itemId) {
@@ -90,6 +97,13 @@ class ImageShareFragment : Fragment() {
                 }
 
             })
+
+        rotateLeftBtn = binding.rotateLeft
+
+        rotateLeftBtn.setOnClickListener {
+
+            fullImage
+        }
 
         return binding.root
     }
