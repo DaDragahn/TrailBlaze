@@ -195,7 +195,9 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     }
 
     private fun initSearchFab() {
-        binding.searchView.setOnSearchClickListener {
+        binding.searchView.isFocusable = false
+//        binding.searchView.setOnSearchClickListener {
+        binding.searchView.setOnClickListener {
             val placeOptions = PlaceOptions.builder()
                 .backgroundColor(Color.parseColor("#EEEEEE"))
                 .limit(10)
@@ -211,8 +213,8 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                     placeOptions
                 )
                 .build(requireActivity())
-            binding.searchView.clearFocus()
             startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE)
+            binding.searchView.clearFocus()
         }
     }
 
@@ -228,7 +230,9 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
 
             // Move map camera to the selected location
-            binding.searchView.setQuery("${selectedCarmenFeature.text()}", false)
+
+//            binding.searchView.setQuery("${selectedCarmenFeature.text()}", false)
+            binding.searchView.setText("${selectedCarmenFeature.text()}")
             binding.searchView.clearFocus()
             center = GeoLocation(
                 (selectedCarmenFeature.geometry() as Point?)!!.latitude(),
@@ -497,6 +501,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             locationComponent!!.renderMode = RenderMode.COMPASS
 
             binding.recenterBtn.setOnClickListener {
+                binding.searchView.setText("")
                 locationComponent!!.setCameraMode(
                     CameraMode.TRACKING_GPS,
                     750L,

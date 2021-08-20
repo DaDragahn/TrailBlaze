@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:text="O que achou do Percurso?"
+            android:text="@string/o_que_achou_do_percurso"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -120,7 +120,6 @@
             app:spanCount="2"
             tools:listitem="@layout/item_foto_collection" />
 
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/finalizarBtn"
             android:layout_width="170dp"
@@ -134,8 +133,6 @@
             android:textSize="20sp"
             app:backgroundTint="@color/trailGreen" />
 
-
     </GridLayout>
-
 
 </androidx.appcompat.widget.LinearLayoutCompat>

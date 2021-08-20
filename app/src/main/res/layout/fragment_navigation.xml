@@ -106,7 +106,6 @@
                 android:layout_marginBottom="50dp"
                 android:orientation="horizontal">
 
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/terminarBtn"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -170,7 +169,6 @@
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical">
-
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="30dp"
@@ -254,10 +252,5 @@
         </GridLayout>
 
     </GridLayout>
-
-
-    <!--    <androidx.camera.view.PreviewView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent" />-->
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

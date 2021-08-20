@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context=".CameraFragment">
 
-
     <androidx.camera.view.PreviewView
         android:id="@+id/cameraPreview"
         android:layout_width="match_parent"
@@ -25,6 +24,5 @@
         app:backgroundTint="@color/trailGreen"
         app:borderWidth="3dp"
         app:maxImageSize="58dp" />
-
 
 </FrameLayout>

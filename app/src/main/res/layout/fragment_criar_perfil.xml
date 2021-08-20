@@ -77,32 +77,6 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!--                                <EditText-->
-                <!--                                    android:id="@+id/firstName"-->
-                <!--                                    android:layout_width="280dip"-->
-                <!--                                    android:layout_height="40dp"-->
-                <!--                                    android:layout_gravity="top|center_horizontal"-->
-                <!--                                    android:layout_marginTop="20dp"-->
-                <!--                                    android:background="@drawable/custom_input"-->
-                <!--                                    android:hint="@string/firstName"-->
-                <!--                                    android:paddingStart="12dip"-->
-                <!--                                    android:paddingEnd="12dip"-->
-                <!--                                    android:textColor="@color/black"-->
-                <!--                                    android:textColorHint="@color/ash_gray" />-->
-
-                <!--                                <EditText-->
-                <!--                                    android:id="@+id/lastName"-->
-                <!--                                    android:layout_width="280dip"-->
-                <!--                                    android:layout_height="40dp"-->
-                <!--                                    android:layout_gravity="center"-->
-                <!--                                    android:layout_marginTop="20dp"-->
-                <!--                                    android:background="@drawable/custom_input"-->
-                <!--                                    android:hint="@string/lastName"-->
-                <!--                                    android:paddingStart="12dip"-->
-                <!--                                    android:paddingEnd="12dip"-->
-                <!--                                    android:textColor="@color/black"-->
-                <!--                                    android:textColorHint="@color/ash_gray" />-->
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/save"
                     android:layout_width="160dp"

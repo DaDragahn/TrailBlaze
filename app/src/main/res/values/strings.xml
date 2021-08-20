@@ -6,7 +6,7 @@
     <string name="user_location_permission_explanation">This app needs location permissions in order to show its functionality.</string>
 
     <string name="explorar">Explorar</string>
-    <string name="guardados">Guardados</string>
+    <string name="favoritos">Favoritos</string>
     <string name="contribuir">Contribuir</string>
     <string name="perfil">Perfil</string>
     <string name="firstName">Primeiro Nome</string>
@@ -80,6 +80,11 @@
     <string name="partilhar_imagem">Partilhar Imagem</string>
     <string name="passos">Passos</string>
     <string name="distancia">Distância</string>
+    <string name="procurar">Procurar</string>
+    <string name="favorite">Favorite</string>
+    <string name="download">Download</string>
+    <string name="a_gravar">A GRAVAR</string>
+    <string name="o_que_achou_do_percurso">O que achou do Percurso?</string>
 
     <string-array name="modalidades">
         <item>Caminhada</item>

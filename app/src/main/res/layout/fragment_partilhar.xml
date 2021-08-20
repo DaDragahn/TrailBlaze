@@ -124,26 +124,6 @@
                         android:textColor="@color/black" />
                 </androidx.cardview.widget.CardView>
 
-                <!--            <androidx.cardview.widget.CardView-->
-                <!--                android:layout_width="130dp"-->
-                <!--                android:layout_height="70dp"-->
-                <!--                android:layout_gravity="start"-->
-                <!--                android:backgroundTint="@color/dirt_white"-->
-                <!--                app:cardCornerRadius="10dp">-->
-
-                <!--                <TextView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_gravity="top"-->
-                <!--                    android:layout_marginStart="10dp"-->
-                <!--                    android:layout_marginTop="5dp"-->
-                <!--                    android:text="Grupo:"-->
-                <!--                    android:textColor="@color/trailGreen"-->
-                <!--                    android:textSize="15sp"-->
-                <!--                    android:textStyle="bold"-->
-                <!--                    tools:ignore="HardcodedText" />-->
-                <!--            </androidx.cardview.widget.CardView>-->
-
                 <androidx.cardview.widget.CardView
                     android:layout_width="200dp"
                     android:layout_height="70dp"
@@ -200,7 +180,6 @@
                 </androidx.cardview.widget.CardView>
 
             </GridLayout>
-
 
             <androidx.cardview.widget.CardView
                 android:layout_width="350dp"
@@ -297,19 +276,6 @@
                             tools:ignore="LabelFor" />
 
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <!--                <EditText-->
-                    <!--                    android:id="@+id/modalidadeTextView"-->
-                    <!--                    android:layout_width="match_parent"-->
-                    <!--                    android:layout_height="39dp"-->
-                    <!--                    android:layout_gravity="center|start"-->
-                    <!--                    android:layout_marginStart="10dp"-->
-                    <!--                    android:layout_marginTop="10dp"-->
-                    <!--                    android:layout_marginEnd="10dp"-->
-                    <!--                    android:autofillHints="Nome"-->
-                    <!--                    android:inputType="text"-->
-                    <!--                    android:textColor="@color/black"-->
-                    <!--                    tools:ignore="LabelFor" />-->
 
                 </androidx.cardview.widget.CardView>
 

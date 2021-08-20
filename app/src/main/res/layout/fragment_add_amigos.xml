@@ -32,6 +32,7 @@
             android:background="@drawable/search_bar"
             android:closeIcon="@drawable/ic_cross"
             android:elevation="4dp"
+            android:searchHintIcon="@color/transparent"
             android:searchIcon="@drawable/ic_magnifying_glass"
             android:theme="@style/SearchView" />
 

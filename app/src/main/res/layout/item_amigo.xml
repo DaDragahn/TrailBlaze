@@ -4,72 +4,62 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.skydoves.transformationlayout.TransformationLayout
-        android:id="@+id/transformationLayout"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:transformation_duration="550">
+        android:layout_margin="15dp"
+        app:cardBackgroundColor="@color/dirt_white"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="4dp">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardView"
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:background="@color/ash_gray"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="14dp"
-            app:cardElevation="4dp">
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:orientation="horizontal">
 
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="top"
-                android:background="@color/dirt_white"
-                android:orientation="horizontal">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profileImage"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="@string/profileimage"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                app:shapeAppearanceOverlay="@style/circularImage"
+                app:strokeColor="@color/dirt_white"
+                app:strokeWidth="5dp" />
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/profileImage"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="start|center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:contentDescription="@string/profileimage"
-                    android:padding="5dp"
-                    android:scaleType="fitXY"
-                    app:shapeAppearanceOverlay="@style/circularImage"
-                    app:strokeColor="@color/dirt_white"
-                    app:strokeWidth="5dp" />
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/trailGreen"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image" />
 
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:textColor="@color/trailGreen"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/image" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/adicionar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/ic_add_circle"
+                app:backgroundTint="@color/trailGreen" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/adicionar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="15dp"
-                    android:background="@drawable/ic_add_circle"
-                    app:backgroundTint="@color/trailGreen" />
+        </GridLayout>
 
-            </GridLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </com.skydoves.transformationlayout.TransformationLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

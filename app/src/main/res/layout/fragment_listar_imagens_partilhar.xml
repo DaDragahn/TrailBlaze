@@ -38,5 +38,4 @@
         app:spanCount="2"
         tools:listitem="@layout/item_foto" />
 
-
 </androidx.appcompat.widget.LinearLayoutCompat>

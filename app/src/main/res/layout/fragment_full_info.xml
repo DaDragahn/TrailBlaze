@@ -177,25 +177,12 @@
 
                     </GridLayout>
 
-
-                    <!--                    <TextView-->
-                    <!--                        android:id="@+id/autor"-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_gravity="start"-->
-                    <!--                        android:layout_marginStart="10dp"-->
-                    <!--                        android:layout_marginTop="5dp"-->
-                    <!--                        android:textColor="@color/black"-->
-                    <!--                        android:textSize="15sp"-->
-                    <!--                        tools:text="Teste Run" />-->
-
                     <View
                         android:layout_width="400dp"
                         android:layout_height="1dp"
                         android:layout_gravity="top|center_horizontal"
                         android:layout_marginTop="5dp"
                         android:background="@android:color/darker_gray" />
-
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -218,7 +205,6 @@
                         android:autoSizeTextType="uniform"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
-
 
                     <View
                         android:layout_width="400dp"

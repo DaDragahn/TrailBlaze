@@ -51,7 +51,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/rotateLeft"
             android:layout_row="1"

@@ -8,7 +8,7 @@
     <item
         android:id="@+id/guardadosFragment"
         android:icon="@drawable/selector_guardados"
-        android:title="@string/guardados" />
+        android:title="@string/favoritos" />
 
     <item
         android:id="@+id/contribuirFragment"

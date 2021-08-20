@@ -5,12 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.skydoves.transformationlayout.TransformationLayout
-        android:id="@+id/transformationLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:transformation_duration="550">
-
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -49,8 +43,5 @@
                 tools:text="Test Run"/>
 
         </GridLayout>
-
-
-    </com.skydoves.transformationlayout.TransformationLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
