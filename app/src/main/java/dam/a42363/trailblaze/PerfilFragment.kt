@@ -61,7 +61,6 @@ class PerfilFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentPerfilBinding.inflate(inflater, container, false)
 
         binding.amigosBtn.setOnClickListener {
@@ -103,7 +102,6 @@ class PerfilFragment : Fragment() {
                     true
                 }
                 R.id.defenicoes -> {
-                    navController.navigate(R.id.action_perfilFragment_to_terminarFragment)
                     true
                 }
                 R.id.logout -> {

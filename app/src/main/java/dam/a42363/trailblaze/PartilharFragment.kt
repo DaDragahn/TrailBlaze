@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.firebase.auth.FirebaseAuth
@@ -57,6 +59,7 @@ class PartilharFragment : Fragment() {
     private val TAG = "TrackingLocation"
     private var routeJson: String? = null
     private var isDestroy: Boolean = true
+    private var imageUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +76,8 @@ class PartilharFragment : Fragment() {
     ): View {
 
         _binding = FragmentPartilharBinding.inflate(inflater, container, false)
-
+        isDestroy = true
+        imageUrl = (activity as MainActivity).imageUrl
         routeJson = arguments?.getString("routeCoordinates")
         idTrail = arguments?.getString("idTrail")
         routeCoordinates = FeatureCollection.fromJson(routeJson!!)
@@ -90,6 +94,20 @@ class PartilharFragment : Fragment() {
         binding.partilharBtn.setOnClickListener {
             savedRouteOnDatabase()
         }
+
+        if (imageUrl!!.isNotBlank() && imageUrl!!.isNotEmpty()) {
+            binding.addImage.visibility = View.GONE
+            Glide.with(this).load(imageUrl).into(binding.placeImage)
+            binding.placeImage.visibility = View.VISIBLE
+        }
+        binding.addImage.setOnClickListener {
+            isDestroy = false
+            val bundle = bundleOf("idTrail" to idTrail)
+            navController.navigate(
+                R.id.action_partilharFragment_to_listarImagensPartilharFragment,
+                bundle
+            )
+        }
         return binding.root
     }
 
@@ -98,8 +116,10 @@ class PartilharFragment : Fragment() {
 
         val modalidades = resources.getStringArray(R.array.modalidades)
         val dificuldade = resources.getStringArray(R.array.dificuldade)
-        val modalidadeArrayAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, modalidades)
-        val dificuldadeArrayAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, dificuldade)
+        val modalidadeArrayAdapter =
+            ArrayAdapter(requireContext(), R.layout.item_dropdown, modalidades)
+        val dificuldadeArrayAdapter =
+            ArrayAdapter(requireContext(), R.layout.item_dropdown, dificuldade)
         binding.modalidadesTextView.setAdapter(modalidadeArrayAdapter)
         binding.dificuldadeTextView.setAdapter(dificuldadeArrayAdapter)
     }
@@ -244,6 +264,8 @@ class PartilharFragment : Fragment() {
         updates["localidade"] = binding.partidaFimTextView.text.toString()
         updates["modalidade"] = binding.modalidadesTextView.text.toString()
         updates["route"] = currentRoute?.toJson()!!
+        updates["fotoBanner"] = imageUrl.toString()
+        (activity as MainActivity).imageUrl = ""
         val doc = db.collection("locations").document(idTrail!!)
         doc.set(updates).addOnCompleteListener {
             if (it.isSuccessful) {

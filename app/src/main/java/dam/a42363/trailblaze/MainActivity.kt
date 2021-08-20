@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     internal var dificuldadeArray = ArrayList<String>()
     internal var modalidadeArray = ArrayList<String>()
+    internal var imageUrl: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

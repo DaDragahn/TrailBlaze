@@ -21,6 +21,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.Task
@@ -410,6 +411,8 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                             val route = document?.getString("route")
 
                             binding.nome.text = document?.getString("nome")
+                            Glide.with(this).load(document?.getString("fotoBanner"))
+                                .into(binding.fotoBanner)
                             binding.localidade.text = document?.getString("localidade")
                             binding.distancia.text =
                                 "Distância: ${document?.getString("distancia")}"
@@ -421,8 +424,10 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                             cardView.visibility = View.VISIBLE
 
                             binding.dirBtn.setOnClickListener {
-                                val bundle = bundleOf("feature" to feature.id(),
-                                "route" to route)
+                                val bundle = bundleOf(
+                                    "feature" to feature.id(),
+                                    "route" to route
+                                )
                                 navController.navigate(
                                     R.id.action_explorarFragment_to_fullInfoFragment,
                                     bundle

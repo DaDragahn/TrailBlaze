@@ -263,14 +263,14 @@
             </androidx.cardview.widget.CardView>
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/shapeableImageView2"
+                android:id="@+id/fotoBanner"
                 android:layout_width="wrap_content"
                 android:layout_height="250dp"
                 android:layout_gravity="top|center"
                 android:layout_x="1dp"
                 android:layout_y="0dp"
                 android:background="@drawable/default_placeholder"
-                android:scaleType="fitCenter" />
+                android:scaleType="centerCrop" />
 
         </AbsoluteLayout>
 

@@ -13,6 +13,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.core.constants.Constants
@@ -141,7 +142,8 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
                 binding.localidade.text = document?.getString("localidade")
                 binding.dificuldade.text = "${document?.getString("dificuldade")}"
                 binding.modalidade.text = document?.getString("modalidade")
-//                binding.autor.text = document?.getString("autor")
+                Glide.with(this).load(document?.getString("fotoBanner"))
+                    .into(binding.fotoBanner)
                 binding.descricao.text = document?.getString("descricao")
                 mapView.getMapAsync(this)
             }

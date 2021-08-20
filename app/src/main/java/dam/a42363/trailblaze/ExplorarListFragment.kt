@@ -1,6 +1,7 @@
 package dam.a42363.trailblaze
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -158,10 +160,12 @@ class ExplorarListFragment : Fragment() {
 
     inner class FindTrailsViewHolder(val routeBinding: ItemRouteRatingBinding) :
         RecyclerView.ViewHolder(routeBinding.root) {
-        fun setVariables(nome: String, author: String, localidade: String) {
+        fun setVariables(nome: String, author: String, localidade: String, fotoBanner: String, ctx: Context) {
             routeBinding.name.text = nome
             routeBinding.author.text = author
             routeBinding.localidade.text = localidade
+            Glide.with(ctx).load(fotoBanner)
+                .into(routeBinding.image)
         }
 
         @SuppressLint("SetTextI18n")
@@ -204,8 +208,9 @@ class ExplorarListFragment : Fragment() {
             val name = snapshots.getSnapshot(position).getString("nome")!!
             val author = snapshots.getSnapshot(position).getString("distancia")!!
             val localidade = snapshots.getSnapshot(position).getString("localidade")!!
+            val fotoBanner = snapshots.getSnapshot(position).getString("fotoBanner")!!
             holder.setRating(snapshots.getSnapshot(position).id)
-            holder.setVariables(name, author, localidade)
+            holder.setVariables(name, author, localidade,fotoBanner, requireContext())
             holder.routeBinding.cardView.setOnClickListener {
                 val bundle = bundleOf(
                     "feature" to snapshots.getSnapshot(position).id,
