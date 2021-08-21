@@ -91,7 +91,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewInfo"
                 android:layout_width="match_parent"
-                android:layout_height="790dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_y="221dp"
                 android:background="@drawable/cardview_info"
@@ -99,7 +99,7 @@
 
                 <GridLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -217,32 +217,70 @@
                         android:id="@+id/mapView"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
+                        android:layout_marginTop="5dp"
                         android:layout_gravity="top"
                         app:mapbox_cameraZoom="16" />
 
-                    <TextView
-                        android:id="@+id/reviewTextView"
+                    <GridLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/reviews"
-                        android:textColor="@color/trailGreen"
-                        android:textSize="30sp"
-                        android:textStyle="bold" />
+                        android:orientation="vertical"
+                        android:paddingBottom="100dp">
 
-                    <RatingBar
-                        android:id="@+id/ratingBar"
-                        style="@style/Widget.AppCompat.RatingBar.Indicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:layout_marginStart="10dp"
-                        android:isIndicator="true"
-                        android:progressBackgroundTint="@color/ash_gray_alpha"
-                        android:progressTint="@color/ratingGold"
-                        android:secondaryProgressTint="@color/ratingGold" />
+                        <GridLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/reviews"
+                                android:textColor="@color/trailGreen"
+                                android:textSize="30sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/reviewTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:textColor="@color/black"
+                                android:textSize="25sp"
+                                android:textStyle="bold"
+                                tools:text="Nenhum" />
+
+                            <TextView
+                                android:id="@+id/reviewCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:textColor="@color/black"
+                                android:textSize="20sp"
+                                tools:text="(12)" />
+
+                        </GridLayout>
+
+                        <RatingBar
+                            android:id="@+id/ratingBar"
+                            style="@style/Widget.AppCompat.RatingBar.Indicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:layout_marginStart="10dp"
+                            android:isIndicator="true"
+                            android:progressBackgroundTint="@color/ash_gray_alpha"
+                            android:progressTint="@color/ratingGold"
+                            android:secondaryProgressTint="@color/ratingGold" />
+
+                    </GridLayout>
 
                 </GridLayout>
 

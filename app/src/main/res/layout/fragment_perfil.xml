@@ -50,19 +50,124 @@
                 android:layout_width="345dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="75dp"
+                android:layout_marginTop="70dp"
                 android:gravity="center|center_horizontal|center_vertical"
                 android:textColor="@color/trailDarkGreen"
                 android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/user"
-                android:layout_width="345dp"
+            <!--            <TextView-->
+            <!--                android:id="@+id/user"-->
+            <!--                android:layout_width="345dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="center_horizontal"-->
+            <!--                android:layout_marginTop="120dp"-->
+            <!--                android:gravity="center"-->
+            <!--                android:textColor="@color/trailDarkGreen" />-->
+
+            <GridLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="120dp"
-                android:gravity="center"
-                android:textColor="@color/trailDarkGreen" />
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="5dp"
+                android:columnCount="3"
+                android:orientation="horizontal">
+
+                <GridLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/numAmigos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:text="85"
+                        android:textColor="@color/white"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        tools:text="85" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:text="@string/amigos"
+                        android:textColor="@color/trailDarkGreen"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </GridLayout>
+
+                <GridLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/numGrupos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:text="5"
+                        android:textColor="@color/white"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        tools:text="5" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:text="@string/grupos"
+                        android:textColor="@color/trailDarkGreen"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </GridLayout>
+
+                <GridLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/numTrilhos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:text="11"
+                        android:textColor="@color/white"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        tools:text="11" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:text="@string/trilhos"
+                        android:textColor="@color/trailDarkGreen"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </GridLayout>
+
+            </GridLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -95,7 +200,7 @@
                 android:layout_height="125dp"
                 android:layout_marginStart="25dp"
                 android:background="@drawable/round_buttons_perfil"
-                android:text="@string/trilhos"
+                android:text="@string/meus_trilhos"
                 android:textColor="@color/white" />
 
             <androidx.appcompat.widget.AppCompatButton

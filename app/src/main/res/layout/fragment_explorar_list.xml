@@ -32,7 +32,7 @@
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:layout_marginStart="30dp"
-            android:background="@drawable/ic_settings__1_" />
+            android:background="@drawable/ic_filters" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/lista"

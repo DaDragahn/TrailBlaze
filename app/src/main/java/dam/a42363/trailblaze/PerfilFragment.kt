@@ -123,7 +123,7 @@ class PerfilFragment : Fragment() {
                 (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
             }
 
-            val email = binding.user
+//            val email = binding.user
             val name = binding.firstName
             val profileImage = binding.profileImage
 
@@ -135,7 +135,7 @@ class PerfilFragment : Fragment() {
                             val documentSnapshot = task.result
                             if (documentSnapshot!!.exists()) {
                                 name.text = documentSnapshot.getString("nome")
-                                email.text = documentSnapshot.getString("email")
+//                                email.text = documentSnapshot.getString("email")
                                 if (!documentSnapshot.getString("photoUrl").equals(""))
                                     Glide.with(this).load(documentSnapshot.getString("photoUrl"))
                                         .into(profileImage)

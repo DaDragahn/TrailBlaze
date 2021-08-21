@@ -20,7 +20,7 @@
     <string name="password">Password</string>
     <string name="profileimage">ProfileImage</string>
     <string name="logout">Logout</string>
-    <string name="trilhos">Meus Trilhos</string>
+    <string name="meus_trilhos">Meus Trilhos</string>
     <string name="grupos">Grupos</string>
     <string name="fotos">Fotos</string>
     <string name="gravar">Gravar</string>
@@ -85,6 +85,7 @@
     <string name="download">Download</string>
     <string name="a_gravar">A GRAVAR</string>
     <string name="o_que_achou_do_percurso">O que achou do Percurso?</string>
+    <string name="trilhos">Trilhos</string>
 
     <string-array name="modalidades">
         <item>Caminhada</item>

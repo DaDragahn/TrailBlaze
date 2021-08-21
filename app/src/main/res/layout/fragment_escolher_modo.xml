@@ -33,13 +33,6 @@
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
-                <CheckBox
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="start"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="30dp" />
-
             </GridLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -64,34 +57,26 @@
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:columnCount="3"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start|top"
+                    android:layout_gravity="start|center_vertical"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:text="@string/amigos"
                     android:textColor="@color/trailGreen"
                     android:textSize="30sp"
                     android:textStyle="bold" />
-
-                <CheckBox
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="15dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/start"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="20dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
                     android:backgroundTint="@color/white"
                     android:text="@string/convidar"

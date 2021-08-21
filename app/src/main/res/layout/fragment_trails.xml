@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="35dp"
-            android:text="@string/trilhos"
+            android:text="@string/meus_trilhos"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />

@@ -163,11 +163,13 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
             }
             withContext(Dispatchers.Main) {
                 if (ratingsArray.isEmpty()) {
-                    binding.reviewTextView.text = "Reviews: Nenhum"
+                    binding.reviewTextView.text = "Nenhum"
                     binding.ratingBar.visibility = View.GONE
                 } else {
                     val average = ratingsArray.average().toFloat()
-                    binding.reviewTextView.text = "Reviews: $average"
+                    val count = ratingsArray.size
+                    binding.reviewTextView.text = "$average"
+                    binding.reviewCount.text = "($count)"
                     binding.ratingBar.rating = average
                 }
             }

@@ -2,8 +2,14 @@ package dam.a42363.trailblaze
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper.getMainLooper
@@ -16,6 +22,7 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -57,9 +64,15 @@ import dam.a42363.trailblaze.utils.Constants
 import timber.log.Timber
 import java.lang.ref.WeakReference
 import kotlin.properties.Delegates
+import android.content.Context.SENSOR_SERVICE
+import android.content.SharedPreferences
+
+import androidx.core.content.ContextCompat.getSystemService
+import kotlin.math.sqrt
 
 
-class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
+class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
+    SensorEventListener {
 
     private var timeWhenStopped: Long = 0
     private lateinit var mapView: MapView
@@ -90,6 +103,12 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     private var destroy: Boolean = false
     private var idTrail: String? = null
     private val lobbyArray = ArrayList<String>()
+
+    private var sensorManager: SensorManager? = null
+    private var sensor: Sensor? = null
+
+    private val magnitudePrevious = 0.0f
+    private var stepCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -155,6 +174,9 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
         binding.chronometer.start()
 
+        sensorManager = activity?.getSystemService(SENSOR_SERVICE) as SensorManager
+        sensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
         return binding.root
     }
 
@@ -182,7 +204,10 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 timeWhenStopped = binding.chronometer.base - SystemClock.elapsedRealtime()
                 binding.chronometer.stop()
                 val bundle = bundleOf("idTrail" to idTrail)
-                navController.navigate(R.id.action_navigationFragment_to_cameraFragment, bundle)
+                navController.navigate(
+                    R.id.action_navigationFragment_to_cameraFragment,
+                    bundle
+                )
 
             } else {
                 ActivityCompat.requestPermissions(
@@ -197,7 +222,10 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             binding.chronometer.stop()
             val bundle =
                 bundleOf("idTrail" to idTrail, "time" to chronoText)
-            navController.navigate(R.id.action_navigationFragment_to_terminarFragment, bundle)
+            navController.navigate(
+                R.id.action_navigationFragment_to_terminarFragment,
+                bundle
+            )
         }
 
         binding.terminarBtn.setOnClickListener {
@@ -205,7 +233,10 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             binding.chronometer.stop()
             val bundle =
                 bundleOf("idTrail" to idTrail, "time" to chronoText)
-            navController.navigate(R.id.action_navigationFragment_to_terminarFragment, bundle)
+            navController.navigate(
+                R.id.action_navigationFragment_to_terminarFragment,
+                bundle
+            )
         }
     }
 
@@ -276,10 +307,11 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
             mapCamera = NavigationCamera(mapboxMap)
             mapCamera?.addProgressChangeListener(mapboxNavigation!!)
-            navigationMapRoute = NavigationMapRoute.Builder(mapView, mapboxMap, viewLifecycleOwner)
-                .withMapboxNavigation(mapboxNavigation)
-                .withVanishRouteLineEnabled(true)
-                .build()
+            navigationMapRoute =
+                NavigationMapRoute.Builder(mapView, mapboxMap, viewLifecycleOwner)
+                    .withMapboxNavigation(mapboxNavigation)
+                    .withVanishRouteLineEnabled(true)
+                    .build()
 
             val locationEngineRequest =
                 LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
@@ -318,7 +350,8 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                             )
                         )
                     }
-                    val iconSource = style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
+                    val iconSource =
+                        style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
                     iconSource?.setGeoJson(FeatureCollection.fromFeatures(userMarkerList))
                 }
                 .addOnFailureListener { exception ->
@@ -335,7 +368,8 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
                     .document(auth.uid!!).update(updates)
 
-                db.collection("Trails").document(idTrail!!).collection("TrailsCollection").get()
+                db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+                    .get()
                     .addOnSuccessListener { result ->
                         for (document in result) {
                             if (document.id != auth.uid!!)
@@ -417,6 +451,33 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         }
     }
 
+    override fun onSensorChanged(event: SensorEvent?) {
+
+        if (event != null) {
+            Toast.makeText(requireContext(), "ENTERED", Toast.LENGTH_SHORT).show()
+            val xAcceleration = event.values[0]
+            val yAcceleration = event.values[1]
+            val zAcceleration = event.values[2]
+
+            val magnitude =
+                sqrt((xAcceleration * xAcceleration + yAcceleration * yAcceleration + zAcceleration * zAcceleration).toDouble())
+
+            val magnitudeDelta = magnitude - magnitudePrevious
+
+            if (magnitudeDelta > 3) {
+                stepCount++
+            }
+
+            binding.totalPassos.text = "$stepCount"
+
+            sensorManager?.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+    }
+
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
@@ -432,6 +493,11 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     override fun onResume() {
         super.onResume()
         mapView.onResume()
+
+        val sharedPreferences: SharedPreferences? = activity?.getPreferences(Context.MODE_PRIVATE)
+        stepCount = sharedPreferences!!.getInt("stepCount", 0)
+
+
     }
 
     override fun onStop() {
@@ -442,11 +508,25 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             locationEngineCallback
         )
         mapView.onStop()
+
+        val sharedPreferences: SharedPreferences? = activity?.getPreferences(Context.MODE_PRIVATE)
+
+        val editor: SharedPreferences.Editor? = sharedPreferences?.edit()
+        editor?.clear()
+        editor?.putInt("stepCount", stepCount)
+        editor?.apply()
     }
 
     override fun onPause() {
         super.onPause()
         mapView.onPause()
+
+        val sharedPreferences: SharedPreferences? = activity?.getPreferences(Context.MODE_PRIVATE)
+
+        val editor: SharedPreferences.Editor? = sharedPreferences?.edit()
+        editor?.clear()
+        editor?.putInt("stepCount", stepCount)
+        editor?.apply()
     }
 
     override fun onDestroy() {
@@ -526,6 +606,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             binding.terminarCardView.visibility
         }
     }
+
 
 //    private val routeProgressObserver = object : RouteProgressObserver {
 //        override fun onRouteProgressChanged(routeProgress: RouteProgress) {
