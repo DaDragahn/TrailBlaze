@@ -121,6 +121,7 @@ class GrupoFragment : Fragment() {
             }
         }
         db.collection("Groups").document(groupId!!).get().addOnSuccessListener {
+            binding.grupoName.text = it.getString("nome")
             val photoUrl = it.getString("photoUrl").toString()
             if (photoUrl != "")
                 Glide.with(this).load(photoUrl).override(SIZE_ORIGINAL, SIZE_ORIGINAL)

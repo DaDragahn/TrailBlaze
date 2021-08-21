@@ -86,11 +86,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:includeFontPadding="false"
-                        android:text="85"
                         android:textColor="@color/white"
                         android:textSize="30sp"
                         android:textStyle="bold"
-                        tools:text="85" />
+                        tools:text="" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -118,11 +117,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:includeFontPadding="false"
-                        android:text="5"
                         android:textColor="@color/white"
                         android:textSize="30sp"
                         android:textStyle="bold"
-                        tools:text="5" />
+                        tools:text="" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -149,11 +147,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:includeFontPadding="false"
-                        android:text="11"
                         android:textColor="@color/white"
                         android:textSize="30sp"
                         android:textStyle="bold"
-                        tools:text="11" />
+                        tools:text="" />
 
                     <TextView
                         android:layout_width="wrap_content"
