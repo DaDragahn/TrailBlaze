@@ -45,7 +45,7 @@
                 android:textColor="@color/trailGreen"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                tools:text="Teste Run" />
+                tools:text=""/>
 
             <TextView
                 android:id="@+id/localidade"
@@ -55,7 +55,7 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@color/black"
                 android:textSize="15sp"
-                tools:text="Sintra, Lisboa" />
+                tools:text="" />
 
             <GridLayout
                 android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
                     android:maxLines="1"
                     android:textColor="@color/black"
                     android:textSize="13sp"
-                    tools:text="(15)" />
+                    tools:text="" />
 
             </GridLayout>
 
@@ -117,7 +117,7 @@
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold"
-                    tools:text="100m" />
+                    tools:text="" />
 
             </GridLayout>
 
@@ -157,25 +157,6 @@
             app:elevation="0dp"
             app:fabCustomSize="35dp"
             app:maxImageSize="25dp"
-            app:tint="@color/trailGreen" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/downloadBtn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="5dp"
-            android:backgroundTint="@color/dirt_white"
-            android:contentDescription="@string/download"
-            android:elevation="0dp"
-            android:foregroundGravity="center"
-            android:src="@drawable/ic_round_download"
-            android:visibility="visible"
-            app:backgroundTint="@color/trailGreen"
-            app:borderWidth="2dp"
-            app:elevation="0dp"
-            app:fabCustomSize="25dp"
-            app:maxImageSize="17dp"
             app:tint="@color/trailGreen" />
 
     </com.google.android.material.card.MaterialCardView>

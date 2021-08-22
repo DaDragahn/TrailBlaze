@@ -603,10 +603,9 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         }
 
         override fun onFinalDestinationArrival(routeProgress: RouteProgress) {
-            binding.terminarCardView.visibility
+            binding.terminarCardView.visibility = View.VISIBLE
         }
     }
-
 
 //    private val routeProgressObserver = object : RouteProgressObserver {
 //        override fun onRouteProgressChanged(routeProgress: RouteProgress) {

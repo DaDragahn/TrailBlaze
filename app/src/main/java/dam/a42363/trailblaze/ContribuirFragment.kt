@@ -58,7 +58,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
     private lateinit var locationComponent: LocationComponent
     private var locationEngine: LocationEngine? = null
-    private val DEFAULT_INTERVAL_IN_MILLISECONDS = 3000L
+    private val DEFAULT_INTERVAL_IN_MILLISECONDS = 30000L
     private val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
 
     private lateinit var db: FirebaseFirestore
@@ -388,7 +388,6 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     override fun onStop() {
         super.onStop()
         mapView.onStop()
-        routeCoordinates.clear()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -402,14 +401,16 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         mapView.onDestroy()
 //        numberExample = 0.00001
         if (isDestroy) {
-            storageRef.child("images/${auth.currentUser?.uid}/locations/${idTrail}").listAll().addOnSuccessListener {
-                it.items.forEach {ref ->
-                    ref.delete()
+            storageRef.child("images/${auth.currentUser?.uid}/locations/${idTrail}").listAll()
+                .addOnSuccessListener {
+                    it.items.forEach { ref ->
+                        ref.delete()
+                    }
                 }
-            }
         }
     }
-//    override fun onDestroyView() {
+
+    //    override fun onDestroyView() {
 //        super.onDestroyView()
 //        if (isDestroy) {
 //            storageRef.child("images/${auth.currentUser?.uid}/locations/${idTrail}").listAll().addOnSuccessListener {

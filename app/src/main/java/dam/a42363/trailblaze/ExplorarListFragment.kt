@@ -22,6 +22,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -40,6 +41,8 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class ExplorarListFragment : Fragment() {
+    private var user: String? = null
+    private lateinit var auth: FirebaseAuth
     private lateinit var navController: NavController
     private var adapter: FindTrailsFirestoreRecyclerAdapter? = null
     private var _binding: FragmentExplorarListBinding? = null
@@ -84,6 +87,8 @@ class ExplorarListFragment : Fragment() {
             navController.navigate(R.id.action_explorarListFragment_to_explorarFragment)
         }
         db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+        user = auth.currentUser?.uid
         val point = arguments?.getString("local")?.let { Point.fromJson(it) }
         if (point != null) {
             center = GeoLocation(point.latitude(), point.longitude())
@@ -160,7 +165,13 @@ class ExplorarListFragment : Fragment() {
 
     inner class FindTrailsViewHolder(val routeBinding: ItemRouteRatingBinding) :
         RecyclerView.ViewHolder(routeBinding.root) {
-        fun setVariables(nome: String, author: String, localidade: String, fotoBanner: String, ctx: Context) {
+        fun setVariables(
+            nome: String,
+            author: String,
+            localidade: String,
+            fotoBanner: String,
+            ctx: Context
+        ) {
             routeBinding.name.text = nome
             routeBinding.author.text = author
             routeBinding.localidade.text = localidade
@@ -178,12 +189,18 @@ class ExplorarListFragment : Fragment() {
                 for (rating in ratings.documents) {
                     rating.getString("rating")?.let { ratingsArray.add(it.toFloat()) }
                 }
+                val favorite =  db.collection("Favorite").document("FavoriteDocument").collection(user!!).document(id).get()
+                    .await()
                 withContext(Dispatchers.Main) {
                     if (ratingsArray.isNotEmpty()) {
                         val average = ratingsArray.average().toFloat()
                         routeBinding.ratingBar.rating = average
                     }
                     routeBinding.reviewCount.text = "(${ratingsArray.size})"
+                    if(favorite.getBoolean("favorite") == true){
+                        routeBinding.likeBtn.visibility = View.GONE
+                        routeBinding.likeFullBtn.visibility = View.VISIBLE
+                    }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
@@ -210,7 +227,25 @@ class ExplorarListFragment : Fragment() {
             val localidade = snapshots.getSnapshot(position).getString("localidade")!!
             val fotoBanner = snapshots.getSnapshot(position).getString("fotoBanner")!!
             holder.setRating(snapshots.getSnapshot(position).id)
-            holder.setVariables(name, author, localidade,fotoBanner, requireContext())
+            holder.setVariables(name, author, localidade, fotoBanner, requireContext())
+            holder.routeBinding.likeBtn.setOnClickListener {
+                val updates: MutableMap<String, Any> = HashMap()
+                updates["favorite"] = true
+                db.collection("Favorite").document("FavoriteDocument")
+                    .collection(user!!)
+                    .document(snapshots.getSnapshot(position).id).set(updates)
+                holder.routeBinding.likeBtn.visibility = View.GONE
+                holder.routeBinding.likeFullBtn.visibility = View.VISIBLE
+            }
+            holder.routeBinding.likeFullBtn.setOnClickListener {
+                val updates: MutableMap<String, Any> = HashMap()
+                updates["favorite"] = false
+                db.collection("Favorite").document("FavoriteDocument")
+                    .collection(user!!)
+                    .document(snapshots.getSnapshot(position).id).set(updates)
+                holder.routeBinding.likeBtn.visibility = View.VISIBLE
+                holder.routeBinding.likeFullBtn.visibility = View.GONE
+            }
             holder.routeBinding.cardView.setOnClickListener {
                 val bundle = bundleOf(
                     "feature" to snapshots.getSnapshot(position).id,
