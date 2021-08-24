@@ -1,6 +1,7 @@
 package dam.a42363.trailblaze
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
@@ -19,6 +20,16 @@ import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import dam.a42363.trailblaze.databinding.FragmentHandlerBinding
 import dam.a42363.trailblaze.utils.SampleMethods
+import android.preference.PreferenceManager
+
+import android.content.SharedPreferences
+import android.content.res.Configuration
+import android.util.Log
+import androidx.camera.core.impl.utils.ContextUtil
+import androidx.camera.core.impl.utils.ContextUtil.getBaseContext
+import androidx.camera.core.impl.utils.ContextUtil.getBaseContext
+import java.util.*
+
 
 class HandlerFragment : Fragment() {
 
@@ -26,7 +37,7 @@ class HandlerFragment : Fragment() {
     private lateinit var navController: NavController
 
     private lateinit var progressBar: ProgressBar
-    private lateinit var requestPermissionLauncher : ActivityResultLauncher<String>
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
     var _binding: FragmentHandlerBinding? = null
     private val binding get() = _binding!!
@@ -34,6 +45,19 @@ class HandlerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val editor: SharedPreferences =
+            requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val lang: String? = editor.getString("My_Lang", "")
+        val config: Configuration = requireActivity().baseContext.resources.configuration
+        if ("" != lang && !config.locale.language.equals(lang)) {
+            val locale = Locale(lang)
+            Locale.setDefault(locale)
+            config.locale = locale
+            requireActivity().baseContext.resources.updateConfiguration(
+                config,
+                requireActivity().baseContext.resources.displayMetrics
+            )
+        }
         requestPermissionLauncher =
             registerForActivityResult(
                 ActivityResultContracts.RequestPermission()

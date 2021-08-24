@@ -20,6 +20,7 @@
 
     <application
         android:allowBackup="true"
+        android:configChanges="locale|orientation"
         android:icon="@mipmap/ic_square"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_square_round"
