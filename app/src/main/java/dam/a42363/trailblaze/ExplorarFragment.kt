@@ -83,13 +83,12 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
     private lateinit var cardView: CardView
 
-    private lateinit var center: GeoLocation
+    private var center: GeoLocation? = null
     private lateinit var db: FirebaseFirestore
     private lateinit var navController: NavController
     private var doubleBackToExitPressedOnce = false
 
     private val REQUEST_CODE_AUTOCOMPLETE = 1
-    private val TAG = "PlaceAutocompleteFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -145,7 +144,13 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 R.color.orange,
                 requireActivity().applicationContext.theme
             )
-
+        val point = arguments?.getString("local")?.let { Point.fromJson(it) }
+        if (point != null) {
+            center = GeoLocation(point.latitude(), point.longitude())
+        }
+        if (arguments?.getString("searchText") != null) {
+            binding.searchView.setText(arguments?.getString("searchText"))
+        }
         return binding.root
     }
 
@@ -164,11 +169,11 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
         binding.lista.setOnClickListener {
             val local = Point.fromLngLat(
-                center.longitude,
-                center.latitude
+                center!!.longitude,
+                center!!.latitude
             )
             val bundle = bundleOf(
-                "local" to local.toJson()
+                "local" to local.toJson(), "searchText" to binding.searchView.text.toString()
             )
             navController.navigate(R.id.action_explorarFragment_to_explorarListFragment, bundle)
 
@@ -259,7 +264,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     private fun checkGeoQuery() {
         val markerList: MutableList<Feature> = ArrayList()
         val radiusInM = (2 * 1000).toDouble()
-        val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
+        val bounds = GeoFireUtils.getGeoHashQueryBounds(center!!, radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
         for (b in bounds) {
             val q = db.collection("locations")
@@ -287,7 +292,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                         // accuracy, but most will match
                         val docLocation = GeoLocation(lat, lng)
                         val distanceInM =
-                            GeoFireUtils.getDistanceBetween(docLocation, center)
+                            GeoFireUtils.getDistanceBetween(docLocation, center!!)
                         if (distanceInM <= radiusInM) {
                             matchingDocs.add(doc)
                         }
@@ -520,12 +525,27 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
                 checkGeoQuery()
             }
-
-            center = GeoLocation(
-                locationComponent?.lastKnownLocation!!.latitude,
-                locationComponent!!.lastKnownLocation!!
-                    .longitude
-            )
+            if (center == null) {
+                center = GeoLocation(
+                    locationComponent?.lastKnownLocation!!.latitude,
+                    locationComponent!!.lastKnownLocation!!
+                        .longitude
+                )
+            } else {
+                mapboxMap.animateCamera(
+                    CameraUpdateFactory.newCameraPosition(
+                        CameraPosition.Builder()
+                            .target(
+                                LatLng(
+                                    center!!.latitude,
+                                    center!!.longitude
+                                )
+                            )
+                            .zoom(14.0)
+                            .build()
+                    ), 4000
+                )
+            }
         } else {
             permissionsManager = PermissionsManager(this)
 

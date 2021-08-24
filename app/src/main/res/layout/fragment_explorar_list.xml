@@ -14,17 +14,17 @@
         android:layout_gravity="start|top"
         android:background="@color/ash_gray_alpha_transparent">
 
-        <SearchView
+        <EditText
             android:id="@+id/searchView"
             android:layout_width="270dp"
-            android:layout_height="30dp"
-            android:layout_gravity="start"
-            android:layout_marginStart="1dp"
+            android:layout_height="35dp"
             android:background="@drawable/search_bar"
-            android:closeIcon="@drawable/ic_cross"
-            android:elevation="4dp"
-            android:searchIcon="@drawable/ic_magnifying_glass"
-            android:theme="@style/SearchView" />
+            android:drawableLeft="@drawable/ic_magnifying_glass"
+            android:drawablePadding="20dp"
+            android:hint="@string/procurar"
+            android:padding="5dp"
+            android:textAlignment="textStart" />
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/filtro"

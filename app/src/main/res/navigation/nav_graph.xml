@@ -55,6 +55,9 @@
         <action
             android:id="@+id/action_guardadosFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_guardadosFragment_to_fullInfoFragment"
+            app:destination="@id/fullInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/contribuirFragment"
@@ -238,7 +241,11 @@
         android:id="@+id/trailsFragment"
         android:name="dam.a42363.trailblaze.TrailsFragment"
         android:label="fragment_trrails"
-        tools:layout="@layout/fragment_trails" />
+        tools:layout="@layout/fragment_trails" >
+        <action
+            android:id="@+id/action_trailsFragment_to_fullInfoFragment"
+            app:destination="@id/fullInfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/gruposFragment"
         android:name="dam.a42363.trailblaze.GruposFragment"

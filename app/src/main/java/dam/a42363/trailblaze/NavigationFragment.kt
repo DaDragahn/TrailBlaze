@@ -68,6 +68,7 @@ import android.content.Context.SENSOR_SERVICE
 import android.content.SharedPreferences
 
 import androidx.core.content.ContextCompat.getSystemService
+import com.mapbox.navigation.core.trip.session.RouteProgressObserver
 import kotlin.math.sqrt
 
 
@@ -353,6 +354,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 .build()
             mapboxNavigation = MapboxNavigation(navigationOptions)
 //            mapboxNavigation!!.registerRouteProgressObserver(replayProgressObserver)
+            mapboxNavigation!!.registerRouteProgressObserver(routeProgressObserver)
             mapboxNavigation!!.registerArrivalObserver(arrivalObserver)
 //            mapboxReplayer.pushRealLocation(requireContext(), 0.0)
 //            mapboxReplayer.play()
@@ -564,6 +566,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     override fun onDestroy() {
         mapView.onDestroy()
 //        mapboxNavigation?.unregisterRouteProgressObserver(replayProgressObserver)
+        mapboxNavigation?.unregisterRouteProgressObserver(routeProgressObserver)
         mapboxNavigation?.unregisterArrivalObserver(arrivalObserver);
         mapboxNavigation?.stopTripSession()
         mapboxNavigation?.onDestroy()
@@ -578,6 +581,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         if (destroy) {
             mapView.onDestroy()
 //        mapboxNavigation?.unregisterRouteProgressObserver(replayProgressObserver)
+            mapboxNavigation?.unregisterRouteProgressObserver(routeProgressObserver)
             mapboxNavigation?.unregisterArrivalObserver(arrivalObserver);
             mapboxNavigation?.stopTripSession()
             mapboxNavigation?.onDestroy()
@@ -641,26 +645,10 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         }
     }
 
-//    private val routeProgressObserver = object : RouteProgressObserver {
-//        override fun onRouteProgressChanged(routeProgress: RouteProgress) {
-//            try {
-//                routeProgress.currentState.let { currentState ->
-//                    val state = currentState
-//                    Log.e("State", state.toString())
-//                    if (state == RouteProgressState.ROUTE_COMPLETE && routeProgress.distanceRemaining < 10) {
-//                        Toast.makeText(
-//                            requireContext(),
-//                            "You have arrived at your destination!",
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                    } else if (state == RouteProgressState.OFF_ROUTE) {
-//                        Log.e("< <OFF> >", " off route > > > > > > > > > > > > > > > > > > >")
-//                    }
-//                }
-//            } catch (e: Exception) {
-//                Log.e("Nav Err", e.message!!)
-//            }
-//        }
-//    }
-//
+    private val routeProgressObserver = object : RouteProgressObserver {
+        override fun onRouteProgressChanged(routeProgress: RouteProgress) {
+            Log.d("RecordRoute", "${routeProgress.distanceTraveled}")
+            binding.distanciaPercorrida.text = routeProgress.distanceTraveled.toString()
+        }
+    }
 }

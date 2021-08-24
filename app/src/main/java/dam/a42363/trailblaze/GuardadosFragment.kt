@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -208,11 +209,15 @@ class GuardadosFragment : Fragment() {
                 holder.routeBinding.likeFullBtn.visibility = View.VISIBLE
             }
             holder.routeBinding.cardView.setOnClickListener {
-                Toast.makeText(
-                    requireContext(),
-                    snapshots.getSnapshot(position).id,
-                    Toast.LENGTH_LONG
-                ).show()
+                val bundle = bundleOf(
+                    "feature" to snapshots.getSnapshot(position).id,
+                    "route" to snapshots.getSnapshot(position).getString("route")
+                )
+
+                navController.navigate(
+                    R.id.action_guardadosFragment_to_fullInfoFragment,
+                    bundle
+                )
             }
         }
 
