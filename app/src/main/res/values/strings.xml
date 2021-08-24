@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TrailBlaze</string>
+    <string name="app_name" translatable="false">TrailBlaze</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="mapbox_access_token" translatable="false">sk.eyJ1IjoiZGFkcmFnYWhuIiwiYSI6ImNrcHIxbWQ1NjA0Mnoybm1udjk0dnBvNnUifQ.2afhAdim2KHXvHxM7lLlUQ</string>
     <string name="user_location_permission_not_granted">You didn\'t grant location permissions.</string>
@@ -9,7 +9,6 @@
     <string name="favoritos">Favoritos</string>
     <string name="contribuir">Contribuir</string>
     <string name="perfil">Perfil</string>
-    <string name="firstName">Primeiro Nome</string>
     <string name="lastName">Apelido</string>
     <string name="guardar">Guardar</string>
     <string name="icon">icon</string>
@@ -25,7 +24,6 @@
     <string name="fotos">Fotos</string>
     <string name="gravar">Gravar</string>
     <string name="center">center</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dir">DIR</string>
     <string name="iniciar">INICIAR</string>
     <string name="descricao">Descrição</string>
@@ -90,6 +88,15 @@
     <string name="linguagem">Linguagem</string>
     <string name="metrico">Métrico</string>
     <string name="portugues">Português</string>
+    <string name="camera">camera</string>
+    <string name="stop">stop</string>
+    <string name="pause">pause</string>
+    <string name="play">play</string>
+    <string name="nome_">Nome:</string>
+    <string name="partida_fim">Partida/Fim:</string>
+    <string name="descricao_">Descrição:</string>
+    <string name="foto_">Foto:</string>
+    <string name="tempo_">Tempo:</string>
 
     <string-array name="modalidades">
         <item>Caminhada</item>

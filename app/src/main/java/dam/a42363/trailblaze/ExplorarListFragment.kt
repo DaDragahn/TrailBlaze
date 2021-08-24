@@ -104,6 +104,12 @@ class ExplorarListFragment : Fragment() {
                 center = GeoLocation(point.latitude(), point.longitude())
             }
         }
+
+        binding.filtro.setOnClickListener {
+
+            navController.navigate(R.id.action_explorarListFragment_to_filtrosFragment)
+        }
+
         binding.lista.setOnClickListener {
             val local = Point.fromLngLat(
                 center!!.longitude,

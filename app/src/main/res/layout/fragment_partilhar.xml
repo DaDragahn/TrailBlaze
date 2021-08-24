@@ -36,11 +36,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="Nome:"
+                    android:text="@string/nome_"
                     android:textColor="@color/trailGreen"
                     android:textSize="15sp"
-                    android:textStyle="bold"
-                    tools:ignore="HardcodedText" />
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/nomeTextView"
@@ -71,11 +70,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="Partida/Fim:"
+                    android:text="@string/partida_fim"
                     android:textColor="@color/trailGreen"
                     android:textSize="15sp"
-                    android:textStyle="bold"
-                    tools:ignore="HardcodedText" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/partidaFimTextView"
@@ -138,11 +136,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:text="Dificuldade:"
+                        android:text="@string/dificuldade_"
                         android:textColor="@color/trailGreen"
                         android:textSize="15sp"
-                        android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
+                        android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
@@ -194,11 +191,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="Descrição:"
+                    android:text="@string/descricao_"
                     android:textColor="@color/trailGreen"
                     android:textSize="15sp"
-                    android:textStyle="bold"
-                    tools:ignore="HardcodedText" />
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/descricaoTextView"
@@ -238,11 +234,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:text="Modalidade:"
+                        android:text="@string/modalidade_"
                         android:textColor="@color/trailGreen"
                         android:textSize="15sp"
-                        android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
+                        android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
@@ -291,11 +286,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:text="Foto:"
+                        android:text="@string/foto_"
                         android:textColor="@color/trailGreen"
                         android:textSize="15sp"
-                        android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
+                        android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/addImage"
@@ -312,8 +306,8 @@
                         android:layout_height="70dp"
                         android:layout_gravity="center"
                         android:layout_marginStart="20dp"
-                        android:scaleType="fitXY"
                         android:background="@drawable/default_placeholder"
+                        android:scaleType="fitXY"
                         android:visibility="gone" />
 
                 </androidx.cardview.widget.CardView>

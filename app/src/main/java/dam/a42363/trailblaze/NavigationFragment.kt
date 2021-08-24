@@ -193,7 +193,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
 
         if (event != null) {
-            Toast.makeText(requireContext(), "ENTERED", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(requireContext(), "ENTERED", Toast.LENGTH_SHORT).show()
 
 //            event.values.firstOrNull()?.let {
 //                Toast.makeText(requireContext(), "Step count: $it ", Toast.LENGTH_SHORT).show()
@@ -218,10 +218,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
             magnitudePrevious = magnitude.toFloat()
 
-//            Toast.makeText(requireContext(), "MP: $magnitudePrevious", Toast.LENGTH_SHORT)
-//                .show()
-
-            if (magnitudeDelta > 2) {
+            if (magnitudeDelta > 9) {
                 stepCounter++
 
             }
@@ -300,7 +297,6 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 it
             ) == PackageManager.PERMISSION_GRANTED
         }
-
 
     @SuppressLint("MissingPermission")
     fun onStartNavigation() {

@@ -24,10 +24,6 @@ import android.content.Context.MODE_PRIVATE
 
 import android.content.SharedPreferences
 
-
-
-
-
 class DefinicoesFragment : Fragment() {
 
     private var _binding: FragmentDefinicoesBinding? = null
@@ -37,8 +33,8 @@ class DefinicoesFragment : Fragment() {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
 
@@ -48,9 +44,9 @@ class DefinicoesFragment : Fragment() {
         val linguagem = resources.getStringArray(R.array.linguagem)
 
         val unidadesArrayAdapter =
-            ArrayAdapter(requireContext(), R.layout.item_dropdown, unidades)
+                ArrayAdapter(requireContext(), R.layout.item_dropdown, unidades)
         val linguagemArrayAdapter =
-            ArrayAdapter(requireContext(), R.layout.item_dropdown, linguagem)
+                ArrayAdapter(requireContext(), R.layout.item_dropdown, linguagem)
 
         binding.unidadesTextView.setAdapter(unidadesArrayAdapter)
         binding.linguagemTextView.setAdapter(linguagemArrayAdapter)
@@ -59,21 +55,21 @@ class DefinicoesFragment : Fragment() {
         val conf: Configuration = res.configuration
         //Log.d("RecordRoute",conf.locale.language)
 
-        when(conf.locale.language){
-            "en" ->{
+        when (conf.locale.language) {
+            "en" -> {
                 binding.linguagemTextView.setText("English", false)
             }
-            "pt" ->{
+            "pt" -> {
                 binding.linguagemTextView.setText("Português", false)
             }
         }
 
         binding.linguagemTextView.setOnItemClickListener { _, _, _, id ->
-            when(id){
-                0L ->{
+            when (id) {
+                0L -> {
                     setLocale("pt")
                 }
-                1L ->{
+                1L -> {
                     setLocale("en")
                 }
             }
@@ -94,6 +90,7 @@ class DefinicoesFragment : Fragment() {
             navController.popBackStack()
         }
     }
+
     private fun setLocale(lang: String) {
 
         val editor: SharedPreferences.Editor = requireActivity().getSharedPreferences("Settings", MODE_PRIVATE).edit()

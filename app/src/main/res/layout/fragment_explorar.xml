@@ -133,10 +133,9 @@
                         android:layout_gravity="start|top"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:text="Distância:"
+                        android:text="@string/distancia_"
                         android:textColor="@color/black"
-                        android:textSize="15sp"
-                        tools:ignore="HardcodedText" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/dificuldade"
@@ -212,7 +211,7 @@
             app:cardCornerRadius="10dp">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/cancel"
+                android:id="@+id/close"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="end"
@@ -246,12 +245,11 @@
                     android:layout_marginStart="15dp"
                     android:text="@string/individual"
                     android:textColor="@color/trailGreen"
-                    android:textSize="13dip"
+                    android:textSize="13sp"
                     app:backgroundTint="@color/white"
                     app:cornerRadius="10dp"
                     app:strokeColor="@color/trailGreen"
-                    app:strokeWidth="1dp"
-                    tools:ignore="SpUsage" />
+                    app:strokeWidth="1dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/acompanhadoBtn"
@@ -262,12 +260,11 @@
                     android:layout_marginEnd="15dp"
                     android:text="@string/acompanhado"
                     android:textColor="@color/trailGreen"
-                    android:textSize="13dip"
+                    android:textSize="13sp"
                     app:backgroundTint="@color/white"
                     app:cornerRadius="10dp"
                     app:strokeColor="@color/trailGreen"
-                    app:strokeWidth="1dp"
-                    tools:ignore="SpUsage" />
+                    app:strokeWidth="1dp" />
 
             </GridLayout>
 

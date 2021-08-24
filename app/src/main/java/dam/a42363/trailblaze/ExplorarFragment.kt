@@ -179,6 +179,10 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
         }
 
+        binding.close.setOnClickListener {
+            binding.decisionCardView.visibility = View.GONE
+        }
+
         binding.filtro.setOnClickListener {
 
             navController.navigate(R.id.action_explorarFragment_to_filtrosFragment)
