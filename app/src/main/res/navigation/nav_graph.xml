@@ -100,6 +100,9 @@
         <action
             android:id="@+id/action_perfilFragment_to_terminarFragment"
             app:destination="@id/terminarFragment" />
+        <action
+            android:id="@+id/action_perfilFragment_to_definicoesFragment"
+            app:destination="@id/definicoesFragment" />
 
     </fragment>
     <fragment
@@ -345,4 +348,9 @@
         android:name="dam.a42363.trailblaze.ListarImagensPartilharFragment"
         android:label="fragment_listar_imagens_partilhar"
         tools:layout="@layout/fragment_listar_imagens_partilhar" />
+    <fragment
+        android:id="@+id/definicoesFragment"
+        android:name="dam.a42363.trailblaze.DefinicoesFragment"
+        android:label="fragment_definicoes"
+        tools:layout="@layout/fragment_definicoes" />
 </navigation>

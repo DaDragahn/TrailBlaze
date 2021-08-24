@@ -129,6 +129,7 @@ class PerfilFragment : Fragment() {
                     true
                 }
                 R.id.defenicoes -> {
+                    navController.navigate(R.id.action_perfilFragment_to_definicoesFragment)
                     true
                 }
                 R.id.logout -> {

@@ -19,7 +19,7 @@
         <entry key="..\:/ISEL/ANO5-2SEM/Projeto/TrailBlaze/app/src/main/res/layout/fragment_full_info.xml" value="0.22131147540983606" />
         <entry key="..\:/ISEL/ANO5-2SEM/Projeto/TrailBlaze/app/src/main/res/layout/fragment_grupo.xml" value="0.3097677595628415" />
         <entry key="..\:/ISEL/ANO5-2SEM/Projeto/TrailBlaze/app/src/main/res/layout/fragment_grupos.xml" value="0.20953947368421053" />
-        <entry key="..\:/ISEL/ANO5-2SEM/Projeto/TrailBlaze/app/src/main/res/layout/fragment_guardados.xml" value="0.33" />
+        <entry key="..\:/ISEL/ANO5-2SEM/Projeto/TrailBlaze/app/src/main/res/layout/fragment_guardados.xml" value="0.35" />
         <entry key="..\:/ISEL/ANO5-2SEM/Projeto/TrailBlaze/app/src/main/res/layout/fragment_image_share.xml" value="0.35" />
         <entry key="..\:/ISEL/ANO5-2SEM/Projeto/TrailBlaze/app/src/main/res/layout/fragment_listar_imagens_partilhar.xml" value="0.35" />
         <entry key="..\:/ISEL/ANO5-2SEM/Projeto/TrailBlaze/app/src/main/res/layout/fragment_login.xml" value="0.35" />
@@ -39,9 +39,12 @@
         <entry key="..\:/ISEL/ANO5-2SEM/Projeto/TrailBlaze/app/src/main/res/layout/item_route_2.xml" value="0.35" />
         <entry key="..\:/ISEL/ANO5-2SEM/Projeto/TrailBlaze/app/src/main/res/layout/item_route_rating.xml" value="0.35" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.23680555555555555" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/buttons.xml" value="0.24177631578947367" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_3_dots.xml" value="0.24177631578947367" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_add_circle.xml" value="0.24177631578947367" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_baseline_share.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_bookmark.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_bookmark_filled.xml" value="0.24177631578947367" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_dry_clean.xml" value="0.24177631578947367" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_edit_image.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_leave.xml" value="0.23941368078175895" />
@@ -57,6 +60,9 @@
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_settings__1_.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/round_navbar.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/search_bar.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/selector_contribuir.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/selector_guardados.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/sign_in_buttons.xml" value="0.24177631578947367" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/activity_main.xml" value="0.11376858435681965" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_add_amigos.xml" value="0.11376858435681965" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_add_amigos_grupo.xml" value="0.23157894736842105" />
@@ -64,12 +70,13 @@
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_amigos.xml" value="0.1717896174863388" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_camera.xml" value="0.1717896174863388" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_contribuir.xml" value="0.1" />
-        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_criar_perfil.xml" value="0.11376858435681965" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_criar_perfil.xml" value="0.21" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_definicoes.xml" value="0.25" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_editar_perfil.xml" value="0.11376858435681965" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_escolher_modo.xml" value="0.33" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_explorar.xml" value="0.25" />
-        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_explorar_list.xml" value="0.20457650273224043" />
-        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_filtros.xml" value="0.11376858435681965" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_explorar_list.xml" value="0.25" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_filtros.xml" value="0.33" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_fotos.xml" value="0.11376858435681965" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_full_info.xml" value="0.2" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_grupo.xml" value="0.23157894736842105" />
@@ -78,14 +85,14 @@
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_handler.xml" value="0.23157894736842105" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_image_share.xml" value="0.23157894736842105" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_listar_imagens_partilhar.xml" value="0.11376858435681965" />
-        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_login.xml" value="0.11376858435681965" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_login.xml" value="0.22" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_navigation.xml" value="0.15778688524590165" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_notifications.xml" value="0.11376858435681965" />
-        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_partilhar.xml" value="0.11376858435681965" />
-        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_perfil.xml" value="0.32106715731370744" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_partilhar.xml" value="0.25" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_perfil.xml" value="0.25" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_registar.xml" value="0.20457650273224043" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_route_fotos.xml" value="0.11376858435681965" />
-        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_sign_in.xml" value="0.11376858435681965" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_sign_in.xml" value="0.25" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_terminar.xml" value="0.23157894736842105" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_trails.xml" value="0.20457650273224043" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/item_amigo.xml" value="0.20457650273224043" />

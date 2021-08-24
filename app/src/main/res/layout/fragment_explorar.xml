@@ -70,72 +70,9 @@
         </com.mapbox.mapboxsdk.maps.MapView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/decisionCardView"
-            android:layout_width="350dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/dirt_white"
-            android:visibility="gone"
-            app:cardCornerRadius="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="50dp"
-                android:text="@string/seleciona_o_tipo_de_percurso"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="50dp"
-                android:columnCount="2"
-                android:orientation="horizontal">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/individualBtn"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="150dp"
-                    android:layout_height="55dp"
-                    android:layout_gravity="start"
-                    android:layout_marginStart="15dp"
-                    android:text="@string/individual"
-                    android:textColor="@color/trailGreen"
-                    android:textSize="13dip"
-                    app:backgroundTint="@color/white"
-                    app:cornerRadius="10dp"
-                    app:strokeColor="@color/trailGreen"
-                    app:strokeWidth="1dp"
-                    tools:ignore="SpUsage" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/acompanhadoBtn"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="150dp"
-                    android:layout_height="55dp"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="15dp"
-                    android:text="@string/acompanhado"
-                    android:textColor="@color/trailGreen"
-                    android:textSize="13dip"
-                    app:backgroundTint="@color/white"
-                    app:cornerRadius="10dp"
-                    app:strokeColor="@color/trailGreen"
-                    app:strokeWidth="1dp"
-                    tools:ignore="SpUsage" />
-
-            </GridLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
             android:id="@+id/cardViewInfo"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@color/cardview_dark_background">
 
@@ -201,7 +138,6 @@
                         android:textSize="15sp"
                         tools:ignore="HardcodedText" />
 
-
                     <TextView
                         android:id="@+id/dificuldade"
                         android:layout_width="wrap_content"
@@ -260,6 +196,78 @@
                         app:iconPadding="3dp"
                         app:iconTint="@color/white" />
                 </GridLayout>
+
+            </GridLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/decisionCardView"
+            android:layout_width="350dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/dirt_white"
+            app:cardCornerRadius="10dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="end"
+                android:layout_margin="15dp"
+                android:background="@drawable/ic_cross"
+                app:backgroundTint="@color/trailGreen" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:text="@string/seleciona_o_tipo_de_percurso"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="50dp"
+                android:columnCount="2"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/individualBtn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="150dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/individual"
+                    android:textColor="@color/trailGreen"
+                    android:textSize="13dip"
+                    app:backgroundTint="@color/white"
+                    app:cornerRadius="10dp"
+                    app:strokeColor="@color/trailGreen"
+                    app:strokeWidth="1dp"
+                    tools:ignore="SpUsage" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/acompanhadoBtn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="150dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="15dp"
+                    android:text="@string/acompanhado"
+                    android:textColor="@color/trailGreen"
+                    android:textSize="13dip"
+                    app:backgroundTint="@color/white"
+                    app:cornerRadius="10dp"
+                    app:strokeColor="@color/trailGreen"
+                    app:strokeWidth="1dp"
+                    tools:ignore="SpUsage" />
 
             </GridLayout>
 

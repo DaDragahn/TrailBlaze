@@ -107,8 +107,10 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     private var sensorManager: SensorManager? = null
     private var sensor: Sensor? = null
 
-    private val magnitudePrevious = 0.0f
-    private var stepCount = 0
+    private var magnitudePrevious = 0.0f
+
+    private var counterSteps = 0
+    private var stepCounter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -175,9 +177,59 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         binding.chronometer.start()
 
         sensorManager = activity?.getSystemService(SENSOR_SERVICE) as SensorManager
+//        sensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
         sensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        sensor?.let {
+            sensorManager!!.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST)
+//            sensorManager!!.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+        }
 
         return binding.root
+    }
+
+
+    override fun onSensorChanged(event: SensorEvent?) {
+
+
+        if (event != null) {
+            Toast.makeText(requireContext(), "ENTERED", Toast.LENGTH_SHORT).show()
+
+//            event.values.firstOrNull()?.let {
+//                Toast.makeText(requireContext(), "Step count: $it ", Toast.LENGTH_SHORT).show()
+//                binding.totalPassos.text = event.values.firstOrNull().toString()
+//            }
+
+//            if (counterSteps < 1) {
+//                counterSteps = event.values[0].toInt()
+//            }
+//
+//            stepCounter = event.values[0].toInt() - counterSteps
+
+
+            val xAcceleration = event.values[0]
+            val yAcceleration = event.values[1]
+            val zAcceleration = event.values[2]
+
+            val magnitude =
+                sqrt(((xAcceleration * xAcceleration) + (yAcceleration * yAcceleration) + (zAcceleration * zAcceleration)).toDouble())
+
+            val magnitudeDelta = magnitude - magnitudePrevious
+
+            magnitudePrevious = magnitude.toFloat()
+
+//            Toast.makeText(requireContext(), "MP: $magnitudePrevious", Toast.LENGTH_SHORT)
+//                .show()
+
+            if (magnitudeDelta > 2) {
+                stepCounter++
+
+            }
+
+            binding.totalPassos.text = "$stepCounter"
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -451,32 +503,6 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         }
     }
 
-    override fun onSensorChanged(event: SensorEvent?) {
-
-        if (event != null) {
-            Toast.makeText(requireContext(), "ENTERED", Toast.LENGTH_SHORT).show()
-            val xAcceleration = event.values[0]
-            val yAcceleration = event.values[1]
-            val zAcceleration = event.values[2]
-
-            val magnitude =
-                sqrt((xAcceleration * xAcceleration + yAcceleration * yAcceleration + zAcceleration * zAcceleration).toDouble())
-
-            val magnitudeDelta = magnitude - magnitudePrevious
-
-            if (magnitudeDelta > 3) {
-                stepCount++
-            }
-
-            binding.totalPassos.text = "$stepCount"
-
-            sensorManager?.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
-
-        }
-    }
-
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-    }
 
     override fun onLowMemory() {
         super.onLowMemory()
@@ -494,8 +520,9 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         super.onResume()
         mapView.onResume()
 
-        val sharedPreferences: SharedPreferences? = activity?.getPreferences(Context.MODE_PRIVATE)
-        stepCount = sharedPreferences!!.getInt("stepCount", 0)
+//        val sharedPreferences: SharedPreferences? =
+//            activity?.getPreferences(Context.MODE_PRIVATE)
+//        stepCount = sharedPreferences!!.getInt("stepCount", 0)
 
 
     }
@@ -509,24 +536,29 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         )
         mapView.onStop()
 
-        val sharedPreferences: SharedPreferences? = activity?.getPreferences(Context.MODE_PRIVATE)
+//        val sharedPreferences: SharedPreferences? =
+//            activity?.getPreferences(Context.MODE_PRIVATE)
+//
+//        val editor: SharedPreferences.Editor? = sharedPreferences?.edit()
+//        editor?.clear()
+//        editor?.putInt("stepCount", stepCount)
+//        editor?.apply()
+//
+//        binding.totalPassos.text = "0"
 
-        val editor: SharedPreferences.Editor? = sharedPreferences?.edit()
-        editor?.clear()
-        editor?.putInt("stepCount", stepCount)
-        editor?.apply()
     }
 
     override fun onPause() {
         super.onPause()
         mapView.onPause()
 
-        val sharedPreferences: SharedPreferences? = activity?.getPreferences(Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences? =
+            activity?.getPreferences(Context.MODE_PRIVATE)
 
-        val editor: SharedPreferences.Editor? = sharedPreferences?.edit()
-        editor?.clear()
-        editor?.putInt("stepCount", stepCount)
-        editor?.apply()
+//        val editor: SharedPreferences.Editor? = sharedPreferences?.edit()
+//        editor?.clear()
+//        editor?.putInt("stepCount", stepCount)
+//        editor?.apply()
     }
 
     override fun onDestroy() {
@@ -538,6 +570,8 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
             .document(auth.uid!!).delete()
         super.onDestroy()
+
+//        binding.totalPassos.text = "0"
     }
 
     override fun onDestroyView() {
