@@ -64,6 +64,9 @@ class ExplorarListFragment : Fragment() {
 
     private val REQUEST_CODE_AUTOCOMPLETE = 1
 
+    private lateinit var mainDificuldadeArray: java.util.ArrayList<String>
+    private lateinit var mainModalidadeArray: java.util.ArrayList<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -97,6 +100,10 @@ class ExplorarListFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser?.uid
+
+        mainModalidadeArray = (activity as MainActivity).modalidadeArray
+        mainDificuldadeArray = (activity as MainActivity).dificuldadeArray
+
         if (center == null) {
             val point = arguments?.getString("local")?.let { Point.fromJson(it) }
             binding.searchView.setText(arguments?.getString("searchText"))
@@ -206,6 +213,7 @@ class ExplorarListFragment : Fragment() {
                 for (task in tasks) {
                     val snap = task.result
                     for (doc in snap!!.documents) {
+                        var check = true
                         val activeRoute = DirectionsRoute.fromJson(doc.getString("route")!!)
                         val optimizedRoute =
                             LineString.fromPolyline(activeRoute.geometry()!!, Constants.PRECISION_6)
@@ -218,7 +226,23 @@ class ExplorarListFragment : Fragment() {
                         val distanceInM =
                             GeoFireUtils.getDistanceBetween(docLocation, center!!)
                         if (distanceInM <= radiusInM) {
-                            matchingDocs.add(doc.id)
+
+                            if (mainModalidadeArray.isNotEmpty()) {
+                                if (!mainModalidadeArray.contains(doc.getString("modalidade")))
+                                    check = false
+                            }
+                            if (mainDificuldadeArray.isNotEmpty()) {
+                                if (!mainDificuldadeArray.contains(
+                                        doc.getString(
+                                            "dificuldade"
+                                        )
+                                    )
+                                )
+                                    check = false
+                            }
+                            if (check) {
+                                matchingDocs.add(doc.id)
+                            }
                         }
                     }
                 }

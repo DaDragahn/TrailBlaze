@@ -205,7 +205,6 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
     private fun initSearchFab() {
         binding.searchView.isFocusable = false
-//        binding.searchView.setOnSearchClickListener {
         binding.searchView.setOnClickListener {
             val placeOptions = PlaceOptions.builder()
                 .backgroundColor(Color.parseColor("#EEEEEE"))
@@ -239,8 +238,6 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
 
             // Move map camera to the selected location
-
-//            binding.searchView.setQuery("${selectedCarmenFeature.text()}", false)
             binding.searchView.setText("${selectedCarmenFeature.text()}")
             binding.searchView.clearFocus()
             center = GeoLocation(
@@ -352,9 +349,6 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                                 fet.addStringProperty(ICON_PROPERTY, CYCLING_ICON_ID)
                                 markerList.add(fet)
                             }
-//                            else -> {
-//                                Log.d("RecordRoute", "Nothing found")
-//                            }
                         }
                     }
                 }
@@ -409,10 +403,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     @SuppressLint("SetTextI18n")
     override fun onMapClick(point: LatLng): Boolean {
         val screenPoint = mapboxMap.projection.toScreenLocation(point)
-//        Toast.makeText(
-//            requireContext(), screenPoint.y.toString(),
-//            Toast.LENGTH_SHORT
-//        ).show()
+
         val featuresList: List<Feature> =
             mapboxMap.queryRenderedFeatures(screenPoint, ICON_GEOJSON_LAYER_ID)
         if (featuresList.isNotEmpty()) {
@@ -427,10 +418,22 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                             Glide.with(this).load(document?.getString("fotoBanner"))
                                 .into(binding.fotoBanner)
                             binding.localidade.text = document?.getString("localidade")
+                            when("${document?.getString("dificuldade")}"){
+                                "Fácil" ->{
+                                    binding.dificuldade.text =
+                                       getString(R.string.facil)
+                                }
+                                "Moderado"->{
+                                    binding.dificuldade.text =
+                                        getString(R.string.moderado)
+                                }
+                                "Difícil"->{
+                                    binding.dificuldade.text =
+                                        getString(R.string.dificil)
+                                }
+                            }
                             binding.distancia.text =
                                 "${document?.getString("distancia")}"
-                            binding.dificuldade.text =
-                                "${document?.getString("dificuldade")}"
 
                             (activity as MainActivity).bottomNavigationView?.visibility =
                                 View.GONE

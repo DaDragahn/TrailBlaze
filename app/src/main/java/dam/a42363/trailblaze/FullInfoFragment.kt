@@ -140,8 +140,34 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
                     LineString.fromPolyline(activeRoute.geometry()!!, Constants.PRECISION_6)
                 binding.nome.text = document?.getString("nome")
                 binding.localidade.text = document?.getString("localidade")
-                binding.dificuldade.text = "${document?.getString("dificuldade")}"
-                binding.modalidade.text = document?.getString("modalidade")
+                when ("${document?.getString("dificuldade")}") {
+                    "Fácil" -> {
+                        binding.dificuldade.text =
+                            getString(R.string.facil)
+                    }
+                    "Moderada" -> {
+                        binding.dificuldade.text =
+                            getString(R.string.moderado)
+                    }
+                    "Difícil" -> {
+                        binding.dificuldade.text =
+                            getString(R.string.dificil)
+                    }
+                }
+                when ("${document?.getString("modalidade")}") {
+                    "Caminhada" -> {
+                        binding.modalidade.text =
+                            getString(R.string.caminhada)
+                    }
+                    "Corrida" -> {
+                        binding.modalidade.text =
+                            getString(R.string.corrida)
+                    }
+                    "Ciclismo" -> {
+                        binding.modalidade.text =
+                            getString(R.string.ciclismo)
+                    }
+                }
                 Glide.with(this).load(document?.getString("fotoBanner"))
                     .into(binding.fotoBanner)
                 binding.descricao.text = document?.getString("descricao")

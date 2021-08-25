@@ -313,6 +313,9 @@
         <action
             android:id="@+id/action_filtrosFragment_to_explorarFragment"
             app:destination="@id/explorarFragment" />
+        <action
+            android:id="@+id/action_filtrosFragment_to_explorarListFragment"
+            app:destination="@id/explorarListFragment" />
     </fragment>
     <fragment
         android:id="@+id/terminarFragment"

@@ -1,28 +1,19 @@
 package dam.a42363.trailblaze
 
+import android.content.Context.MODE_PRIVATE
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import dam.a42363.trailblaze.databinding.FragmentDefinicoesBinding
-import dam.a42363.trailblaze.databinding.FragmentPartilharBinding
-import androidx.core.content.ContextCompat.startActivity
-
-import android.content.Intent
-import android.content.res.Configuration
-import android.content.res.Resources
-
-import android.util.DisplayMetrics
-import androidx.core.content.ContextCompat
-import java.util.*
-import android.content.Context.MODE_PRIVATE
-
-import android.content.SharedPreferences
 
 class DefinicoesFragment : Fragment() {
 
@@ -33,8 +24,8 @@ class DefinicoesFragment : Fragment() {
 
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
 
@@ -44,23 +35,22 @@ class DefinicoesFragment : Fragment() {
         val linguagem = resources.getStringArray(R.array.linguagem)
 
         val unidadesArrayAdapter =
-                ArrayAdapter(requireContext(), R.layout.item_dropdown, unidades)
+            ArrayAdapter(requireContext(), R.layout.item_dropdown, unidades)
         val linguagemArrayAdapter =
-                ArrayAdapter(requireContext(), R.layout.item_dropdown, linguagem)
+            ArrayAdapter(requireContext(), R.layout.item_dropdown, linguagem)
 
         binding.unidadesTextView.setAdapter(unidadesArrayAdapter)
         binding.linguagemTextView.setAdapter(linguagemArrayAdapter)
 
         val res: Resources = resources
         val conf: Configuration = res.configuration
-        //Log.d("RecordRoute",conf.locale.language)
 
         when (conf.locale.language) {
             "en" -> {
-                binding.linguagemTextView.setText("English", false)
+                binding.linguagemTextView.setText(getString(R.string.ingles), false)
             }
             "pt" -> {
-                binding.linguagemTextView.setText("Português", false)
+                binding.linguagemTextView.setText(getString(R.string.portugues), false)
             }
         }
 
@@ -93,7 +83,8 @@ class DefinicoesFragment : Fragment() {
 
     private fun setLocale(lang: String) {
 
-        val editor: SharedPreferences.Editor = requireActivity().getSharedPreferences("Settings", MODE_PRIVATE).edit()
+        val editor: SharedPreferences.Editor =
+            requireActivity().getSharedPreferences("Settings", MODE_PRIVATE).edit()
         editor.putString("My_Lang", lang)
         editor.apply()
 

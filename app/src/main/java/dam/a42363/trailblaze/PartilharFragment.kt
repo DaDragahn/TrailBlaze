@@ -219,7 +219,7 @@ class PartilharFragment : Fragment() {
                                 binding.distanciaTextView.text =
                                     "%.0f".format(currentRoute!!.distance()) + "m"
                             } else {
-                                binding.distanciaTextView.text = distance.toString() + "Km"
+                                binding.distanciaTextView.text = "%.1f".format(distance) + "Km"
                             }
                             reverseGeocode(origin)
 //                            Log.d(
@@ -258,11 +258,31 @@ class PartilharFragment : Fragment() {
         updates["autor"] = user.displayName.toString()
         updates["uid"] = user.uid
         updates["descricao"] = binding.descricaoTextView.text.toString()
-        updates["dificuldade"] = binding.dificuldadeTextView.text.toString()
+        when (binding.dificuldadeTextView.text.toString()) {
+            getString(R.string.facil) -> {
+                updates["dificuldade"] = "Fácil"
+            }
+            getString(R.string.moderado) -> {
+                updates["dificuldade"] = "Moderado"
+            }
+            getString(R.string.dificil) -> {
+                updates["dificuldade"] = "Difícil"
+            }
+        }
+        when (binding.modalidadesTextView.text.toString()) {
+            getString(R.string.caminhada) -> {
+                updates["modalidade"] = "Caminhada"
+            }
+            getString(R.string.corrida) -> {
+                updates["modalidade"] = "Corrida"
+            }
+            getString(R.string.ciclismo) -> {
+                updates["modalidade"] = "Ciclismo"
+            }
+        }
         updates["distancia"] = binding.distanciaTextView.text.toString()
         updates["geohash"] = hash
         updates["localidade"] = binding.partidaFimTextView.text.toString()
-        updates["modalidade"] = binding.modalidadesTextView.text.toString()
         updates["route"] = currentRoute?.toJson()!!
         updates["fotoBanner"] = imageUrl.toString()
         (activity as MainActivity).imageUrl = ""
