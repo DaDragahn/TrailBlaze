@@ -100,6 +100,12 @@
     <string name="convidar_amigo">Convidar Amigo</string>
     <string name="editar_foto">Editar Foto</string>
     <string name="sair_do_grupo">Sair do Grupo</string>
+    <string name="nenhum">Nenhum</string>
+    <string name="nao_gostei">Não gostei</string>
+    <string name="nao_foi_mau">Não foi mau</string>
+    <string name="podia_ser_melhor">Podia ser melhor</string>
+    <string name="gostei">Gostei</string>
+    <string name="adorei">Adorei</string>
 
     <string-array name="modalidades">
         <item>@string/caminhada</item>

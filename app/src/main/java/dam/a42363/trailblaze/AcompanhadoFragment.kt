@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import dam.a42363.trailblaze.databinding.FragmentEscolherModoBinding
+import dam.a42363.trailblaze.databinding.FragmentAcompanhadoBinding
 import dam.a42363.trailblaze.databinding.ItemAmigoConvidarBinding
 import dam.a42363.trailblaze.databinding.ItemGrupoBinding
 import dam.a42363.trailblaze.models.Friends
@@ -28,9 +28,9 @@ import dam.a42363.trailblaze.models.Grupo
 import java.time.LocalDateTime
 
 
-class EscolherModoFragment : Fragment() {
+class AcompanhadoFragment : Fragment() {
 
-    var _binding: FragmentEscolherModoBinding? = null
+    var _binding: FragmentAcompanhadoBinding? = null
     private val binding get() = _binding!!
     private lateinit var amigosListView: RecyclerView
     private lateinit var grupoListView: RecyclerView
@@ -53,7 +53,7 @@ class EscolherModoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentEscolherModoBinding.inflate(inflater, container, false)
+        _binding = FragmentAcompanhadoBinding.inflate(inflater, container, false)
         amigosListView = binding.amigosListView
         grupoListView = binding.grupoListView
         auth = FirebaseAuth.getInstance()

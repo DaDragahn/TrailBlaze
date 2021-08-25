@@ -72,10 +72,10 @@ class TerminarFragment : Fragment() {
 
         db.collection("Rating").document("RatingDocument").collection(idTrail!!).document(user!!)
             .get().addOnSuccessListener {
-            if (!it.getString("rating").isNullOrBlank()) {
-                ratingBar.rating = it.getString("rating")?.toFloat()!!
+                if (!it.getString("rating").isNullOrBlank()) {
+                    ratingBar.rating = it.getString("rating")?.toFloat()!!
+                }
             }
-        }
 
         finalizarBtn.setOnClickListener {
             val msg = ratingBar.rating.toString()
@@ -97,19 +97,19 @@ class TerminarFragment : Fragment() {
                 message.text = ""
             }
             if (rating > 0.0 && rating <= 1.0) {
-                message.text = "Bummer"
+                message.text = getString(R.string.nao_gostei)
             }
             if (rating <= 2.0 && rating > 1.0) {
-                message.text = "Could be better"
+                message.text = getString(R.string.nao_foi_mau)
             }
             if (rating <= 3.0 && rating > 2.0) {
-                message.text = "Not Bad"
+                message.text = getString(R.string.podia_ser_melhor)
             }
             if (rating <= 4.0 && rating > 3.0) {
-                message.text = "Nice Experience"
+                message.text = getString(R.string.gostei)
             }
             if (rating <= 5.0 && rating > 4.0) {
-                message.text = "Loved it!!"
+                message.text = getString(R.string.adorei)
             }
         }
 

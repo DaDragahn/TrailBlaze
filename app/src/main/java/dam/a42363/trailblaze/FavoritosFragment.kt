@@ -25,7 +25,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import dam.a42363.trailblaze.databinding.FragmentGuardadosBinding
+import dam.a42363.trailblaze.databinding.FragmentFavoritosBinding
 import dam.a42363.trailblaze.databinding.ItemRouteRatingBinding
 import dam.a42363.trailblaze.models.RouteInfo
 import kotlinx.coroutines.CoroutineScope
@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class GuardadosFragment : Fragment() {
+class FavoritosFragment : Fragment() {
     private val favoriteArray: ArrayList<String> = ArrayList()
     private lateinit var trailsListView: RecyclerView
     private var adapter: FindTrailsFirestoreRecyclerAdapter? = null
@@ -43,7 +43,7 @@ class GuardadosFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    var _binding: FragmentGuardadosBinding? = null
+    var _binding: FragmentFavoritosBinding? = null
     private val binding get() = _binding!!
     private var doubleBackToExitPressedOnce = false
 
@@ -72,7 +72,7 @@ class GuardadosFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentGuardadosBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoritosBinding.inflate(inflater, container, false)
 
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()

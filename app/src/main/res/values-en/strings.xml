@@ -100,6 +100,12 @@
     <string name="convidar_amigo">Invite Friend</string>
     <string name="editar_foto">Edit Photo</string>
     <string name="sair_do_grupo">Leave Group</string>
+    <string name="nenhum">None</string>
+    <string name="nao_gostei">Didn\'t like it</string>
+    <string name="nao_foi_mau">It wasn\'t bad</string>
+    <string name="podia_ser_melhor">It could be better</string>
+    <string name="gostei">Liked it</string>
+    <string name="adorei">Loved it</string>
 
     <string-array name="modalidades">
         <item>@string/caminhada</item>

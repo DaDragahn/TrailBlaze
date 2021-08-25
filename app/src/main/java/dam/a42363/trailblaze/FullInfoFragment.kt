@@ -189,7 +189,7 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
             }
             withContext(Dispatchers.Main) {
                 if (ratingsArray.isEmpty()) {
-                    binding.reviewTextView.text = "Nenhum"
+                    binding.reviewTextView.text = getString(R.string.nenhum)
                     binding.ratingBar.visibility = View.GONE
                 } else {
                     val average = ratingsArray.average().toFloat()

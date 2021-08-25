@@ -144,17 +144,6 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser?.uid
 
-        binding.iniciarBtn.backgroundTintList =
-            view?.resources?.getColorStateList(
-                R.color.trailGreen,
-                requireActivity().applicationContext.theme
-            )
-
-        binding.dirBtn.backgroundTintList =
-            view?.resources?.getColorStateList(
-                R.color.orange,
-                requireActivity().applicationContext.theme
-            )
         val point = arguments?.getString("local")?.let { Point.fromJson(it) }
         if (point != null) {
             center = GeoLocation(point.latitude(), point.longitude())

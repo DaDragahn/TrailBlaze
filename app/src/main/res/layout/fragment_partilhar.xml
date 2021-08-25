@@ -138,6 +138,7 @@
                         android:layout_marginTop="5dp"
                         android:text="@string/dificuldade_"
                         android:textColor="@color/trailGreen"
+                        android:includeFontPadding="false"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 

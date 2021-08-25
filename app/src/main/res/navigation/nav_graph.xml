@@ -48,9 +48,9 @@
     </fragment>
     <fragment
         android:id="@+id/guardadosFragment"
-        android:name="dam.a42363.trailblaze.GuardadosFragment"
+        android:name="dam.a42363.trailblaze.FavoritosFragment"
         android:label="fragment_guardados"
-        tools:layout="@layout/fragment_guardados">
+        tools:layout="@layout/fragment_favoritos">
 
         <action
             android:id="@+id/action_guardadosFragment_to_signInFragment"
@@ -272,9 +272,9 @@
     </fragment>
     <fragment
         android:id="@+id/escolherModoFragment"
-        android:name="dam.a42363.trailblaze.EscolherModoFragment"
+        android:name="dam.a42363.trailblaze.AcompanhadoFragment"
         android:label="fragment_escolher_modo"
-        tools:layout="@layout/fragment_escolher_modo">
+        tools:layout="@layout/fragment_acompanhado">
         <action
             android:id="@+id/action_escolherModoFragment_to_navigationFragment"
             app:destination="@id/navigationFragment" />
