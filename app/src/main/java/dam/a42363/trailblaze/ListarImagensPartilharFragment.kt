@@ -49,6 +49,10 @@ class ListarImagensPartilharFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
+        if (activity != null && this.activity is MainActivity) {
+            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+        }
+
     }
 
     private fun listFiles() = CoroutineScope(Dispatchers.IO).launch {

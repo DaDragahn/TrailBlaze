@@ -68,6 +68,10 @@ class GruposFragment : Fragment() {
             navController.popBackStack()
         }
 
+        if (activity != null && this.activity is MainActivity) {
+            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+        }
+
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.adicionarGrupo -> {

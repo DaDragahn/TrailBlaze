@@ -86,6 +86,10 @@ class EditarPerfilFragment : Fragment() {
             navController.popBackStack()
         }
 
+        if (activity != null && this.activity is MainActivity) {
+            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+        }
+
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
 

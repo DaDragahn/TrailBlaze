@@ -87,6 +87,10 @@ class AddAmigosGrupoFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
+        if (activity != null && this.activity is MainActivity) {
+            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+        }
+
         binding.backBtn.setOnClickListener {
             navController.popBackStack()
         }

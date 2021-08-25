@@ -80,7 +80,7 @@ class AmigosFragment : Fragment() {
         }
 
         if (activity != null && this.activity is MainActivity) {
-            (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
+            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
         }
 
         binding.backBtn.setOnClickListener {

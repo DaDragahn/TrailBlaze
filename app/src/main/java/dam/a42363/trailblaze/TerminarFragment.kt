@@ -58,6 +58,7 @@ class TerminarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(view)
+
         val time: String? = arguments?.getString("time")
         binding.tempoPercurso.text = "Tempo: $time"
         db.collection("locations").document(idTrail!!).get().addOnSuccessListener {

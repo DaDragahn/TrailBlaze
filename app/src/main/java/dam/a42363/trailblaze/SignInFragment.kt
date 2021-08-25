@@ -64,6 +64,10 @@ class SignInFragment : Fragment(){
 
         navController = Navigation.findNavController(view)
 
+        if (activity != null && this.activity is MainActivity) {
+            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+        }
+
         auth = FirebaseAuth.getInstance()
 
         //--------------------------------------------GOOGLE--------------------------------------------\\

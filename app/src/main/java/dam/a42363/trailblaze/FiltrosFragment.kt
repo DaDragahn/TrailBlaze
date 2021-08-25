@@ -34,6 +34,7 @@ class FiltrosFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
         setClicked()
+
         binding.cancel.setOnClickListener {
             navController.popBackStack()
         }

@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -25,7 +26,6 @@ import java.lang.Exception
 
 class ImageShareFragment : Fragment() {
 
-    private lateinit var loadedImage: Bitmap
     private lateinit var navController: NavController
 
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
@@ -106,5 +106,16 @@ class ImageShareFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        navController = Navigation.findNavController(view)
+
+        if (activity != null && this.activity is MainActivity) {
+            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+        }
     }
 }

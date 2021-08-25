@@ -89,6 +89,10 @@ class AddAmigosFragment : Fragment() {
         binding.backBtn.setOnClickListener {
             navController.popBackStack()
         }
+
+        if (activity != null && this.activity is MainActivity) {
+            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+        }
     }
 
     fun searchPeople(text: String) {

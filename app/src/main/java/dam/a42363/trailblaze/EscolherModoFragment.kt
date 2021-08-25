@@ -79,6 +79,10 @@ class EscolherModoFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
+        if (activity != null && this.activity is MainActivity) {
+            (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
+        }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
