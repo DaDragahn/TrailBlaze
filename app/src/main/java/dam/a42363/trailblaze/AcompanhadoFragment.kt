@@ -150,7 +150,7 @@ class AcompanhadoFragment : Fragment() {
         if (amigoAdapter != null) {
             amigoAdapter!!.stopListening()
         }
-        if(grupoAdapter != null){
+        if (grupoAdapter != null) {
             grupoAdapter!!.stopListening()
         }
     }
@@ -215,7 +215,7 @@ class AcompanhadoFragment : Fragment() {
         @SuppressLint("SetTextI18n")
         fun setVariables(nome: String, membros: String, ctx: Context) {
             grupoBinding.name.text = nome
-            grupoBinding.membros.text = "Membros: $membros"
+            grupoBinding.membros.text = membros
         }
     }
 
@@ -236,7 +236,7 @@ class AcompanhadoFragment : Fragment() {
             if (groupArray.contains(onlineId)) {
                 val nome: String = data["nome"] as String
                 holder.setVariables(nome, groupArray.size.toString(), ctx)
-                holder.grupoBinding.cardView.setOnClickListener{
+                holder.grupoBinding.cardView.setOnClickListener {
                     binding.decisionCardView.visibility = View.VISIBLE
                     binding.aceitarBtn.setOnClickListener {
                         inviteGroupandStartTrail(groupArray)
