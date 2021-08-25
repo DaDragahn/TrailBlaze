@@ -428,9 +428,9 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                                 .into(binding.fotoBanner)
                             binding.localidade.text = document?.getString("localidade")
                             binding.distancia.text =
-                                "Distância: ${document?.getString("distancia")}"
+                                "${document?.getString("distancia")}"
                             binding.dificuldade.text =
-                                "Dificuldade: ${document?.getString("dificuldade")}"
+                                "${document?.getString("dificuldade")}"
 
                             (activity as MainActivity).bottomNavigationView?.visibility =
                                 View.GONE

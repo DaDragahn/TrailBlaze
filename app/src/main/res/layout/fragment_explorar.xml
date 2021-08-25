@@ -29,7 +29,7 @@
                     android:layout_width="270dp"
                     android:layout_height="35dp"
                     android:background="@drawable/search_bar"
-                    android:drawableLeft="@drawable/ic_magnifying_glass"
+                    android:drawableStart="@drawable/ic_magnifying_glass"
                     android:drawablePadding="20dp"
                     android:hint="@string/procurar"
                     android:padding="5dp"
@@ -126,25 +126,57 @@
                     android:columnCount="2"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/distancia"
+                    <GridLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start|top"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:text="@string/distancia_"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/dificuldade"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/distancia_"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/distancia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                    </GridLayout>
+
+                    <GridLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|center_horizontal"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top|center_horizontal"
+                            android:text="@string/dificuldade_"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/dificuldade"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top|center_horizontal"
+                            android:layout_marginStart="5dp"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                    </GridLayout>
+
+
                 </GridLayout>
 
                 <View
