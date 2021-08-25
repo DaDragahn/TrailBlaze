@@ -332,25 +332,27 @@ class ExplorarListFragment : Fragment() {
             val author = snapshots.getSnapshot(position).getString("distancia")!!
             val localidade = snapshots.getSnapshot(position).getString("localidade")!!
             val fotoBanner = snapshots.getSnapshot(position).getString("fotoBanner")!!
-            holder.setRating(snapshots.getSnapshot(position).id)
             holder.setVariables(name, author, localidade, fotoBanner, requireContext())
-            holder.routeBinding.likeBtn.setOnClickListener {
-                val updates: MutableMap<String, Any> = HashMap()
-                updates["favorite"] = true
-                db.collection("Favorite").document("FavoriteDocument")
-                    .collection(user!!)
-                    .document(snapshots.getSnapshot(position).id).set(updates)
-                holder.routeBinding.likeBtn.visibility = View.GONE
-                holder.routeBinding.likeFullBtn.visibility = View.VISIBLE
-            }
-            holder.routeBinding.likeFullBtn.setOnClickListener {
-                val updates: MutableMap<String, Any> = HashMap()
-                updates["favorite"] = false
-                db.collection("Favorite").document("FavoriteDocument")
-                    .collection(user!!)
-                    .document(snapshots.getSnapshot(position).id).set(updates)
-                holder.routeBinding.likeBtn.visibility = View.VISIBLE
-                holder.routeBinding.likeFullBtn.visibility = View.GONE
+            if (user != null && auth.uid != null) {
+                holder.setRating(snapshots.getSnapshot(position).id)
+                holder.routeBinding.likeBtn.setOnClickListener {
+                    val updates: MutableMap<String, Any> = HashMap()
+                    updates["favorite"] = true
+                    db.collection("Favorite").document("FavoriteDocument")
+                        .collection(user!!)
+                        .document(snapshots.getSnapshot(position).id).set(updates)
+                    holder.routeBinding.likeBtn.visibility = View.GONE
+                    holder.routeBinding.likeFullBtn.visibility = View.VISIBLE
+                }
+                holder.routeBinding.likeFullBtn.setOnClickListener {
+                    val updates: MutableMap<String, Any> = HashMap()
+                    updates["favorite"] = false
+                    db.collection("Favorite").document("FavoriteDocument")
+                        .collection(user!!)
+                        .document(snapshots.getSnapshot(position).id).set(updates)
+                    holder.routeBinding.likeBtn.visibility = View.VISIBLE
+                    holder.routeBinding.likeFullBtn.visibility = View.GONE
+                }
             }
             holder.routeBinding.cardView.setOnClickListener {
                 val bundle = bundleOf(

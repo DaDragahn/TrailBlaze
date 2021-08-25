@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -56,6 +58,11 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import dam.a42363.trailblaze.databinding.FragmentExplorarBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -85,6 +92,8 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
     private var center: GeoLocation? = null
     private lateinit var db: FirebaseFirestore
+    private var user: String? = null
+    private lateinit var auth: FirebaseAuth
     private lateinit var navController: NavController
     private var doubleBackToExitPressedOnce = false
 
@@ -132,6 +141,8 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         mainDificuldadeArray = (activity as MainActivity).dificuldadeArray
 
         db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+        user = auth.currentUser?.uid
 
         binding.iniciarBtn.backgroundTintList =
             view?.resources?.getColorStateList(
@@ -400,6 +411,28 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         )
     }
 
+    private fun setRating(id: String) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val favorite =
+                db.collection("Favorite").document("FavoriteDocument").collection(user!!)
+                    .document(id).get()
+                    .await()
+            withContext(Dispatchers.Main) {
+                if (favorite.getBoolean("favorite") == true) {
+                    binding.likeBtn.visibility = View.GONE
+                    binding.likeFullBtn.visibility = View.VISIBLE
+                } else {
+                    binding.likeBtn.visibility = View.VISIBLE
+                    binding.likeFullBtn.visibility = View.GONE
+                }
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     override fun onMapClick(point: LatLng): Boolean {
         val screenPoint = mapboxMap.projection.toScreenLocation(point)
@@ -412,6 +445,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             val document = it.result
+
                             val route = document?.getString("route")
 
                             binding.nome.text = document?.getString("nome")
@@ -472,6 +506,28 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                                         R.id.action_explorarFragment_to_escolherModoFragment,
                                         bundle
                                     )
+                                }
+                            }
+                            if (user != null && auth.uid != null) {
+                                val docID = document.id
+                                setRating(docID)
+                                binding.likeBtn.setOnClickListener {
+                                    val updates: MutableMap<String, Any> = HashMap()
+                                    updates["favorite"] = true
+                                    db.collection("Favorite").document("FavoriteDocument")
+                                        .collection(user!!)
+                                        .document(docID).set(updates)
+                                    binding.likeBtn.visibility = View.GONE
+                                    binding.likeFullBtn.visibility = View.VISIBLE
+                                }
+                                binding.likeFullBtn.setOnClickListener {
+                                    val updates: MutableMap<String, Any> = HashMap()
+                                    updates["favorite"] = false
+                                    db.collection("Favorite").document("FavoriteDocument")
+                                        .collection(user!!)
+                                        .document(docID).set(updates)
+                                    binding.likeBtn.visibility = View.VISIBLE
+                                    binding.likeFullBtn.visibility = View.GONE
                                 }
                             }
                         }
