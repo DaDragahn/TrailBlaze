@@ -45,7 +45,7 @@
                 android:textColor="@color/trailGreen"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                tools:text=""/>
+                tools:text="" />
 
             <TextView
                 android:id="@+id/localidade"
@@ -123,41 +123,71 @@
 
         </GridLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/likeBtn"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center|end"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="@color/dirt_white"
-            android:contentDescription="@string/favorite"
-            android:elevation="0dp"
-            android:foregroundGravity="center"
-            android:src="@drawable/ic_heart_outlined"
-            android:visibility="visible"
-            app:backgroundTint="@color/dirt_white"
-            app:elevation="0dp"
-            app:fabCustomSize="35dp"
-            app:maxImageSize="25dp"
-            app:tint="@color/trailGreen" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/likeBtn"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center|end"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/ic_heart_outlined"
+                    android:backgroundTint="@color/trailGreen"
+                    android:contentDescription="@string/favorite"
+                    android:elevation="0dp"
+                    android:foregroundGravity="center"
+                    android:visibility="visible" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/likeFullBtn"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center|end"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="@color/dirt_white"
-            android:contentDescription="@string/favorite"
-            android:elevation="0dp"
-            android:foregroundGravity="center"
-            android:src="@drawable/ic_heart_filled"
-            android:visibility="gone"
-            app:backgroundTint="@color/dirt_white"
-            app:elevation="0dp"
-            app:fabCustomSize="35dp"
-            app:maxImageSize="25dp"
-            app:tint="@color/trailGreen" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/likeFullBtn"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center|end"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/ic_heart_filled"
+                    android:backgroundTint="@color/trailGreen"
+                    android:contentDescription="@string/favorite"
+                    android:elevation="0dp"
+                    android:foregroundGravity="center"
+                    android:visibility="gone" />
+
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/likeBtn"-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:layout_gravity="center|end"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:backgroundTint="@color/dirt_white"-->
+<!--            android:contentDescription="@string/favorite"-->
+<!--            android:elevation="0dp"-->
+<!--            android:foregroundGravity="center"-->
+<!--            android:src="@drawable/ic_heart_outlined"-->
+<!--            android:visibility="visible"-->
+<!--            app:backgroundTint="@color/dirt_white"-->
+<!--            app:borderWidth="0dp"-->
+<!--            app:elevation="0dp"-->
+<!--            app:fabCustomSize="35dp"-->
+<!--            app:maxImageSize="25dp"-->
+<!--            app:tint="@color/trailGreen" />-->
+
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/likeFullBtn"-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:layout_gravity="center|end"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:backgroundTint="@color/dirt_white"-->
+<!--            android:contentDescription="@string/favorite"-->
+<!--            android:elevation="0dp"-->
+<!--            android:foregroundGravity="center"-->
+<!--            android:src="@drawable/ic_heart_filled"-->
+<!--            android:visibility="gone"-->
+<!--            app:backgroundTint="@color/dirt_white"-->
+<!--            app:borderWidth="0dp"-->
+<!--            app:elevation="0dp"-->
+<!--            app:fabCustomSize="35dp"-->
+<!--            app:maxImageSize="25dp"-->
+<!--            app:tint="@color/trailGreen" />-->
 
     </com.google.android.material.card.MaterialCardView>
 
