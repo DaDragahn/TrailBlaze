@@ -102,7 +102,7 @@ class GruposFragment : Fragment() {
         RecyclerView.ViewHolder(grupoBinding.root) {
         fun setVariables(nome: String, photoUrl: String, membros: String, ctx: Context) {
             grupoBinding.name.text = nome
-            grupoBinding.membros.text = "Membros: $membros"
+            grupoBinding.membros.text = membros
             Glide.with(ctx).load(photoUrl).override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                 .into(grupoBinding.image)
         }

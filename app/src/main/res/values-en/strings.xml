@@ -85,7 +85,9 @@
     <string name="unidades">Units</string>
     <string name="linguagem">Language</string>
     <string name="metrico">Metric</string>
+    <string name="imperial">Imperial</string>
     <string name="portugues">Portuguese</string>
+    <string name="ingles">English</string>
     <string name="camera">camera</string>
     <string name="stop">stop</string>
     <string name="pause">pause</string>
@@ -95,28 +97,30 @@
     <string name="descricao_">Description:</string>
     <string name="foto_">Photo:</string>
     <string name="tempo_">Time:</string>
+    <string name="convidar_amigo">Invite Friend</string>
+    <string name="editar_foto">Edit Photo</string>
+    <string name="sair_do_grupo">Leave Group</string>
 
     <string-array name="modalidades">
-        <item>Caminhada</item>
-        <item>Bicicleta</item>
-        <item>Corrida</item>
+        <item>@string/caminhada</item>
+        <item>@string/corrida</item>
+        <item>@string/ciclismo</item>
     </string-array>
 
     <string-array name="dificuldade">
-        <item>Fácil</item>
-        <item>Moderado</item>
-        <item>Dificil</item>
+        <item>@string/facil</item>
+        <item>@string/moderado</item>
+        <item>@string/dificil</item>
     </string-array>
 
     <string-array name="unidades">
-        <item>Métrico</item>
-        <item>Imperial</item>
+        <item>@string/metrico</item>
+        <item>@string/imperial</item>
     </string-array>
 
     <string-array name="linguagem">
-        <item>Portuguese</item>
-        <item>English</item>
+        <item>@string/portugues</item>
+        <item>@string/ingles</item>
     </string-array>
-
 
 </resources>

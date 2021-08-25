@@ -4,7 +4,7 @@
     <item
         android:id="@+id/invite"
         android:icon="@drawable/ic_outline_person_add_alt"
-        android:title="Convidar Amigo"
+        android:title="@string/convidar_amigo"
         app:showAsAction="always" />
 
     <item
@@ -16,13 +16,13 @@
             <item
                 android:id="@+id/editarFoto"
                 android:icon="@drawable/ic_edit_image"
-                android:title="Editar Foto"
+                android:title="@string/editar_foto"
                 app:showAsAction="ifRoom" />
 
             <item
                 android:id="@+id/leave"
                 android:icon="@drawable/ic_leave"
-                android:title="Sair do Grupo"
+                android:title="@string/sair_do_grupo"
                 app:showAsAction="ifRoom" />
         </menu>
 
