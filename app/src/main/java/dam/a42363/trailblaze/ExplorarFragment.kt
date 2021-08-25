@@ -479,7 +479,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             }
             return true
         }
-        if (screenPoint.y < 1130) {
+        if (screenPoint.y < 1450) {
             (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
             cardView.visibility = View.GONE
         }

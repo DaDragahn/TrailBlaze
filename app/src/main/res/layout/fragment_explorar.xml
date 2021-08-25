@@ -176,7 +176,6 @@
 
                     </GridLayout>
 
-
                 </GridLayout>
 
                 <View
@@ -229,6 +228,34 @@
                 </GridLayout>
 
             </GridLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/likeBtn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center|end"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/ic_heart_outlined"
+                android:backgroundTint="@color/trailGreen"
+                android:contentDescription="@string/favorite"
+                android:elevation="0dp"
+                android:foregroundGravity="center"
+                android:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/likeFullBtn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center|end"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/ic_heart_filled"
+                android:backgroundTint="@color/trailGreen"
+                android:contentDescription="@string/favorite"
+                android:elevation="0dp"
+                android:foregroundGravity="center"
+                android:visibility="gone" />
 
         </androidx.cardview.widget.CardView>
 
