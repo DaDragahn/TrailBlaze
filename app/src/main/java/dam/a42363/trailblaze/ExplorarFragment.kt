@@ -418,16 +418,16 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                             Glide.with(this).load(document?.getString("fotoBanner"))
                                 .into(binding.fotoBanner)
                             binding.localidade.text = document?.getString("localidade")
-                            when("${document?.getString("dificuldade")}"){
-                                "Fácil" ->{
+                            when ("${document?.getString("dificuldade")}") {
+                                "Fácil" -> {
                                     binding.dificuldade.text =
-                                       getString(R.string.facil)
+                                        getString(R.string.facil)
                                 }
-                                "Moderado"->{
+                                "Moderado" -> {
                                     binding.dificuldade.text =
                                         getString(R.string.moderado)
                                 }
-                                "Difícil"->{
+                                "Difícil" -> {
                                     binding.dificuldade.text =
                                         getString(R.string.dificil)
                                 }
@@ -479,9 +479,13 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             }
             return true
         }
-        if (screenPoint.y < 1130) {
+        if (screenPoint.y < requireView().height / 2) {
+            mapboxMap.uiSettings.setAllGesturesEnabled(true)
             (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
             cardView.visibility = View.GONE
+        }
+        if (screenPoint.y > requireView().height / 2 && cardView.visibility == View.VISIBLE) {
+            mapboxMap.uiSettings.setAllGesturesEnabled(false)
         }
         return false
     }
