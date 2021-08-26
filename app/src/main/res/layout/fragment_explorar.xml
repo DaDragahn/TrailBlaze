@@ -113,6 +113,39 @@
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
+                <GridLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    android:orientation="horizontal">
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:isIndicator="true"
+                        android:progressBackgroundTint="@color/ash_gray_alpha"
+                        android:progressTint="@color/ratingGold"
+                        android:secondaryProgressTint="@color/ratingGold" />
+
+                    <TextView
+                        android:id="@+id/reviewCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="5dp"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        tools:text="" />
+
+                </GridLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

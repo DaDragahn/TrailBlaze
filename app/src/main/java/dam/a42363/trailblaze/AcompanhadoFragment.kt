@@ -32,18 +32,24 @@ class AcompanhadoFragment : Fragment() {
 
     var _binding: FragmentAcompanhadoBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var amigosListView: RecyclerView
     private lateinit var grupoListView: RecyclerView
+
     private lateinit var db: FirebaseFirestore
     private lateinit var userRef: CollectionReference
     private lateinit var friendRef: Query
     private lateinit var grupoRef: Query
     private lateinit var auth: FirebaseAuth
+
     private lateinit var onlineId: String
+
     private lateinit var navController: NavController
+
     private var amigoAdapter: FindFriendsFirestoreRecyclerAdapter? = null
     private var grupoAdapter: GroupFinderFirestoreRecyclerAdapter? = null
     private val friendsArray = ArrayList<String>()
+
     private var optimizedRoute: String? = null
     private var feature: String? = null
 
@@ -62,8 +68,10 @@ class AcompanhadoFragment : Fragment() {
         friendRef = db.collection("Friends").document("FriendDocument").collection(onlineId)
         userRef = db.collection("users")
         grupoRef = db.collection("Groups")
+
         displayAllFriends()
         displayAllGroups()
+
         binding.start.setOnClickListener {
             inviteAndStartTrail()
         }
@@ -79,8 +87,12 @@ class AcompanhadoFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
+        binding.backBtn.setOnClickListener {
+            navController.popBackStack()
+        }
+
         if (activity != null && this.activity is MainActivity) {
-            (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
+            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
         }
 
     }
