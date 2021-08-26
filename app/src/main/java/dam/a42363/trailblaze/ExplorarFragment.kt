@@ -400,7 +400,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         )
     }
 
-    private fun setRating(id: String) = CoroutineScope(Dispatchers.IO).launch {
+    private fun setFavorite(id: String) = CoroutineScope(Dispatchers.IO).launch {
         try {
             val favorite =
                 db.collection("Favorite").document("FavoriteDocument").collection(user!!)
@@ -420,6 +420,33 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    fun setRating(id: String) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val ratingsArray = mutableListOf<Float>()
+            val ratings =
+                db.collection("Rating").document("RatingDocument").collection(id).get()
+                    .await()
+            for (rating in ratings.documents) {
+                rating.getString("rating")?.let { ratingsArray.add(it.toFloat()) }
+            }
+            withContext(Dispatchers.Main) {
+                if (ratingsArray.isNotEmpty()) {
+                    val average = ratingsArray.average().toFloat()
+                    binding.ratingBar.rating = average
+                }
+                else{
+                    binding.ratingBar.rating = 0f
+                }
+                binding.reviewCount.text = "(${ratingsArray.size})"
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+            }
+        }
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -497,9 +524,10 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                                     )
                                 }
                             }
+                            val docID = document.id
+                            setRating(docID)
                             if (user != null && auth.uid != null) {
-                                val docID = document.id
-                                setRating(docID)
+                                setFavorite(docID)
                                 binding.likeBtn.setOnClickListener {
                                     val updates: MutableMap<String, Any> = HashMap()
                                     updates["favorite"] = true
