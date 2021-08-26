@@ -422,7 +422,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         }
     }
 
-    fun setRating(id: String) = CoroutineScope(Dispatchers.IO).launch {
+    private fun setRating(id: String) = CoroutineScope(Dispatchers.IO).launch {
         try {
             val ratingsArray = mutableListOf<Float>()
             val ratings =
