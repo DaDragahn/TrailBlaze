@@ -196,6 +196,7 @@ class NotificationsFragment : Fragment() {
                                         holder.notificationBinding.acceptBtn.setOnClickListener {
                                             val lobbySent = hashMapOf(
                                                 "nome" to auth.currentUser!!.displayName,
+                                                "photoUrl" to auth.currentUser!!.photoUrl,
                                                 "LastLocation" to ""
                                             )
                                             if (idInvite != null) {

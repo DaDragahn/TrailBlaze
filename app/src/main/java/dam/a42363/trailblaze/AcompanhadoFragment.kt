@@ -302,6 +302,7 @@ class AcompanhadoFragment : Fragment() {
                     }
                     val lobbySent = hashMapOf(
                         "nome" to documentSnapshot.getString("nome"),
+                        "photoUrl" to auth.currentUser!!.photoUrl,
                         "LastLocation" to ""
                     )
                     lobby.collection("TrailsCollection").document(onlineId).set(lobbySent)

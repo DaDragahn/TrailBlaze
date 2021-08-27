@@ -4,6 +4,8 @@ package dam.a42363.trailblaze
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
@@ -55,6 +57,7 @@ import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
 import com.mapbox.mapboxsdk.style.expressions.Expression.*
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory.textField
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import dam.a42363.trailblaze.databinding.FragmentExplorarBinding
@@ -144,6 +147,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser?.uid
 
+        Log.d("RecordRoute", "${auth.currentUser!!.photoUrl}")
         val point = arguments?.getString("local")?.let { Point.fromJson(it) }
         if (point != null) {
             center = GeoLocation(point.latitude(), point.longitude())
@@ -200,6 +204,29 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             checkGeoQuery()
             initSearchFab()
             mapboxMap.addOnMapClickListener(this)
+        }
+        val res: Resources = resources
+        val conf: Configuration = res.configuration
+
+        mapboxMap.getStyle { style ->
+
+            when (conf.locale.language) {
+                "en" -> {
+                    style.getLayer("country-label")?.setProperties(textField("{name_en}"))
+                    style.getLayer("settlement-label")?.setProperties(textField("{name_en}"))
+                    style.getLayer("settlement_subdivision-label")
+                        ?.setProperties(textField("{name_en}"))
+                    style.getLayer("poi-label")?.setProperties(textField("{name_en}"))
+
+                }
+                "pt" -> {
+                    style.getLayer("country-label")?.setProperties(textField("{name_pt}"))
+                    style.getLayer("settlement-label")?.setProperties(textField("{name_pt}"))
+                    style.getLayer("settlement_subdivision-label")
+                        ?.setProperties(textField("{name_pt}"))
+                    style.getLayer("poi-label")?.setProperties(textField("{name_pt}"))
+                }
+            }
         }
     }
 
@@ -435,8 +462,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 if (ratingsArray.isNotEmpty()) {
                     val average = ratingsArray.average().toFloat()
                     binding.ratingBar.rating = average
-                }
-                else{
+                } else {
                     binding.ratingBar.rating = 0f
                 }
                 binding.reviewCount.text = "(${ratingsArray.size})"

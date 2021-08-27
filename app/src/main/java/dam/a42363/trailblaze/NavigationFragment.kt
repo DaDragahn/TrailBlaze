@@ -10,6 +10,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -32,6 +33,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
@@ -56,6 +60,7 @@ import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import com.mapbox.mapboxsdk.style.expressions.Expression
 import com.mapbox.mapboxsdk.style.layers.Property.ICON_ANCHOR_BOTTOM
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
@@ -79,7 +84,7 @@ import kotlin.properties.Delegates
 
 
 class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
-    SensorEventListener, MapboxMap.OnMapClickListener {
+    SensorEventListener {
 
     private var timeWhenStopped: Long = 0
     private lateinit var mapView: MapView
@@ -105,13 +110,13 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
     private val db = FirebaseFirestore.getInstance()
     private val ICON_GEOJSON_SOURCE_ID = "icon-source-id"
-    val CALLOUT_IMAGE_ID = "CALLOUT_IMAGE_ID"
-    private val CALLOUT_LAYER_ID = "CALLOUT_LAYER_ID"
+    private val ICON_PROPERTY = "ICON_PROPERTY"
 
     private lateinit var slidingUpPanelLayout: SlidingUpPanelLayout
     private var destroy: Boolean = false
     private var idTrail: String? = null
     private val lobbyArray = ArrayList<String>()
+    private val photoURLArray: MutableMap<String, String> = HashMap()
 
     private var sensorManager: SensorManager? = null
     private var sensor: Sensor? = null
@@ -316,12 +321,12 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     }
 
     private fun initMarkerIconSymbolLayer(loadedMapStyle: Style) {
-        // Add the marker image to map
-        loadedMapStyle.addImage(
-            "icon-image", BitmapFactory.decodeResource(
-                this.resources, R.drawable.mapbox_marker_icon_default
-            )
-        )
+//        // Add the marker image to map
+//        loadedMapStyle.addImage(
+//            "icon-image", BitmapFactory.decodeResource(
+//                this.resources, R.drawable.mapbox_marker_icon_default
+//            )
+//        )
 
         // Add the source to the map
         loadedMapStyle.addSource(
@@ -331,26 +336,11 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         )
         loadedMapStyle.addLayer(
             SymbolLayer("icon-layer-id", ICON_GEOJSON_SOURCE_ID).withProperties(
-                PropertyFactory.iconImage("icon-image"),
                 PropertyFactory.iconSize(1f),
                 PropertyFactory.iconAllowOverlap(true),
                 PropertyFactory.iconIgnorePlacement(true),
                 PropertyFactory.iconOffset(arrayOf(0f, -7f))
             )
-        )
-    }
-
-    private fun setUpInfoWindowLayer(loadedStyle: Style) {
-        loadedStyle.addLayer(
-            SymbolLayer(CALLOUT_LAYER_ID, ICON_GEOJSON_SOURCE_ID)
-                .withProperties( // show image with id title based on the value of the name feature property
-                    PropertyFactory.iconImage(CALLOUT_IMAGE_ID),  // set anchor of icon to bottom-left
-                    PropertyFactory.iconAnchor(ICON_ANCHOR_BOTTOM),  // prevent the feature property window icon from being visible even
-                    // if it collides with other previously drawn symbols
-                    PropertyFactory.iconAllowOverlap(false),  // prevent other symbols from being visible even if they collide with the feature property window icon
-                    PropertyFactory.iconIgnorePlacement(false),  // offset the info window to be above the marker
-                    PropertyFactory.iconOffset(arrayOf(-2f, -28f))
-                )
         )
     }
 
@@ -366,7 +356,6 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             uiSettings.setCompassFadeFacingNorth(false)
             enableLocationComponent(style)
             initMarkerIconSymbolLayer(style)
-            setUpInfoWindowLayer(style)
             val navigationOptions = MapboxNavigation
                 .defaultNavigationOptionsBuilder(requireContext(), Mapbox.getAccessToken())
 //                .locationEngine(ReplayLocationEngine(mapboxReplayer))
@@ -406,7 +395,6 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             navigationMapRoute?.addRoutes(routes)
             mapboxNavigation!!.setRoutes(routes)
             onStartNavigation()
-            mapboxMap.addOnMapClickListener(this)
         }
 
     }
@@ -418,13 +406,37 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 .whereIn(FieldPath.documentId(), lobbyArray).get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
-                        userMarkerList.add(
-                            Feature.fromGeometry(
-                                Point.fromJson(document.getString("LastLocation")!!),
-                                null,
-                                document.id
+                        Glide.with(this)
+                            .asBitmap()
+                            .load(photoURLArray[document.id])
+                            .into(object : CustomTarget<Bitmap>() {
+                                override fun onResourceReady(
+                                    resource: Bitmap,
+                                    transition: Transition<in Bitmap>?
+                                ) {
+                                    style.addImage(document.id, resource)
+                                }
+
+                                override fun onLoadCleared(placeholder: Drawable?) {
+
+                                }
+
+                            })
+                        style.getLayer("icon-layer-id")!!.setProperties(
+                            PropertyFactory.iconImage(
+                                Expression.match(
+                                    Expression.get(ICON_PROPERTY), Expression.literal(document.id),
+                                    Expression.stop(document.id, document.id),
+                                )
                             )
                         )
+                        val fet = Feature.fromGeometry(
+                            Point.fromJson(document.getString("LastLocation")!!),
+                            null,
+                            document.id
+                        )
+                        fet.addStringProperty(ICON_PROPERTY, document.id)
+                        userMarkerList.add(fet)
                     }
                     val iconSource =
                         style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
@@ -439,7 +451,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     }
 
     private fun checkLobby(updates: MutableMap<String, Any>) {
-        if (check == null && !check) {
+        if (!check) {
             if (idTrail != null) {
                 db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
                     .document(auth.uid!!).update(updates)
@@ -448,8 +460,10 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                     .get()
                     .addOnSuccessListener { result ->
                         for (document in result) {
-                            if (document.id != auth.uid!!)
+                            if (document.id != auth.uid!!) {
                                 lobbyArray.add(document.id)
+                                photoURLArray[document.id] = document.getString("photoUrl")!!
+                            }
                         }
                         addUserMarkers(mapboxMap?.style!!)
                     }
@@ -674,119 +688,4 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             binding.distanciaPercorrida.text = routeProgress.distanceTraveled.toString()
         }
     }
-
-    override fun onMapClick(point: LatLng): Boolean {
-        val screenPoint = mapboxMap?.projection?.toScreenLocation(point)
-
-        val featuresList: List<Feature> =
-            mapboxMap!!.queryRenderedFeatures(screenPoint!!, "icon-layer-id")
-        if (featuresList.isNotEmpty()) {
-            for (feature in featuresList) {
-                db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
-                    .document("${feature.id()}").get()
-                    .addOnCompleteListener {
-                        feature.addStringProperty("Nome", it.result.getString("nome"))
-                        GenerateViewIconTask(NavigationFragment()).execute(
-                            FeatureCollection.fromFeature(
-                                feature
-                            )
-                        )
-                    }
-            }
-        }
-        return false
-    }
-
-    internal class GenerateViewIconTask(activity: NavigationFragment) :
-        AsyncTask<FeatureCollection?, Void?, HashMap<String, Bitmap>?>() {
-        private val activityRef: WeakReference<NavigationFragment> =
-            WeakReference<NavigationFragment>(activity)
-        private lateinit var featureAtMapClickPoint: Feature
-
-        private val CALLOUT_IMAGE_ID = "CALLOUT_IMAGE_ID"
-
-        @SuppressLint("InflateParams")
-        override fun doInBackground(vararg params: FeatureCollection?): HashMap<String, Bitmap> {
-            val activity: NavigationFragment? = activityRef.get()
-            val imagesMap: HashMap<String, Bitmap> = HashMap()
-            if (activity != null) {
-                val inflater = LayoutInflater.from(activity.context)
-                if (params[0]?.features() != null) {
-                    featureAtMapClickPoint = params[0]?.features()!![0]
-
-                    val stringBuilder = StringBuilder()
-
-                    val bubbleLayout = inflater.inflate(
-                        R.layout.window_symbol_layer, null
-                    ) as BubbleLayout
-                    val titleTextView =
-                        bubbleLayout.findViewById<TextView>(R.id.info_window_title)
-                    if (featureAtMapClickPoint.properties() != null) {
-                        for (entry in featureAtMapClickPoint.properties()!!.entrySet()) {
-                            stringBuilder.append(
-                                String.format(
-                                    "%s - %s",
-                                    entry.key,
-                                    entry.value
-                                )
-                            );
-                            stringBuilder.append(System.getProperty("line.separator"));
-                        }
-                    }
-                    titleTextView.text = stringBuilder.toString()
-                    val measureSpec =
-                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-                    bubbleLayout.measure(measureSpec, measureSpec)
-                    val measuredWidth = bubbleLayout.measuredWidth.toFloat()
-                    bubbleLayout.arrowPosition = measuredWidth / 2 - 5
-                    val bitmap: Bitmap =
-                        SymbolGenerator.generate(bubbleLayout)
-                    imagesMap[CALLOUT_IMAGE_ID] = bitmap
-                }
-            }
-            return imagesMap
-        }
-
-        override fun onPostExecute(bitmapHashMap: HashMap<String, Bitmap>?) {
-            super.onPostExecute(bitmapHashMap)
-            val activity: NavigationFragment? = activityRef.get()
-            if (activity != null && bitmapHashMap != null) {
-                activity.setImageGenResults(bitmapHashMap)
-                activity.refreshSource(featureAtMapClickPoint)
-            }
-        }
-
-    }
-
-    private fun refreshSource(featureAtClickPoint: Feature) {
-        mapboxMap?.style!!.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
-            ?.setGeoJson(featureAtClickPoint)
-    }
-
-    fun setImageGenResults(imageMap: HashMap<String, Bitmap>?) {
-        if (mapboxMap != null) {
-            mapboxMap!!.getStyle { style: Style ->
-                style.addImages(
-                    imageMap!!
-                )
-            }
-        }
-    }
-
-    private object SymbolGenerator {
-        fun generate(view: View): Bitmap {
-            val measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-            view.measure(measureSpec, measureSpec)
-            val measuredWidth = view.measuredWidth
-            val measuredHeight = view.measuredHeight
-            view.layout(0, 0, measuredWidth, measuredHeight)
-            val bitmap =
-                Bitmap.createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888)
-            bitmap.eraseColor(Color.TRANSPARENT)
-            val canvas = Canvas(bitmap)
-            view.draw(canvas)
-            return bitmap
-        }
-    }
-
 }
