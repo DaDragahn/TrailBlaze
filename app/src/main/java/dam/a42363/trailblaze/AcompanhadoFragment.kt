@@ -302,7 +302,6 @@ class AcompanhadoFragment : Fragment() {
                     }
                     val lobbySent = hashMapOf(
                         "nome" to documentSnapshot.getString("nome"),
-                        "photoUrl" to auth.currentUser!!.photoUrl,
                         "LastLocation" to ""
                     )
                     lobby.collection("TrailsCollection").document(onlineId).set(lobbySent)
@@ -310,7 +309,8 @@ class AcompanhadoFragment : Fragment() {
             }
         }
 
-        val bundle = bundleOf("route" to optimizedRoute, "idTrail" to lobby.id,"individual" to false)
+        val bundle =
+            bundleOf("route" to optimizedRoute, "idTrail" to lobby.id, "individual" to false)
 
         navController.navigate(
             R.id.action_escolherModoFragment_to_navigationFragment,

@@ -6,17 +6,12 @@ import android.content.Context
 import android.content.Context.SENSOR_SERVICE
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.location.Location
-import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Looper.getMainLooper
 import android.os.SystemClock
@@ -24,7 +19,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.app.ActivityCompat
@@ -33,13 +27,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.gson.JsonElement
 import com.mapbox.android.core.location.LocationEngineCallback
 import com.mapbox.android.core.location.LocationEngineRequest
 import com.mapbox.android.core.location.LocationEngineResult
@@ -50,7 +40,6 @@ import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
-import com.mapbox.mapboxsdk.annotations.BubbleLayout
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponent
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
@@ -60,8 +49,6 @@ import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
-import com.mapbox.mapboxsdk.style.expressions.Expression
-import com.mapbox.mapboxsdk.style.layers.Property.ICON_ANCHOR_BOTTOM
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
@@ -77,14 +64,13 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState
 import dam.a42363.trailblaze.databinding.FragmentNavigationBinding
 import dam.a42363.trailblaze.utils.Constants
 import timber.log.Timber
-import java.lang.StringBuilder
 import java.lang.ref.WeakReference
 import kotlin.math.sqrt
 import kotlin.properties.Delegates
 
 
 class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
-    SensorEventListener {
+    SensorEventListener, MapboxMap.OnMapClickListener {
 
     private var timeWhenStopped: Long = 0
     private lateinit var mapView: MapView
@@ -110,13 +96,11 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
     private val db = FirebaseFirestore.getInstance()
     private val ICON_GEOJSON_SOURCE_ID = "icon-source-id"
-    private val ICON_PROPERTY = "ICON_PROPERTY"
 
     private lateinit var slidingUpPanelLayout: SlidingUpPanelLayout
     private var destroy: Boolean = false
     private var idTrail: String? = null
     private val lobbyArray = ArrayList<String>()
-    private val photoURLArray: MutableMap<String, String> = HashMap()
 
     private var sensorManager: SensorManager? = null
     private var sensor: Sensor? = null
@@ -321,12 +305,12 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     }
 
     private fun initMarkerIconSymbolLayer(loadedMapStyle: Style) {
-//        // Add the marker image to map
-//        loadedMapStyle.addImage(
-//            "icon-image", BitmapFactory.decodeResource(
-//                this.resources, R.drawable.mapbox_marker_icon_default
-//            )
-//        )
+        // Add the marker image to map
+        loadedMapStyle.addImage(
+            "icon-image", BitmapFactory.decodeResource(
+                this.resources, R.drawable.mapbox_marker_icon_default
+            )
+        )
 
         // Add the source to the map
         loadedMapStyle.addSource(
@@ -336,10 +320,11 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         )
         loadedMapStyle.addLayer(
             SymbolLayer("icon-layer-id", ICON_GEOJSON_SOURCE_ID).withProperties(
+                PropertyFactory.iconImage("icon-image"),
                 PropertyFactory.iconSize(1f),
                 PropertyFactory.iconAllowOverlap(true),
                 PropertyFactory.iconIgnorePlacement(true),
-                PropertyFactory.iconOffset(arrayOf(0f, -7f))
+                PropertyFactory.iconOffset(arrayOf(0f, 0f))
             )
         )
     }
@@ -406,37 +391,13 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 .whereIn(FieldPath.documentId(), lobbyArray).get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
-                        Glide.with(this)
-                            .asBitmap()
-                            .load(photoURLArray[document.id])
-                            .into(object : CustomTarget<Bitmap>() {
-                                override fun onResourceReady(
-                                    resource: Bitmap,
-                                    transition: Transition<in Bitmap>?
-                                ) {
-                                    style.addImage(document.id, resource)
-                                }
-
-                                override fun onLoadCleared(placeholder: Drawable?) {
-
-                                }
-
-                            })
-                        style.getLayer("icon-layer-id")!!.setProperties(
-                            PropertyFactory.iconImage(
-                                Expression.match(
-                                    Expression.get(ICON_PROPERTY), Expression.literal(document.id),
-                                    Expression.stop(document.id, document.id),
-                                )
+                        userMarkerList.add(
+                            Feature.fromGeometry(
+                                Point.fromJson(document.getString("LastLocation")!!),
+                                null,
+                                document.id
                             )
                         )
-                        val fet = Feature.fromGeometry(
-                            Point.fromJson(document.getString("LastLocation")!!),
-                            null,
-                            document.id
-                        )
-                        fet.addStringProperty(ICON_PROPERTY, document.id)
-                        userMarkerList.add(fet)
                     }
                     val iconSource =
                         style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
@@ -462,7 +423,6 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                         for (document in result) {
                             if (document.id != auth.uid!!) {
                                 lobbyArray.add(document.id)
-                                photoURLArray[document.id] = document.getString("photoUrl")!!
                             }
                         }
                         addUserMarkers(mapboxMap?.style!!)
@@ -687,5 +647,26 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             Log.d("RecordRoute", "${routeProgress.distanceTraveled}")
             binding.distanciaPercorrida.text = routeProgress.distanceTraveled.toString()
         }
+    }
+
+    override fun onMapClick(point: LatLng): Boolean {
+        val screenPoint = mapboxMap!!.projection.toScreenLocation(point)
+
+        val featuresList: List<Feature> =
+            mapboxMap!!.queryRenderedFeatures(screenPoint, "icon-layer-id")
+        if (featuresList.isNotEmpty()) {
+            for (feature in featuresList) {
+                db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+                    .document(feature.id()!!).get().addOnSuccessListener {
+                        Toast.makeText(
+                            requireActivity().applicationContext,
+                            it.getString("nome"),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+            }
+
+        }
+        return false
     }
 }
