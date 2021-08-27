@@ -24,6 +24,7 @@ import dam.a42363.trailblaze.databinding.FragmentNotificationsBinding
 import dam.a42363.trailblaze.databinding.ItemNotificationBinding
 import dam.a42363.trailblaze.models.Invites
 import java.time.LocalDateTime
+import java.time.Month
 
 class NotificationsFragment : Fragment() {
     private var adapter: GetInvitesFirestoreRecyclerAdapter? = null
@@ -163,9 +164,17 @@ class NotificationsFragment : Fragment() {
                     }
                     "Trail" -> {
                         var currentDateTime = LocalDateTime.now()
-                        currentDateTime = currentDateTime.minusHours(1)
-                        val time: LocalDateTime =
-                            LocalDateTime.parse(snapshots.getSnapshot(position).getString("time"))
+                        currentDateTime = currentDateTime.plusHours(1)
+                        val timeMap = snapshots.getSnapshot(position).get("time") as HashMap<*, *>
+
+                        val time = LocalDateTime.of(
+                            (timeMap["year"] as Long).toInt(),
+                            Month.valueOf(timeMap["month"] as String),
+                            (timeMap["dayOfMonth"] as Long).toInt(),
+                            (timeMap["hour"] as Long).toInt(),
+                            (timeMap["minute"] as Long).toInt(),
+                            (timeMap["second"] as Long).toInt()
+                        )
                         if (time.isBefore(currentDateTime)) {
                             val idRoute = snapshots.getSnapshot(position).getString("idRoute")
 

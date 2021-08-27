@@ -3,14 +3,19 @@ package dam.a42363.trailblaze
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
+import android.content.Context.SENSOR_SERVICE
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.location.Location
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Looper.getMainLooper
 import android.os.SystemClock
@@ -18,11 +23,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -30,6 +35,7 @@ import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.JsonElement
 import com.mapbox.android.core.location.LocationEngineCallback
 import com.mapbox.android.core.location.LocationEngineRequest
 import com.mapbox.android.core.location.LocationEngineResult
@@ -40,6 +46,8 @@ import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.annotations.BubbleLayout
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponent
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
@@ -48,6 +56,7 @@ import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import com.mapbox.mapboxsdk.style.layers.Property.ICON_ANCHOR_BOTTOM
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
@@ -55,6 +64,7 @@ import com.mapbox.navigation.base.trip.model.RouteLegProgress
 import com.mapbox.navigation.base.trip.model.RouteProgress
 import com.mapbox.navigation.core.MapboxNavigation
 import com.mapbox.navigation.core.arrival.ArrivalObserver
+import com.mapbox.navigation.core.trip.session.RouteProgressObserver
 import com.mapbox.navigation.ui.camera.NavigationCamera
 import com.mapbox.navigation.ui.route.NavigationMapRoute
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -62,18 +72,14 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState
 import dam.a42363.trailblaze.databinding.FragmentNavigationBinding
 import dam.a42363.trailblaze.utils.Constants
 import timber.log.Timber
+import java.lang.StringBuilder
 import java.lang.ref.WeakReference
-import kotlin.properties.Delegates
-import android.content.Context.SENSOR_SERVICE
-import android.content.SharedPreferences
-
-import androidx.core.content.ContextCompat.getSystemService
-import com.mapbox.navigation.core.trip.session.RouteProgressObserver
 import kotlin.math.sqrt
+import kotlin.properties.Delegates
 
 
 class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
-    SensorEventListener {
+    SensorEventListener, MapboxMap.OnMapClickListener {
 
     private var timeWhenStopped: Long = 0
     private lateinit var mapView: MapView
@@ -99,6 +105,8 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
     private val db = FirebaseFirestore.getInstance()
     private val ICON_GEOJSON_SOURCE_ID = "icon-source-id"
+    val CALLOUT_IMAGE_ID = "CALLOUT_IMAGE_ID"
+    private val CALLOUT_LAYER_ID = "CALLOUT_LAYER_ID"
 
     private lateinit var slidingUpPanelLayout: SlidingUpPanelLayout
     private var destroy: Boolean = false
@@ -332,6 +340,20 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         )
     }
 
+    private fun setUpInfoWindowLayer(loadedStyle: Style) {
+        loadedStyle.addLayer(
+            SymbolLayer(CALLOUT_LAYER_ID, ICON_GEOJSON_SOURCE_ID)
+                .withProperties( // show image with id title based on the value of the name feature property
+                    PropertyFactory.iconImage(CALLOUT_IMAGE_ID),  // set anchor of icon to bottom-left
+                    PropertyFactory.iconAnchor(ICON_ANCHOR_BOTTOM),  // prevent the feature property window icon from being visible even
+                    // if it collides with other previously drawn symbols
+                    PropertyFactory.iconAllowOverlap(false),  // prevent other symbols from being visible even if they collide with the feature property window icon
+                    PropertyFactory.iconIgnorePlacement(false),  // offset the info window to be above the marker
+                    PropertyFactory.iconOffset(arrayOf(-2f, -28f))
+                )
+        )
+    }
+
     @SuppressLint("LogNotTimber", "MissingPermission")
     override fun onMapReady(mapboxMap: MapboxMap) {
         this.mapboxMap = mapboxMap
@@ -344,6 +366,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             uiSettings.setCompassFadeFacingNorth(false)
             enableLocationComponent(style)
             initMarkerIconSymbolLayer(style)
+            setUpInfoWindowLayer(style)
             val navigationOptions = MapboxNavigation
                 .defaultNavigationOptionsBuilder(requireContext(), Mapbox.getAccessToken())
 //                .locationEngine(ReplayLocationEngine(mapboxReplayer))
@@ -383,6 +406,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             navigationMapRoute?.addRoutes(routes)
             mapboxNavigation!!.setRoutes(routes)
             onStartNavigation()
+            mapboxMap.addOnMapClickListener(this)
         }
 
     }
@@ -396,7 +420,9 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                     for (document in documents) {
                         userMarkerList.add(
                             Feature.fromGeometry(
-                                Point.fromJson(document.getString("LastLocation")!!)
+                                Point.fromJson(document.getString("LastLocation")!!),
+                                null,
+                                document.id
                             )
                         )
                     }
@@ -563,7 +589,8 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         mapView.onDestroy()
 //        mapboxNavigation?.unregisterRouteProgressObserver(replayProgressObserver)
         mapboxNavigation?.unregisterRouteProgressObserver(routeProgressObserver)
-        mapboxNavigation?.unregisterArrivalObserver(arrivalObserver);
+        mapboxNavigation?.unregisterArrivalObserver(arrivalObserver)
+
         mapboxNavigation?.stopTripSession()
         mapboxNavigation?.onDestroy()
         db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
@@ -578,7 +605,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             mapView.onDestroy()
 //        mapboxNavigation?.unregisterRouteProgressObserver(replayProgressObserver)
             mapboxNavigation?.unregisterRouteProgressObserver(routeProgressObserver)
-            mapboxNavigation?.unregisterArrivalObserver(arrivalObserver);
+            mapboxNavigation?.unregisterArrivalObserver(arrivalObserver)
             mapboxNavigation?.stopTripSession()
             mapboxNavigation?.onDestroy()
             binding.chronometer.stop()
@@ -647,4 +674,119 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             binding.distanciaPercorrida.text = routeProgress.distanceTraveled.toString()
         }
     }
+
+    override fun onMapClick(point: LatLng): Boolean {
+        val screenPoint = mapboxMap?.projection?.toScreenLocation(point)
+
+        val featuresList: List<Feature> =
+            mapboxMap!!.queryRenderedFeatures(screenPoint!!, "icon-layer-id")
+        if (featuresList.isNotEmpty()) {
+            for (feature in featuresList) {
+                db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+                    .document("${feature.id()}").get()
+                    .addOnCompleteListener {
+                        feature.addStringProperty("Nome", it.result.getString("nome"))
+                        GenerateViewIconTask(NavigationFragment()).execute(
+                            FeatureCollection.fromFeature(
+                                feature
+                            )
+                        )
+                    }
+            }
+        }
+        return false
+    }
+
+    internal class GenerateViewIconTask(activity: NavigationFragment) :
+        AsyncTask<FeatureCollection?, Void?, HashMap<String, Bitmap>?>() {
+        private val activityRef: WeakReference<NavigationFragment> =
+            WeakReference<NavigationFragment>(activity)
+        private lateinit var featureAtMapClickPoint: Feature
+
+        private val CALLOUT_IMAGE_ID = "CALLOUT_IMAGE_ID"
+
+        @SuppressLint("InflateParams")
+        override fun doInBackground(vararg params: FeatureCollection?): HashMap<String, Bitmap> {
+            val activity: NavigationFragment? = activityRef.get()
+            val imagesMap: HashMap<String, Bitmap> = HashMap()
+            if (activity != null) {
+                val inflater = LayoutInflater.from(activity.context)
+                if (params[0]?.features() != null) {
+                    featureAtMapClickPoint = params[0]?.features()!![0]
+
+                    val stringBuilder = StringBuilder()
+
+                    val bubbleLayout = inflater.inflate(
+                        R.layout.window_symbol_layer, null
+                    ) as BubbleLayout
+                    val titleTextView =
+                        bubbleLayout.findViewById<TextView>(R.id.info_window_title)
+                    if (featureAtMapClickPoint.properties() != null) {
+                        for (entry in featureAtMapClickPoint.properties()!!.entrySet()) {
+                            stringBuilder.append(
+                                String.format(
+                                    "%s - %s",
+                                    entry.key,
+                                    entry.value
+                                )
+                            );
+                            stringBuilder.append(System.getProperty("line.separator"));
+                        }
+                    }
+                    titleTextView.text = stringBuilder.toString()
+                    val measureSpec =
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                    bubbleLayout.measure(measureSpec, measureSpec)
+                    val measuredWidth = bubbleLayout.measuredWidth.toFloat()
+                    bubbleLayout.arrowPosition = measuredWidth / 2 - 5
+                    val bitmap: Bitmap =
+                        SymbolGenerator.generate(bubbleLayout)
+                    imagesMap[CALLOUT_IMAGE_ID] = bitmap
+                }
+            }
+            return imagesMap
+        }
+
+        override fun onPostExecute(bitmapHashMap: HashMap<String, Bitmap>?) {
+            super.onPostExecute(bitmapHashMap)
+            val activity: NavigationFragment? = activityRef.get()
+            if (activity != null && bitmapHashMap != null) {
+                activity.setImageGenResults(bitmapHashMap)
+                activity.refreshSource(featureAtMapClickPoint)
+            }
+        }
+
+    }
+
+    private fun refreshSource(featureAtClickPoint: Feature) {
+        mapboxMap?.style!!.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
+            ?.setGeoJson(featureAtClickPoint)
+    }
+
+    fun setImageGenResults(imageMap: HashMap<String, Bitmap>?) {
+        if (mapboxMap != null) {
+            mapboxMap!!.getStyle { style: Style ->
+                style.addImages(
+                    imageMap!!
+                )
+            }
+        }
+    }
+
+    private object SymbolGenerator {
+        fun generate(view: View): Bitmap {
+            val measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            view.measure(measureSpec, measureSpec)
+            val measuredWidth = view.measuredWidth
+            val measuredHeight = view.measuredHeight
+            view.layout(0, 0, measuredWidth, measuredHeight)
+            val bitmap =
+                Bitmap.createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888)
+            bitmap.eraseColor(Color.TRANSPARENT)
+            val canvas = Canvas(bitmap)
+            view.draw(canvas)
+            return bitmap
+        }
+    }
+
 }

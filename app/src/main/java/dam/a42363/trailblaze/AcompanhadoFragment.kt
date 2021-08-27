@@ -309,7 +309,7 @@ class AcompanhadoFragment : Fragment() {
             }
         }
 
-        val bundle = bundleOf("route" to optimizedRoute, "idTrail" to lobby.id)
+        val bundle = bundleOf("route" to optimizedRoute, "idTrail" to lobby.id,"individual" to false)
 
         navController.navigate(
             R.id.action_escolherModoFragment_to_navigationFragment,
