@@ -58,7 +58,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
     private lateinit var locationComponent: LocationComponent
     private var locationEngine: LocationEngine? = null
-    private val DEFAULT_INTERVAL_IN_MILLISECONDS = 30000L
+    private val DEFAULT_INTERVAL_IN_MILLISECONDS = 20000L
     private val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
 
     private lateinit var db: FirebaseFirestore

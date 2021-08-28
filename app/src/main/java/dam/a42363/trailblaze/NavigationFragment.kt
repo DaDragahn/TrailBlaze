@@ -321,7 +321,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         loadedMapStyle.addLayer(
             SymbolLayer("icon-layer-id", ICON_GEOJSON_SOURCE_ID).withProperties(
                 PropertyFactory.iconImage("icon-image"),
-                PropertyFactory.iconSize(1f),
+                PropertyFactory.iconSize(.4f),
                 PropertyFactory.iconAllowOverlap(true),
                 PropertyFactory.iconIgnorePlacement(true),
                 PropertyFactory.iconOffset(arrayOf(0f, 0f))

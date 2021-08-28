@@ -28,6 +28,7 @@
                 android:layout_margin="10dp"
                 android:contentDescription="@string/profileimage"
                 android:padding="5dp"
+                android:scaleType="centerCrop"
                 app:shapeAppearanceOverlay="@style/circularImage"
                 app:strokeColor="@color/dirt_white"
                 app:strokeWidth="5dp" />
