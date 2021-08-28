@@ -44,7 +44,7 @@
             android:id="@+id/groupImage"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="@drawable/default_placeholder"
+            android:background="@drawable/default_banner"
             android:scaleType="centerCrop" />
 
         <androidx.appcompat.widget.Toolbar

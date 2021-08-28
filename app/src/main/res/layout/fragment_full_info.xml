@@ -291,7 +291,7 @@
                 android:layout_gravity="top|center"
                 android:layout_x="1dp"
                 android:layout_y="0dp"
-                android:background="@drawable/default_placeholder"
+                android:background="@drawable/default_banner"
                 android:scaleType="centerCrop" />
 
         </AbsoluteLayout>
