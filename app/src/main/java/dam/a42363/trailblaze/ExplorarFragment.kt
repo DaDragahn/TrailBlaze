@@ -56,6 +56,7 @@ import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
 import com.mapbox.mapboxsdk.style.expressions.Expression.*
+import com.mapbox.mapboxsdk.style.layers.Layer
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory.textField
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
@@ -155,6 +156,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         if (arguments?.getString("searchText") != null) {
             binding.searchView.setText(arguments?.getString("searchText"))
         }
+
         return binding.root
     }
 
@@ -205,6 +207,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             initSearchFab()
             mapboxMap.addOnMapClickListener(this)
         }
+
         val res: Resources = resources
         val conf: Configuration = res.configuration
 

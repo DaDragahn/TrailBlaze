@@ -308,7 +308,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         // Add the marker image to map
         loadedMapStyle.addImage(
             "icon-image", BitmapFactory.decodeResource(
-                this.resources, R.drawable.mapbox_marker_icon_default
+                this.resources, R.drawable.person_pin
             )
         )
 
@@ -341,6 +341,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             uiSettings.setCompassFadeFacingNorth(false)
             enableLocationComponent(style)
             initMarkerIconSymbolLayer(style)
+            mapboxMap.addOnMapClickListener(this)
             val navigationOptions = MapboxNavigation
                 .defaultNavigationOptionsBuilder(requireContext(), Mapbox.getAccessToken())
 //                .locationEngine(ReplayLocationEngine(mapboxReplayer))
@@ -406,9 +407,11 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 .addOnFailureListener { exception ->
                     Timber.tag("TAG").d(exception, "Error getting documents: ")
                 }
+        } else {
+            val iconSource =
+                style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
+            iconSource?.setGeoJson(FeatureCollection.fromFeatures(userMarkerList))
         }
-//        val iconSource = style.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
-//        iconSource?.setGeoJson(featureCollection)
     }
 
     private fun checkLobby(updates: MutableMap<String, Any>) {
