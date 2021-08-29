@@ -130,6 +130,10 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
             (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
         }
 
+        binding.close.setOnClickListener {
+            binding.decisionCardView.visibility = View.GONE
+        }
+
         cardView.setBackgroundResource(R.drawable.cardview_info)
 
         db.collection("locations").document("$feature").get().addOnCompleteListener {
