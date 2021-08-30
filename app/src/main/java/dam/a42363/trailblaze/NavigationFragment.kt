@@ -541,6 +541,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     override fun onStart() {
         super.onStart()
         mapView.onStart()
+        mapboxNavigation?.registerRouteProgressObserver(routeProgressObserver)
         mapboxNavigation?.registerArrivalObserver(arrivalObserver)
         mapCamera?.onStart()
     }
@@ -548,7 +549,6 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     override fun onResume() {
         super.onResume()
         mapView.onResume()
-
 //        val sharedPreferences: SharedPreferences? =
 //            activity?.getPreferences(Context.MODE_PRIVATE)
 //        stepCount = sharedPreferences!!.getInt("stepCount", 0)
@@ -560,9 +560,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         super.onStop()
         mapCamera?.onStop()
         mapboxNavigation?.unregisterArrivalObserver(arrivalObserver)
-        mapboxNavigation?.navigationOptions?.locationEngine?.removeLocationUpdates(
-            locationEngineCallback
-        )
+        mapboxNavigation?.unregisterRouteProgressObserver(routeProgressObserver)
         mapView.onStop()
 
 //        val sharedPreferences: SharedPreferences? =
@@ -634,11 +632,13 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         override fun onSuccess(result: LocationEngineResult) {
             val fragment: NavigationFragment? = fragmentWeakReference.get()
             if (fragment != null) {
-                fragment.updateLocation(result.locations)
+                val location = result.lastLocation ?: return
+                fragment.mapboxMap!!.locationComponent
+                    .forceLocationUpdate(location)
                 val updates: MutableMap<String, Any> =
                     HashMap()
-                val latitude = result.lastLocation!!.latitude
-                val longitude = result.lastLocation!!.longitude
+                val latitude = location.latitude
+                val longitude = location.longitude
                 updates["LastLocation"] = Point.fromLngLat(longitude, latitude).toJson()
                 fragment.clearVariables()
                 fragment.checkLobby(updates)
@@ -653,12 +653,6 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
     private fun clearVariables() {
         lobbyArray.clear()
-//        val iconSource = mapboxMap?.style!!.getSourceAs<GeoJsonSource>(ICON_GEOJSON_SOURCE_ID)
-//        iconSource?.setGeoJson(FeatureCollection.fromFeatures(listOf()))
-    }
-
-    private fun updateLocation(locations: List<Location>) {
-        locationComponent.forceLocationUpdate(locations, false)
     }
 
 //    private val replayProgressObserver = ReplayProgressObserver(mapboxReplayer)
@@ -674,9 +668,9 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     }
 
     private val routeProgressObserver = object : RouteProgressObserver {
+        @SuppressLint("SetTextI18n")
         override fun onRouteProgressChanged(routeProgress: RouteProgress) {
-            Log.d("RecordRoute", "${routeProgress.distanceTraveled}")
-            binding.distanciaPercorrida.text = routeProgress.distanceTraveled.toString()
+            binding.distanciaPercorrida.text = "%.1f".format(routeProgress.distanceTraveled)
         }
     }
 
