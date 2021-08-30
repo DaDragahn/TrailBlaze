@@ -80,6 +80,7 @@
     <string name="favorite">Favorite</string>
     <string name="download">Download</string>
     <string name="a_gravar">RECORDING</string>
+    <string name="pausar">PAUSED</string>
     <string name="o_que_achou_do_percurso">What did you think of the course?</string>
     <string name="trilhos">Trails</string>
     <string name="unidades">Units</string>

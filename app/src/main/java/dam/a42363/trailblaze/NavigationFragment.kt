@@ -1,5 +1,6 @@
 package dam.a42363.trailblaze
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -65,6 +66,7 @@ import dam.a42363.trailblaze.databinding.FragmentNavigationBinding
 import dam.a42363.trailblaze.utils.Constants
 import timber.log.Timber
 import java.lang.ref.WeakReference
+import kotlin.math.roundToInt
 import kotlin.math.sqrt
 import kotlin.properties.Delegates
 
@@ -174,13 +176,30 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
         binding.chronometer.start()
 
+
+        //STEP COUNTER
         sensorManager = activity?.getSystemService(SENSOR_SERVICE) as SensorManager
-//        sensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-        sensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        sensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+
         sensor?.let {
-            sensorManager!!.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST)
-//            sensorManager!!.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+            sensorManager!!.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI)
         }
+
+        //ACCELEROMETER
+//        sensorManager = activity?.getSystemService(SENSOR_SERVICE) as SensorManager
+//        sensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+//        sensor?.let {
+//            sensorManager!!.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST)
+//        }
+
+//        if (sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null) {
+//
+//            binding.totalPassos.text = "Available"
+//
+//        } else {
+//            binding.totalPassos.text = "Not Available"
+//        }
+
 
         return binding.root
     }
@@ -192,35 +211,44 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         if (event != null) {
 //            Toast.makeText(requireContext(), "ENTERED", Toast.LENGTH_SHORT).show()
 
-//            event.values.firstOrNull()?.let {
+            Toast.makeText(
+                requireContext(),
+                "Step count: " + event.values[0].toString(), Toast.LENGTH_SHORT
+            ).show()
+
+
+//            event.values[0].let {
 //                Toast.makeText(requireContext(), "Step count: $it ", Toast.LENGTH_SHORT).show()
-//                binding.totalPassos.text = event.values.firstOrNull().toString()
-//            }
-
-//            if (counterSteps < 1) {
-//                counterSteps = event.values[0].toInt()
-//            }
 //
-//            stepCounter = event.values[0].toInt() - counterSteps
+//                Log.d("STEPS", event.values[0].toString())
+//                binding.totalPassos.text = event.values[0].toString()
+//            }
 
-
-            val xAcceleration = event.values[0]
-            val yAcceleration = event.values[1]
-            val zAcceleration = event.values[2]
-
-            val magnitude =
-                sqrt(((xAcceleration * xAcceleration) + (yAcceleration * yAcceleration) + (zAcceleration * zAcceleration)).toDouble())
-
-            val magnitudeDelta = magnitude - magnitudePrevious
-
-            magnitudePrevious = magnitude.toFloat()
-
-            if (magnitudeDelta > 9) {
-                stepCounter++
-
+            if (counterSteps < 1) {
+                counterSteps = event.values[0].toInt()
             }
 
+            stepCounter = event.values[0].toInt() - counterSteps
+
             binding.totalPassos.text = "$stepCounter"
+
+
+//            val xAcceleration = event.values[0]
+//            val yAcceleration = event.values[1]
+//            val zAcceleration = event.values[2]
+//
+//            val magnitude =
+//                sqrt(((xAcceleration * xAcceleration) + (yAcceleration * yAcceleration) + (zAcceleration * zAcceleration)).toDouble())
+//
+//            val magnitudeDelta = magnitude - magnitudePrevious
+//
+//            magnitudePrevious = magnitude.toFloat()
+//
+//            if (magnitudeDelta > 6) {
+//                stepCounter++
+//
+//            }
+//            binding.totalPassos.text = "$stepCounter"
         }
     }
 

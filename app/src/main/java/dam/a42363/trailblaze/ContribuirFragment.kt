@@ -1,15 +1,20 @@
 package dam.a42363.trailblaze
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper.getMainLooper
 import android.os.SystemClock
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Chronometer
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.cardview.widget.CardView
@@ -72,6 +77,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     private lateinit var stopButton: FloatingActionButton
     private lateinit var chronometerHolder: CardView
     private lateinit var chronometer: Chronometer
+    private lateinit var actionText: TextView
 
     private var timeWhenStopped: Long = 0
     var isRecording: Boolean = false
@@ -104,6 +110,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         backCallback.isEnabled
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -134,6 +141,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         stopButton = binding.stopBtn
         chronometerHolder = binding.chronometerHolder
         chronometer = binding.chronometer
+        actionText = binding.actionText
 
         idTrail = db.collection("locations").document().id
 
@@ -178,6 +186,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
         pauseButton.setOnClickListener {
             isPlaying = false
+            actionText.setText(R.string.pausar)
             playButton.visibility = View.VISIBLE
             pauseButton.visibility = View.GONE
             timeWhenStopped = chronometer.base - SystemClock.elapsedRealtime()
@@ -186,6 +195,7 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
 
         playButton.setOnClickListener {
             isPlaying = true
+            actionText.setText(R.string.a_gravar)
             pauseButton.visibility = View.VISIBLE
             playButton.visibility = View.GONE
             chronometer.base = SystemClock.elapsedRealtime() + timeWhenStopped
