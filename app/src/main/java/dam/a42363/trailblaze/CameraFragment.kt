@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
@@ -65,9 +66,11 @@ class CameraFragment : Fragment() {
 
         binding.cameraBtn.setOnClickListener {
             callback.isEnabled = true
-            binding.cameraBtn.visibility= View.GONE
+            binding.cameraBtn.visibility = View.GONE
+            binding.circularProgressBar.visibility = View.VISIBLE
             takePhoto()
         }
+
 
         // Inflate the layout for this fragment
         return binding.root
@@ -124,6 +127,7 @@ class CameraFragment : Fragment() {
 
                             Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT)
                                 .show()
+                            binding.circularProgressBar.visibility = View.GONE
                             binding.cameraBtn.visibility = View.VISIBLE
                             callback.isEnabled = false
                         }

@@ -98,8 +98,7 @@ class HandlerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
-        progressBar = view.findViewById(R.id.circular_progress_bar)
-
+        progressBar = binding.circularProgressBar
         auth = FirebaseAuth.getInstance()
 
         if (checkLocationPermission()) {

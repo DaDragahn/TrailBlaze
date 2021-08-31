@@ -25,4 +25,16 @@
         app:borderWidth="3dp"
         app:maxImageSize="58dp" />
 
+    <ProgressBar
+        android:id="@+id/circular_progress_bar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
+        android:indeterminate="true"
+        android:maxHeight="50dp"
+        android:minHeight="50dp"
+        android:theme="@style/progressBar"
+        android:visibility="gone" />
+
 </FrameLayout>
