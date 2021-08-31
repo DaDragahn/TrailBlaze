@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -14,7 +16,6 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -28,6 +29,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraFragment : Fragment() {
+    private lateinit var callback: OnBackPressedCallback
     private var idTrail: String? = null
     private lateinit var storageRef: StorageReference
     private var _binding: FragmentCameraBinding? = null
@@ -37,6 +39,16 @@ class CameraFragment : Fragment() {
     private lateinit var outputDirectory: File
     private lateinit var auth: FirebaseAuth
     private lateinit var cameraExecutor: ExecutorService
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+
+        }
+
+        callback.isEnabled = false
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +64,8 @@ class CameraFragment : Fragment() {
         startCamera()
 
         binding.cameraBtn.setOnClickListener {
+            callback.isEnabled = true
+            binding.cameraBtn.visibility= View.GONE
             takePhoto()
         }
 
@@ -108,8 +122,10 @@ class CameraFragment : Fragment() {
                         .addOnSuccessListener {   // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                             val msg = "Photo Saved"
 
-                            Toast.makeText(requireContext(), "$msg $savedUri", Toast.LENGTH_SHORT)
+                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT)
                                 .show()
+                            binding.cameraBtn.visibility = View.VISIBLE
+                            callback.isEnabled = false
                         }
                 }
 

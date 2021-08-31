@@ -78,7 +78,6 @@ class FavoritosFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser
         trailsListView = binding.routesListView
-        getFavorites()
         return binding.root
     }
 
@@ -94,6 +93,7 @@ class FavoritosFragment : Fragment() {
                 (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
             }
         }
+        getFavorites()
     }
 
 
@@ -111,7 +111,7 @@ class FavoritosFragment : Fragment() {
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+
             }
         }
     }

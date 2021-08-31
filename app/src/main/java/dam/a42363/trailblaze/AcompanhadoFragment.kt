@@ -72,12 +72,12 @@ class AcompanhadoFragment : Fragment() {
         displayAllFriends()
         displayAllGroups()
 
+        optimizedRoute = arguments?.getString("route")!!
+        feature = arguments?.getString("feature")!!
+
         binding.start.setOnClickListener {
             inviteAndStartTrail()
         }
-
-        optimizedRoute = arguments?.getString("route")!!
-        feature = arguments?.getString("feature")!!
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -129,7 +129,7 @@ class AcompanhadoFragment : Fragment() {
             }
         }
 
-        val bundle = bundleOf("route" to optimizedRoute, "idTrail" to lobby.id)
+        val bundle = bundleOf("route" to optimizedRoute, "idTrail" to feature,"idLobby" to lobby.id, "individual" to false)
 
         navController.navigate(
             R.id.action_escolherModoFragment_to_navigationFragment,
@@ -310,7 +310,7 @@ class AcompanhadoFragment : Fragment() {
         }
 
         val bundle =
-            bundleOf("route" to optimizedRoute, "idTrail" to lobby.id, "individual" to false)
+            bundleOf("route" to optimizedRoute,  "idTrail" to feature,"idLobby" to lobby.id, "individual" to false)
 
         navController.navigate(
             R.id.action_escolherModoFragment_to_navigationFragment,

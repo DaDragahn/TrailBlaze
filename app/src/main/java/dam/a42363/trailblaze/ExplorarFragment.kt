@@ -148,7 +148,6 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser?.uid
 
-        Log.d("RecordRoute", "${auth.currentUser!!.photoUrl}")
         val point = arguments?.getString("local")?.let { Point.fromJson(it) }
         if (point != null) {
             center = GeoLocation(point.latitude(), point.longitude())

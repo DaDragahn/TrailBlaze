@@ -102,6 +102,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     private lateinit var slidingUpPanelLayout: SlidingUpPanelLayout
     private var destroy: Boolean = false
     private var idTrail: String? = null
+    private var idLobby: String? = null
     private val lobbyArray = ArrayList<String>()
 
     private var sensorManager: SensorManager? = null
@@ -118,8 +119,10 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
             binding.sairCardView.visibility = View.VISIBLE
             binding.sairBtn.setOnClickListener {
-                db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
-                    .document(auth.uid!!).delete()
+                if (!idLobby.isNullOrEmpty()) {
+                    db.collection("Trails").document(idLobby!!).collection("TrailsCollection")
+                        .document(auth.uid!!).delete()
+                }
                 navController.navigate(R.id.action_navigationFragment_to_explorarFragment)
             }
 //            binding.voltarBtn.setOnClickListener {
@@ -170,6 +173,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
         optimizedRoute = DirectionsRoute.fromJson(arguments?.getString("route")!!)
         idTrail = arguments?.getString("idTrail")
+        idLobby = arguments?.getString("idLobby")
         check = arguments?.getBoolean("individual")!!
         Log.v("RecordRoute", idTrail.toString())
         Log.v("RecordRoute", "$optimizedRoute")
@@ -416,7 +420,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     private fun addUserMarkers(style: Style) {
         val userMarkerList: ArrayList<Feature> = ArrayList()
         if (lobbyArray.isNotEmpty()) {
-            db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+            db.collection("Trails").document(idLobby!!).collection("TrailsCollection")
                 .whereIn(FieldPath.documentId(), lobbyArray).get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
@@ -444,11 +448,11 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
     private fun checkLobby(updates: MutableMap<String, Any>) {
         if (!check) {
-            if (idTrail != null) {
-                db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+            if (idLobby != null) {
+                db.collection("Trails").document(idLobby!!).collection("TrailsCollection")
                     .document(auth.uid!!).update(updates)
 
-                db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+                db.collection("Trails").document(idLobby!!).collection("TrailsCollection")
                     .get()
                     .addOnSuccessListener { result ->
                         for (document in result) {
@@ -596,8 +600,10 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
         mapboxNavigation?.stopTripSession()
         mapboxNavigation?.onDestroy()
-        db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
-            .document(auth.uid!!).delete()
+        if(!idLobby.isNullOrEmpty()) {
+            db.collection("Trails").document(idLobby!!).collection("TrailsCollection")
+                .document(auth.uid!!).delete()
+        }
         super.onDestroy()
 
 //        binding.totalPassos.text = "0"
@@ -681,7 +687,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             mapboxMap!!.queryRenderedFeatures(screenPoint, "icon-layer-id")
         if (featuresList.isNotEmpty()) {
             for (feature in featuresList) {
-                db.collection("Trails").document(idTrail!!).collection("TrailsCollection")
+                db.collection("Trails").document(idLobby!!).collection("TrailsCollection")
                     .document(feature.id()!!).get().addOnSuccessListener {
                         Toast.makeText(
                             requireActivity().applicationContext,

@@ -209,7 +209,8 @@ class NotificationsFragment : Fragment() {
                                             val bundle =
                                                 bundleOf(
                                                     "route" to routeInfo,
-                                                    "idTrail" to idInvite
+                                                    "idLobby" to idInvite,
+                                                    "idTrail" to idRoute
                                                 )
 
                                             navController.navigate(
