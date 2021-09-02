@@ -48,6 +48,7 @@
                         android:layout_height="match_parent"
                         android:drawableStart="@drawable/ic_person"
                         android:drawablePadding="10dp"
+                        android:inputType="textEmailAddress"
                         android:hint="@string/email"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dip"

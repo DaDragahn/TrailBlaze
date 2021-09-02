@@ -108,6 +108,7 @@ class PartilharFragment : Fragment() {
                 bundle
             )
         }
+
         return binding.root
     }
 
