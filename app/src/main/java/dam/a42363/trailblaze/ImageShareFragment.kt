@@ -98,12 +98,12 @@ class ImageShareFragment : Fragment() {
 
             })
 
-        rotateLeftBtn = binding.rotateLeft
-
-        rotateLeftBtn.setOnClickListener {
-
-            fullImage
-        }
+//        rotateLeftBtn = binding.rotateLeft
+//
+//        rotateLeftBtn.setOnClickListener {
+//
+//            fullImage
+//        }
 
         return binding.root
     }
@@ -116,6 +116,10 @@ class ImageShareFragment : Fragment() {
 
         if (activity != null && this.activity is MainActivity) {
             (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+        }
+
+        binding.backBtn.setOnClickListener {
+            navController.popBackStack()
         }
     }
 }
