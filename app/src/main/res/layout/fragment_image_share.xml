@@ -60,21 +60,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-        <!--            android:id="@+id/rotateLeft"-->
-        <!--            android:layout_row="1"-->
-        <!--            android:layout_gravity="bottom|start"-->
-        <!--            android:layout_margin="20dp"-->
-        <!--            android:src="@drawable/ic_arrow_back" />-->
-
-        <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-        <!--            android:id="@+id/rotateRigth"-->
-        <!--            android:layout_row="1"-->
-        <!--            android:layout_gravity="bottom|end"-->
-        <!--            android:layout_margin="20dp"-->
-        <!--            android:rotation="180"-->
-        <!--            android:src="@drawable/ic_arrow_back" />-->
-
     </GridLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

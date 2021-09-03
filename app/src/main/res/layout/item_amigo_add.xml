@@ -49,6 +49,54 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image" />
 
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/accept"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="15dp"
+                    android:visibility="gone"
+                    android:background="@drawable/ic_round_check"
+                    app:backgroundTint="@color/trailGreen" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/refuse"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="15dp"
+                    android:visibility="gone"
+                    android:background="@drawable/ic_cross"
+                    app:backgroundTint="@color/trailGreen" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/adicionar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="visible"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/ic_add_circle"
+                    app:backgroundTint="@color/trailGreen" />
+
+            </GridLayout>
+
+
+            <!--            <com.google.android.material.button.MaterialButton-->
+            <!--                android:id="@+id/adicionar"-->
+            <!--                android:layout_width="30dp"-->
+            <!--                android:layout_height="30dp"-->
+            <!--                android:layout_gravity="end|center_vertical"-->
+            <!--                android:layout_marginEnd="15dp"-->
+            <!--                android:background="@drawable/ic_add_circle"-->
+            <!--                app:backgroundTint="@color/trailGreen" />-->
+
         </GridLayout>
 
     </com.google.android.material.card.MaterialCardView>
