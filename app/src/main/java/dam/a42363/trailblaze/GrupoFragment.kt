@@ -2,13 +2,11 @@ package dam.a42363.trailblaze
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -19,7 +17,10 @@ import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import dam.a42363.trailblaze.databinding.FragmentGrupoBinding
@@ -47,7 +48,7 @@ class GrupoFragment : Fragment() {
     private lateinit var img: ByteArray
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
-    var _binding: FragmentGrupoBinding? = null
+    private var _binding: FragmentGrupoBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -83,7 +84,6 @@ class GrupoFragment : Fragment() {
                 // Handle unsuccessful uploads
             }
                 .addOnSuccessListener {   // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                    Log.d("RecordRoute", it.metadata.toString())
                     userRefImagesRef.downloadUrl.addOnSuccessListener { uri ->
                         val photoUrl = "$uri"
                         val updates: MutableMap<String, Any> = HashMap()
@@ -200,7 +200,6 @@ class GrupoFragment : Fragment() {
             position: Int,
             model: AddFriends
         ) {
-            holder.amigoBinding.adicionar.visibility = View.GONE
             val data = snapshots.getSnapshot(position).data
             val id = snapshots.getSnapshot(position).id
             if (groupArray.contains(id)) {

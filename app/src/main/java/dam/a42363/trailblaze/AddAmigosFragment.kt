@@ -2,13 +2,11 @@ package dam.a42363.trailblaze
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -21,12 +19,9 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import dam.a42363.trailblaze.databinding.FragmentAddAmigosBinding
-import dam.a42363.trailblaze.databinding.ItemAmigoBinding
+import dam.a42363.trailblaze.databinding.ItemAmigoAddBinding
 import dam.a42363.trailblaze.models.AddFriends
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.*
 
 
@@ -209,7 +204,7 @@ class AddAmigosFragment : Fragment() {
     }
 
 
-    private inner class FindFriendsViewHolder(val amigoBinding: ItemAmigoBinding) :
+    private inner class FindFriendsViewHolder(val amigoBinding: ItemAmigoAddBinding) :
         RecyclerView.ViewHolder(amigoBinding.root) {
         fun setVariables(nome: String, photoUrl: String, ctx: Context) {
             amigoBinding.name.text = nome
@@ -244,31 +239,37 @@ class AddAmigosFragment : Fragment() {
                                     if (snapshot != null && snapshot.exists()) {
                                         val requestType = snapshot.getString("request_type")
                                         if (requestType.equals("sent")) {
-                                            findFriendsViewHolder.amigoBinding.adicionar.background =
-                                                ContextCompat.getDrawable(
-                                                    ctx,
-                                                    R.drawable.ic_cross
-                                                )
-                                            findFriendsViewHolder.amigoBinding.adicionar.setOnClickListener {
+                                            findFriendsViewHolder.amigoBinding.adicionar.visibility =
+                                                View.GONE
+                                            findFriendsViewHolder.amigoBinding.accept.visibility =
+                                                View.GONE
+                                            findFriendsViewHolder.amigoBinding.refuse.visibility =
+                                                View.VISIBLE
+                                            findFriendsViewHolder.amigoBinding.refuse.setOnClickListener {
                                                 cancelFriendRequest(snapshots.getSnapshot(position).id)
                                             }
                                         } else if (requestType.equals("received")) {
-                                            findFriendsViewHolder.amigoBinding.adicionar.background =
-                                                ContextCompat.getDrawable(
-                                                    ctx,
-                                                    R.drawable.ic_arrow_ios_upward_outline
-                                                )
-                                            findFriendsViewHolder.amigoBinding.adicionar.setOnClickListener {
+                                            findFriendsViewHolder.amigoBinding.adicionar.visibility =
+                                                View.GONE
+                                            findFriendsViewHolder.amigoBinding.accept.visibility =
+                                                View.VISIBLE
+                                            findFriendsViewHolder.amigoBinding.refuse.visibility =
+                                                View.VISIBLE
+                                            findFriendsViewHolder.amigoBinding.accept.setOnClickListener {
                                                 acceptFriendRequest(snapshots.getSnapshot(position).id)
+                                            }
+                                            findFriendsViewHolder.amigoBinding.refuse.setOnClickListener {
+                                                cancelFriendRequest(snapshots.getSnapshot(position).id)
                                             }
                                         }
                                     } else {
                                         if (findFriendsViewHolder.amigoBinding.cardView.visibility == View.VISIBLE) {
-                                            findFriendsViewHolder.amigoBinding.adicionar.background =
-                                                ContextCompat.getDrawable(
-                                                    ctx,
-                                                    R.drawable.ic_add_circle
-                                                )
+                                            findFriendsViewHolder.amigoBinding.adicionar.visibility =
+                                                View.VISIBLE
+                                            findFriendsViewHolder.amigoBinding.accept.visibility =
+                                                View.GONE
+                                            findFriendsViewHolder.amigoBinding.refuse.visibility =
+                                                View.GONE
                                             findFriendsViewHolder.amigoBinding.adicionar.setOnClickListener {
                                                 sendFriendRequest(snapshots.getSnapshot(position).id)
                                             }
@@ -289,7 +290,7 @@ class AddAmigosFragment : Fragment() {
             viewType: Int
         ): FindFriendsViewHolder {
             return FindFriendsViewHolder(
-                ItemAmigoBinding.inflate(
+                ItemAmigoAddBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent, false
                 )

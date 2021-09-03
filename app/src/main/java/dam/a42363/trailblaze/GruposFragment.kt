@@ -24,7 +24,7 @@ class GruposFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
-    var _binding: FragmentGruposBinding? = null
+    private var _binding: FragmentGruposBinding? = null
     private val binding get() = _binding!!
     private lateinit var groupoListView: RecyclerView
     private lateinit var grupoRef: Query

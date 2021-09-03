@@ -14,6 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.Target
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -78,7 +79,7 @@ class AcompanhadoFragment : Fragment() {
         binding.start.setOnClickListener {
             inviteAndStartTrail()
         }
-        // Inflate the layout for this fragment
+
         return binding.root
     }
 
@@ -129,7 +130,12 @@ class AcompanhadoFragment : Fragment() {
             }
         }
 
-        val bundle = bundleOf("route" to optimizedRoute, "idTrail" to feature,"idLobby" to lobby.id, "individual" to false)
+        val bundle = bundleOf(
+            "route" to optimizedRoute,
+            "idTrail" to feature,
+            "idLobby" to lobby.id,
+            "individual" to false
+        )
 
         navController.navigate(
             R.id.action_escolherModoFragment_to_navigationFragment,
@@ -225,9 +231,11 @@ class AcompanhadoFragment : Fragment() {
     inner class GroupFinderViewHolder(val grupoBinding: ItemGrupoBinding) :
         RecyclerView.ViewHolder(grupoBinding.root) {
         @SuppressLint("SetTextI18n")
-        fun setVariables(nome: String, membros: String, ctx: Context) {
+        fun setVariables(nome: String, photoUrl: String, membros: String, ctx: Context) {
             grupoBinding.name.text = nome
             grupoBinding.membros.text = membros
+            Glide.with(ctx).load(photoUrl).override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .into(grupoBinding.image)
         }
     }
 
@@ -247,7 +255,8 @@ class AcompanhadoFragment : Fragment() {
             val groupArray: List<String> = data?.get("groupArray") as List<String>
             if (groupArray.contains(onlineId)) {
                 val nome: String = data["nome"] as String
-                holder.setVariables(nome, groupArray.size.toString(), ctx)
+                val photoUrl = data["photoUrl"].toString()
+                holder.setVariables(nome, photoUrl, groupArray.size.toString(), ctx)
                 holder.grupoBinding.cardView.setOnClickListener {
                     binding.decisionCardView.visibility = View.VISIBLE
                     binding.aceitarBtn.setOnClickListener {
@@ -310,7 +319,12 @@ class AcompanhadoFragment : Fragment() {
         }
 
         val bundle =
-            bundleOf("route" to optimizedRoute,  "idTrail" to feature,"idLobby" to lobby.id, "individual" to false)
+            bundleOf(
+                "route" to optimizedRoute,
+                "idTrail" to feature,
+                "idLobby" to lobby.id,
+                "individual" to false
+            )
 
         navController.navigate(
             R.id.action_escolherModoFragment_to_navigationFragment,

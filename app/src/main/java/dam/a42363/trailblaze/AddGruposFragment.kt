@@ -27,7 +27,7 @@ import java.time.LocalDateTime
 class AddGruposFragment : Fragment() {
 
     private lateinit var navController: NavController
-    var _binding: FragmentAddGruposBinding? = null
+    private var _binding: FragmentAddGruposBinding? = null
     private val binding get() = _binding!!
     private lateinit var amigosListView: RecyclerView
     private lateinit var userRef: CollectionReference
@@ -92,8 +92,6 @@ class AddGruposFragment : Fragment() {
                             "groupArray" to groupArray
                         )
                         group.set(groupSent)
-//                        group.collection("GroupsCollection").document(onlineId).set(groupSent)
-
                     }
                 }
             }
@@ -161,13 +159,9 @@ class AddGruposFragment : Fragment() {
                     holder.setVariables(userName, photoUrl, ctx)
                     holder.amigoBinding.check.setOnCheckedChangeListener { _, isChecked ->
                         if (isChecked) {
-//                            if (friendsArray.isEmpty())
-//                                binding.start.visibility = View.VISIBLE
                             friendsArray.add(usersID)
                         } else {
                             friendsArray.remove(usersID)
-//                            if (friendsArray.isEmpty())
-//                                binding.start.visibility = View.GONE
                         }
                     }
                 }

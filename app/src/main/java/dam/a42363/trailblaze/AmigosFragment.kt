@@ -23,7 +23,7 @@ import dam.a42363.trailblaze.models.Friends
 class AmigosFragment : Fragment() {
     private var adapter: FindFriendsFirestoreRecyclerAdapter? = null
     private lateinit var navController: NavController
-    var _binding: FragmentAmigosBinding? = null
+    private var _binding: FragmentAmigosBinding? = null
     private val binding get() = _binding!!
     private lateinit var db: FirebaseFirestore
     private lateinit var userRef: CollectionReference
@@ -134,7 +134,6 @@ class AmigosFragment : Fragment() {
                     val userName: String = snapshot.getString("nome")!!
                     val photoUrl: String = snapshot.getString("photoUrl")!!
                     holder.setVariables(userName, photoUrl, ctx)
-                    holder.amigoBinding.adicionar.visibility = View.INVISIBLE
                 }
             }
         }

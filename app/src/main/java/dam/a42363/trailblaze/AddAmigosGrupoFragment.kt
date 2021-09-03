@@ -3,8 +3,6 @@ package dam.a42363.trailblaze
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +10,7 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +22,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import dam.a42363.trailblaze.databinding.FragmentAddAmigosGrupoBinding
+import dam.a42363.trailblaze.databinding.ItemAmigoAddBinding
 import dam.a42363.trailblaze.databinding.ItemAmigoBinding
 import dam.a42363.trailblaze.models.Friends
 import kotlinx.coroutines.CoroutineScope
@@ -78,7 +78,7 @@ class AddAmigosGrupoFragment : Fragment() {
 //            }
 //
 //        })
-        searchPeople("test")
+        searchPeople()
         return binding.root
     }
 
@@ -96,7 +96,7 @@ class AddAmigosGrupoFragment : Fragment() {
         }
     }
 
-    private fun searchPeople(newText: String) = CoroutineScope(Dispatchers.IO).launch {
+    private fun searchPeople() = CoroutineScope(Dispatchers.IO).launch {
         try {
             groupRef = groupId?.let { db.collection("Groups").document(it).get().await() }!!
             val data = groupRef.data
@@ -129,7 +129,6 @@ class AddAmigosGrupoFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun addGroup(usersID: String) {
-        Log.d("RecordRoute", "Clicked")
         val currentDateTime = LocalDateTime.now()
         db.collection("users").document(onlineId).get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot!!.exists()) {
@@ -147,7 +146,7 @@ class AddAmigosGrupoFragment : Fragment() {
         }
     }
 
-    private inner class FindFriendsViewHolder(val amigoBinding: ItemAmigoBinding) :
+    private inner class FindFriendsViewHolder(val amigoBinding: ItemAmigoAddBinding) :
         RecyclerView.ViewHolder(amigoBinding.root) {
         fun setVariables(nome: String, photoUrl: String, ctx: Context) {
             amigoBinding.name.text = nome
@@ -182,11 +181,7 @@ class AddAmigosGrupoFragment : Fragment() {
                             } else {
                                 for (invite in it.documents) {
                                     if (invite.getString("type").equals("Group")) {
-                                        findFriendsViewHolder.amigoBinding.adicionar.background =
-                                            ContextCompat.getDrawable(
-                                                ctx,
-                                                R.drawable.ic_cross
-                                            )
+                                        findFriendsViewHolder.amigoBinding.adicionar.visibility = View.GONE
                                     } else {
                                         findFriendsViewHolder.amigoBinding.adicionar.setOnClickListener {
                                             addGroup(usersID)
@@ -206,7 +201,7 @@ class AddAmigosGrupoFragment : Fragment() {
             viewType: Int
         ): FindFriendsViewHolder {
             return FindFriendsViewHolder(
-                ItemAmigoBinding.inflate(
+                ItemAmigoAddBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent, false
                 )
