@@ -2,7 +2,6 @@ package dam.a42363.trailblaze
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
@@ -21,7 +20,6 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dam.a42363.trailblaze.databinding.FragmentImageShareBinding
-import java.lang.Exception
 
 
 class ImageShareFragment : Fragment() {
@@ -33,7 +31,7 @@ class ImageShareFragment : Fragment() {
 
     private lateinit var rotateLeftBtn: FloatingActionButton
 
-    var _binding: FragmentImageShareBinding? = null
+    private var _binding: FragmentImageShareBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -42,7 +40,6 @@ class ImageShareFragment : Fragment() {
     ): View {
         _binding = FragmentImageShareBinding.inflate(inflater, container, false)
         val url = arguments?.getString("url")
-        //Log.d("RecordRoute", url.toString())
 
         toolbar = binding.toolbar
         toolbar.inflateMenu(R.menu.share_menu)
@@ -97,13 +94,6 @@ class ImageShareFragment : Fragment() {
                 }
 
             })
-
-//        rotateLeftBtn = binding.rotateLeft
-//
-//        rotateLeftBtn.setOnClickListener {
-//
-//            fullImage
-//        }
 
         return binding.root
     }

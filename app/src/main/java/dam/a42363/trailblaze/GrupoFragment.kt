@@ -55,8 +55,6 @@ class GrupoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-
         _binding = FragmentGrupoBinding.inflate(inflater, container, false)
 
         auth = FirebaseAuth.getInstance()
@@ -80,18 +78,15 @@ class GrupoFragment : Fragment() {
 
             val userRefImagesRef = storageRef.child("images/groups/${groupId}/groupPhoto.jpg")
             val uploadTask: UploadTask = userRefImagesRef.putBytes(img)
-            uploadTask.addOnFailureListener {
-                // Handle unsuccessful uploads
-            }
-                .addOnSuccessListener {   // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                    userRefImagesRef.downloadUrl.addOnSuccessListener { uri ->
-                        val photoUrl = "$uri"
-                        val updates: MutableMap<String, Any> = HashMap()
-                        updates["photoUrl"] = photoUrl
-                        db.collection("Groups").document(groupId!!)
-                            .update(updates)
-                    }
+            uploadTask.addOnSuccessListener {   // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                userRefImagesRef.downloadUrl.addOnSuccessListener { uri ->
+                    val photoUrl = "$uri"
+                    val updates: MutableMap<String, Any> = HashMap()
+                    updates["photoUrl"] = photoUrl
+                    db.collection("Groups").document(groupId!!)
+                        .update(updates)
                 }
+            }
         }
 
         toolbar = binding.toolbar

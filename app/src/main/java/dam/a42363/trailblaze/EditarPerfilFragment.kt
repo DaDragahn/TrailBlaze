@@ -29,7 +29,7 @@ import java.io.InputStream
 
 class EditarPerfilFragment : Fragment() {
 
-    var _binding: FragmentEditarPerfilBinding? = null
+    private var _binding: FragmentEditarPerfilBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
@@ -46,8 +46,6 @@ class EditarPerfilFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-
         _binding = FragmentEditarPerfilBinding.inflate(inflater, container, false)
 
         db = FirebaseFirestore.getInstance()
@@ -77,6 +75,7 @@ class EditarPerfilFragment : Fragment() {
         return byteBuffer.toByteArray()
     }
 
+    @SuppressLint("LogNotTimber")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -98,7 +97,6 @@ class EditarPerfilFragment : Fragment() {
 
         val storageRef = storage.reference
 
-//        val email = binding.email
         val name = binding.nome
         val lastName = binding.apelido
         val profileImage = binding.profileImage
@@ -116,7 +114,6 @@ class EditarPerfilFragment : Fragment() {
 
                             name.setText(fullName?.get(0))
                             lastName.setText(fullName?.get(1))
-//                            email.setText(documentSnapshot.getString("email"))
                             photoUrl = documentSnapshot.getString("photoUrl").toString()
                             if (photoUrl != "")
                                 Glide.with(this).load(photoUrl)
@@ -134,38 +131,33 @@ class EditarPerfilFragment : Fragment() {
         save.setOnClickListener {
             val txtFirstName = name.text.toString()
             val txtLastName = lastName.text.toString()
-//            val email = email.text.toString()
 
             if (TextUtils.isEmpty(txtFirstName) || TextUtils.isEmpty(txtLastName)) {
                 Toast.makeText(this.activity, "Empty credentials!!", Toast.LENGTH_SHORT)
                     .show()
             } else {
                 if (isNewPhoto) {
-                    //val userRef = storageRef.child("user.jpg")
 
                     val userRefImagesRef = storageRef.child("images/${user?.uid}/user.jpg")
                     val uploadTask: UploadTask = userRefImagesRef.putBytes(img)
-                    uploadTask.addOnFailureListener {
-                        // Handle unsuccessful uploads
-                    }
-                        .addOnSuccessListener {   // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                            userRefImagesRef.downloadUrl.addOnSuccessListener {
-                                photoUrl = "$it"
-                                val updates: MutableMap<String, Any> = HashMap()
-                                updates["nome"] = "$txtFirstName $txtLastName"
-                                updates["photoUrl"] = photoUrl
+                    uploadTask.addOnSuccessListener {
+                        userRefImagesRef.downloadUrl.addOnSuccessListener {
+                            photoUrl = "$it"
+                            val updates: MutableMap<String, Any> = HashMap()
+                            updates["nome"] = "$txtFirstName $txtLastName"
+                            updates["photoUrl"] = photoUrl
 
-                                val profileUpdates = UserProfileChangeRequest.Builder()
-                                    .setDisplayName("$txtFirstName $txtLastName")
-                                    .setPhotoUri(Uri.parse(photoUrl))
-                                    .build()
+                            val profileUpdates = UserProfileChangeRequest.Builder()
+                                .setDisplayName("$txtFirstName $txtLastName")
+                                .setPhotoUri(Uri.parse(photoUrl))
+                                .build()
 
-                                user?.updateProfile(profileUpdates)
+                            user?.updateProfile(profileUpdates)
 
-                                db.collection("users").document(user!!.uid).update(updates)
-                                navController.navigate(R.id.action_editarPerfilFragment_to_perfilFragment)
-                            }
+                            db.collection("users").document(user!!.uid).update(updates)
+                            navController.navigate(R.id.action_editarPerfilFragment_to_perfilFragment)
                         }
+                    }
                 } else {
                     val updates: MutableMap<String, Any> = HashMap()
                     updates["nome"] = "$txtFirstName $txtLastName"
@@ -183,8 +175,5 @@ class EditarPerfilFragment : Fragment() {
                 }
             }
         }
-
-
     }
-
 }

@@ -35,9 +35,6 @@ import com.mapbox.core.constants.Constants
 import com.mapbox.geojson.LineString
 import com.mapbox.geojson.Point
 import com.mapbox.mapboxsdk.Mapbox
-import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
-import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
 import dam.a42363.trailblaze.databinding.FragmentExplorarListBinding
@@ -92,9 +89,6 @@ class ExplorarListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        if (_binding != null) {
-//            return binding.root
-//        }
         _binding = FragmentExplorarListBinding.inflate(inflater, container, false)
 
         db = FirebaseFirestore.getInstance()
@@ -132,7 +126,7 @@ class ExplorarListFragment : Fragment() {
         initSearchFab()
 
         updateRouteInfo()
-        // Inflate the layout for this fragment
+
         return binding.root
     }
 
@@ -173,16 +167,8 @@ class ExplorarListFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode === Activity.RESULT_OK && requestCode === REQUEST_CODE_AUTOCOMPLETE) {
 
-            // Retrieve selected location's CarmenFeature
             val selectedCarmenFeature = PlaceAutocomplete.getPlace(data)
 
-            // Create a new FeatureCollection and add a new Feature to it using selectedCarmenFeature above.
-            // Then retrieve and update the source designated for showing a selected location's symbol layer icon
-
-
-            // Move map camera to the selected location
-
-//            binding.searchView.setQuery("${selectedCarmenFeature.text()}", false)
             binding.searchView.setText("${selectedCarmenFeature.text()}")
             binding.searchView.clearFocus()
             center = GeoLocation(
@@ -379,7 +365,6 @@ class ExplorarListFragment : Fragment() {
                 )
             )
         }
-
     }
 
     override fun onStop() {

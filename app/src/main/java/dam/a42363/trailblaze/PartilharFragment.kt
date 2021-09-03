@@ -136,6 +136,7 @@ class PartilharFragment : Fragment() {
 
     }
 
+    @SuppressLint("LogNotTimber")
     private fun reverseGeocode(point: Point) {
         try {
             val client = MapboxGeocoding.builder()
@@ -145,7 +146,7 @@ class PartilharFragment : Fragment() {
                 .build()
 
             client.enqueueCall(object : Callback<GeocodingResponse> {
-                @SuppressLint("SetTextI18n")
+                @SuppressLint("SetTextI18n", "LogNotTimber")
                 override fun onResponse(
                     call: Call<GeocodingResponse>,
                     response: Response<GeocodingResponse>
@@ -163,6 +164,7 @@ class PartilharFragment : Fragment() {
                     }
                 }
 
+                @SuppressLint("LogNotTimber")
                 override fun onFailure(call: Call<GeocodingResponse>, throwable: Throwable) {
                     Log.e(TAG, "Geocoding Failure", throwable)
                 }
@@ -189,11 +191,9 @@ class PartilharFragment : Fragment() {
         destination = points.last()
         points = points.drop(1)
         points = points.dropLast(1)
-        Log.v("TrackingLocation", "$origin" + "$destination")
         while (points.size > 23) {
             points = points.drop(index++)
         }
-        Log.v("TrackingLocation", points.size.toString())
         if (points.size > 1) {
             MapboxDirections.builder()
                 .accessToken(Mapbox.getAccessToken()!!)
@@ -211,10 +211,6 @@ class PartilharFragment : Fragment() {
                         if (response.isSuccessful && response.body()!!.routes().isNotEmpty()) {
                             currentRoute =
                                 response.body()!!.routes()[0]
-//                            optimizedRoute = LineString.fromPolyline(
-//                                currentRoute?.geometry()!!,
-//                                Constants.PRECISION_6
-//                            )
                             val distance: Float = (currentRoute!!.distance() / 1000f).toFloat()
                             if (distance < 1) {
                                 binding.distanciaTextView.text =
@@ -223,12 +219,6 @@ class PartilharFragment : Fragment() {
                                 binding.distanciaTextView.text = "%.1f".format(distance) + "Km"
                             }
                             reverseGeocode(origin)
-//                            Log.d(
-//                                "TrackingLocation",
-//                                optimizedRoute!!.coordinates().size.toString()
-//                            )
-                            Log.d("TrackingLocation", currentRoute?.toJson()!!)
-
                         } else {
                             // If the response code does not response "OK" an error has occurred.
                             Timber.e("MapboxMapMatching failed with %s", response.code())

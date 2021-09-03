@@ -1,15 +1,11 @@
 package dam.a42363.trailblaze
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper.getMainLooper
 import android.os.SystemClock
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,9 +78,8 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
     private var timeWhenStopped: Long = 0
     var isRecording: Boolean = false
     var isPlaying: Boolean = false
-    var isDestroy: Boolean = true
+    private var isDestroy: Boolean = true
     var routeCoordinates: ArrayList<Point> = ArrayList()
-//    var numberExample = 0.001
 
     private val callback: TrackingLocationCallback =
         TrackingLocationCallback(this)
@@ -115,7 +110,6 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         if (_binding != null) {
             isPlaying = true
             isDestroy = true
@@ -218,9 +212,6 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
             val feature = Feature.fromGeometry(lineString)
 
             val featureJson = FeatureCollection.fromFeature(feature).toJson()
-
-//            val lineStringTest = lineString.toJson()
-//            Log.d("TrackingLocation", lineStringTest)
 
             locationEngine?.removeLocationUpdates(callback)
 
@@ -363,7 +354,6 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                             latitude
                         )
                     )
-//                    fragment.numberExample += 0.001
                 }
             }
         }
@@ -409,7 +399,6 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
         super.onDestroy()
         locationEngine?.removeLocationUpdates(callback)
         mapView.onDestroy()
-//        numberExample = 0.00001
         if (isDestroy) {
             storageRef.child("images/${auth.currentUser?.uid}/locations/${idTrail}").listAll()
                 .addOnSuccessListener {
@@ -419,17 +408,6 @@ class ContribuirFragment : Fragment(), OnMapReadyCallback, PermissionsListener {
                 }
         }
     }
-
-    //    override fun onDestroyView() {
-//        super.onDestroyView()
-//        if (isDestroy) {
-//            storageRef.child("images/${auth.currentUser?.uid}/locations/${idTrail}").listAll().addOnSuccessListener {
-//                it.items.forEach {ref ->
-//                    ref.delete()
-//                }
-//            }
-//        }
-//    }
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()

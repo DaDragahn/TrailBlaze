@@ -230,7 +230,6 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initMarkerIconSymbolLayer(style: Style) {
-        // Add the marker image to map
         style.addImage(
             "icon-image", BitmapFactory.decodeResource(
                 this.resources, R.drawable.mapbox_marker_icon_default
@@ -239,7 +238,7 @@ class FullInfoFragment : Fragment(), OnMapReadyCallback {
         val markerList: MutableList<Feature> = ArrayList()
         markerList.add(Feature.fromGeometry(optimizedRoute.coordinates().first()))
         markerList.add(Feature.fromGeometry(optimizedRoute.coordinates().last()))
-        // Add the source to the map
+
         style.addSource(
             GeoJsonSource(
                 ICON_GEOJSON_SOURSE_ID

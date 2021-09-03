@@ -16,25 +16,19 @@ class ListImageAdapter(
 ) : RecyclerView.Adapter<ListImageAdapter.ImageViewHolder>() {
 
     inner class ImageViewHolder(val fotoBinding: ItemFotoBinding) :
-        RecyclerView.ViewHolder(fotoBinding.root) {
-
-    }
+        RecyclerView.ViewHolder(fotoBinding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-
         return ImageViewHolder(
             ItemFotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
     override fun getItemCount(): Int {
-
         return urls.size
-
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-
         val url = urls[position]
         Glide.with(holder.itemView).load(url).into(holder.fotoBinding.image)
         holder.fotoBinding.image.setOnClickListener {

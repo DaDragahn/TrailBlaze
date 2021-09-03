@@ -27,8 +27,6 @@ class DefinicoesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-
         _binding = FragmentDefinicoesBinding.inflate(inflater, container, false)
 
         val unidades = resources.getStringArray(R.array.unidades)

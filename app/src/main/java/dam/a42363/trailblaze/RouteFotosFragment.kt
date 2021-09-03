@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dam.a42363.trailblaze.adapters.ImageAdapter
@@ -27,7 +25,7 @@ class RouteFotosFragment : Fragment() {
     private lateinit var path: String
     private lateinit var fotosListView: RecyclerView
     private lateinit var navController: NavController
-    var _binding: FragmentRouteFotosBinding? = null
+    private var _binding: FragmentRouteFotosBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(

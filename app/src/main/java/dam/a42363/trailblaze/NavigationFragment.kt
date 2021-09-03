@@ -1,6 +1,5 @@
 package dam.a42363.trailblaze
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -12,7 +11,6 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.location.Location
 import android.os.Bundle
 import android.os.Looper.getMainLooper
 import android.os.SystemClock
@@ -66,8 +64,6 @@ import dam.a42363.trailblaze.databinding.FragmentNavigationBinding
 import dam.a42363.trailblaze.utils.Constants
 import timber.log.Timber
 import java.lang.ref.WeakReference
-import kotlin.math.roundToInt
-import kotlin.math.sqrt
 import kotlin.properties.Delegates
 
 
@@ -86,7 +82,6 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
     private lateinit var auth: FirebaseAuth
 
-    //    private val mapboxReplayer = MapboxReplayer()
     private var check by Delegates.notNull<Boolean>()
     private lateinit var permissionsManager: PermissionsManager
     private var _binding: FragmentNavigationBinding? = null
@@ -337,14 +332,12 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     }
 
     private fun initMarkerIconSymbolLayer(loadedMapStyle: Style) {
-        // Add the marker image to map
         loadedMapStyle.addImage(
             "icon-image", BitmapFactory.decodeResource(
                 this.resources, R.drawable.person_pin
             )
         )
 
-        // Add the source to the map
         loadedMapStyle.addSource(
             GeoJsonSource(
                 ICON_GEOJSON_SOURCE_ID
@@ -376,14 +369,10 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             mapboxMap.addOnMapClickListener(this)
             val navigationOptions = MapboxNavigation
                 .defaultNavigationOptionsBuilder(requireContext(), Mapbox.getAccessToken())
-//                .locationEngine(ReplayLocationEngine(mapboxReplayer))
                 .build()
             mapboxNavigation = MapboxNavigation(navigationOptions)
-//            mapboxNavigation!!.registerRouteProgressObserver(replayProgressObserver)
             mapboxNavigation!!.registerRouteProgressObserver(routeProgressObserver)
             mapboxNavigation!!.registerArrivalObserver(arrivalObserver)
-//            mapboxReplayer.pushRealLocation(requireContext(), 0.0)
-//            mapboxReplayer.play()
 
             mapCamera = NavigationCamera(mapboxMap)
             mapCamera?.addProgressChangeListener(mapboxNavigation!!)
@@ -396,7 +385,7 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
             val locationEngineRequest =
                 LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
                     .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
-                    .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME) // sets the maximum wait time in milliseconds for location updates. Locations determined at intervals but delivered in batch based on wait time. Batching is not supported by all engines.
+                    .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
                     .build()
 
             mapboxNavigation!!.navigationOptions.locationEngine.requestLocationUpdates(
@@ -556,8 +545,6 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 //        val sharedPreferences: SharedPreferences? =
 //            activity?.getPreferences(Context.MODE_PRIVATE)
 //        stepCount = sharedPreferences!!.getInt("stepCount", 0)
-
-
     }
 
     override fun onStop() {
@@ -576,16 +563,14 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 //        editor?.apply()
 //
 //        binding.totalPassos.text = "0"
-
     }
 
     override fun onPause() {
         super.onPause()
         mapView.onPause()
 
-        val sharedPreferences: SharedPreferences? =
-            activity?.getPreferences(Context.MODE_PRIVATE)
-
+//        val sharedPreferences: SharedPreferences? =
+//            activity?.getPreferences(Context.MODE_PRIVATE)
 //        val editor: SharedPreferences.Editor? = sharedPreferences?.edit()
 //        editor?.clear()
 //        editor?.putInt("stepCount", stepCount)
@@ -594,25 +579,22 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
     override fun onDestroy() {
         mapView.onDestroy()
-//        mapboxNavigation?.unregisterRouteProgressObserver(replayProgressObserver)
         mapboxNavigation?.unregisterRouteProgressObserver(routeProgressObserver)
         mapboxNavigation?.unregisterArrivalObserver(arrivalObserver)
 
         mapboxNavigation?.stopTripSession()
         mapboxNavigation?.onDestroy()
-        if(!idLobby.isNullOrEmpty()) {
+        if (!idLobby.isNullOrEmpty()) {
             db.collection("Trails").document(idLobby!!).collection("TrailsCollection")
                 .document(auth.uid!!).delete()
         }
-        super.onDestroy()
-
 //        binding.totalPassos.text = "0"
+        super.onDestroy()
     }
 
     override fun onDestroyView() {
         if (destroy) {
             mapView.onDestroy()
-//        mapboxNavigation?.unregisterRouteProgressObserver(replayProgressObserver)
             mapboxNavigation?.unregisterRouteProgressObserver(routeProgressObserver)
             mapboxNavigation?.unregisterArrivalObserver(arrivalObserver)
             mapboxNavigation?.stopTripSession()
@@ -661,8 +643,6 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         lobbyArray.clear()
     }
 
-//    private val replayProgressObserver = ReplayProgressObserver(mapboxReplayer)
-
     private var arrivalObserver: ArrivalObserver = object : ArrivalObserver {
         override fun onNextRouteLegStart(routeLegProgress: RouteLegProgress) {
 
@@ -696,7 +676,6 @@ class NavigationFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                         ).show()
                     }
             }
-
         }
         return false
     }

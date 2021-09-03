@@ -1,5 +1,6 @@
 package dam.a42363.trailblaze
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -23,6 +24,7 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import dam.a42363.trailblaze.databinding.FragmentCameraBinding
 import dam.a42363.trailblaze.utils.Constants
+import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -71,8 +73,6 @@ class CameraFragment : Fragment() {
             takePhoto()
         }
 
-
-        // Inflate the layout for this fragment
         return binding.root
     }
 
@@ -113,6 +113,7 @@ class CameraFragment : Fragment() {
             outputOption,
             ContextCompat.getMainExecutor(requireContext()),
             object : ImageCapture.OnImageSavedCallback {
+                @SuppressLint("LogNotTimber")
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
 
@@ -133,6 +134,7 @@ class CameraFragment : Fragment() {
                         }
                 }
 
+                @SuppressLint("LogNotTimber")
                 override fun onError(exception: ImageCaptureException) {
                     Log.d(Constants.TAG, "onError: ${exception.message}", exception)
                 }
@@ -159,7 +161,7 @@ class CameraFragment : Fragment() {
                 cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
 
             } catch (e: Exception) {
-                Log.d(Constants.TAG, "startCamera Fail: ", e)
+                Timber.tag(Constants.TAG).d(e, "startCamera Fail: ")
             }
         }, ContextCompat.getMainExecutor(requireContext()))
     }

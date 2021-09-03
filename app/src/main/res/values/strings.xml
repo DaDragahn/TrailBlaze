@@ -109,6 +109,8 @@
     <string name="podia_ser_melhor">Podia ser melhor</string>
     <string name="gostei">Gostei</string>
     <string name="adorei">Adorei</string>
+    <string name="convitePercurso">enviou-te um convite para percorrer</string>
+    <string name="conviteGrupo">enviou-te um convite para juntares ao Grupo</string>
 
     <string-array name="modalidades">
         <item>@string/caminhada</item>

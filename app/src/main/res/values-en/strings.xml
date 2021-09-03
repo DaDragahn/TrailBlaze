@@ -107,6 +107,8 @@
     <string name="podia_ser_melhor">It could be better</string>
     <string name="gostei">Liked it</string>
     <string name="adorei">Loved it</string>
+    <string name="convitePercurso">invited you to join the trail</string>
+    <string name="conviteGrupo">invited you to join the Group</string>
 
     <string-array name="modalidades">
         <item>@string/caminhada</item>

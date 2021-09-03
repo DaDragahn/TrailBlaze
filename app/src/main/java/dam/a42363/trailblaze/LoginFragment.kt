@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
-import dam.a42363.trailblaze.databinding.FragmentCriarPerfilBinding
 import dam.a42363.trailblaze.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {

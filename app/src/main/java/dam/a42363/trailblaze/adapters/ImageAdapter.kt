@@ -1,6 +1,5 @@
 package dam.a42363.trailblaze.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
@@ -8,7 +7,6 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dam.a42363.trailblaze.R
-import dam.a42363.trailblaze.databinding.ItemFotoBinding
 import dam.a42363.trailblaze.databinding.ItemFotoCollectionBinding
 
 class ImageAdapter(
@@ -22,26 +20,19 @@ class ImageAdapter(
     private lateinit var name: String
 
     inner class ImageViewHolder(val fotoBinding: ItemFotoCollectionBinding) :
-        RecyclerView.ViewHolder(fotoBinding.root) {
-
-    }
+        RecyclerView.ViewHolder(fotoBinding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-
         return ImageViewHolder(
             ItemFotoCollectionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
-
     }
 
     override fun getItemCount(): Int {
-
         return urls.size
-
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-
         val url = urls[position]
         if (names.isNotEmpty()) {
             name = names[position]

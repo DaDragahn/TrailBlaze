@@ -6,6 +6,5 @@ class Friends {
     constructor() {}
     private constructor(date: String) {
         this.date = date
-
     }
 }

@@ -31,13 +31,14 @@ import kotlinx.coroutines.withContext
 class TrailsFragment : Fragment() {
     private var adapter: FindTrailsFirestoreRecyclerAdapter? = null
     private lateinit var navController: NavController
-    var _binding: FragmentTrailsBinding? = null
+    private var _binding: FragmentTrailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var db: FirebaseFirestore
     private lateinit var routeRef: Query
     private lateinit var auth: FirebaseAuth
     private lateinit var onlineId: String
     private lateinit var trailsListView: RecyclerView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -163,7 +164,6 @@ class TrailsFragment : Fragment() {
                 )
             )
         }
-
     }
 
     override fun onStop() {

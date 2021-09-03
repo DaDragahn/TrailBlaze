@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -21,9 +20,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-import dam.a42363.trailblaze.databinding.FragmentExplorarBinding
 import dam.a42363.trailblaze.databinding.FragmentSignInBinding
-import java.util.HashMap
+import java.util.*
 
 class SignInFragment : Fragment(){
 
@@ -53,8 +51,6 @@ class SignInFragment : Fragment(){
         registerBtn = binding.register
         signInButton = binding.googleSignIn
 
-
-        // Inflate the layout for this fragment
         return binding.root
     }
 
@@ -70,8 +66,6 @@ class SignInFragment : Fragment(){
 
         auth = FirebaseAuth.getInstance()
 
-        //--------------------------------------------GOOGLE--------------------------------------------\\
-//        signInButton = view.findViewById(R.id.googleSignIn)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -109,6 +103,7 @@ class SignInFragment : Fragment(){
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
+    @SuppressLint("LogNotTimber")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -132,6 +127,7 @@ class SignInFragment : Fragment(){
         }
     }
 
+    @SuppressLint("LogNotTimber")
     private fun firebaseAuthWithGoogle(idToken: String?) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         this.activity?.let {

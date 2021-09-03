@@ -2,7 +2,9 @@ package dam.a42363.trailblaze
 
 import android.Manifest
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -20,14 +22,6 @@ import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import dam.a42363.trailblaze.databinding.FragmentHandlerBinding
 import dam.a42363.trailblaze.utils.SampleMethods
-import android.preference.PreferenceManager
-
-import android.content.SharedPreferences
-import android.content.res.Configuration
-import android.util.Log
-import androidx.camera.core.impl.utils.ContextUtil
-import androidx.camera.core.impl.utils.ContextUtil.getBaseContext
-import androidx.camera.core.impl.utils.ContextUtil.getBaseContext
 import java.util.*
 
 
@@ -39,7 +33,7 @@ class HandlerFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
-    var _binding: FragmentHandlerBinding? = null
+    private var _binding: FragmentHandlerBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +44,7 @@ class HandlerFragment : Fragment() {
         val lang: String? = editor.getString("My_Lang", "")
         val config: Configuration = requireActivity().baseContext.resources.configuration
         if ("" != lang && !config.locale.language.equals(lang)) {
-            val locale = Locale(lang)
+            val locale = Locale(lang!!)
             Locale.setDefault(locale)
             config.locale = locale
             requireActivity().baseContext.resources.updateConfiguration(
@@ -66,7 +60,7 @@ class HandlerFragment : Fragment() {
                     val user = auth.currentUser
                     Handler(Looper.getMainLooper()).postDelayed({
                         if (user != null && auth.uid != null) {
-                            val currentUser = SampleMethods.getUser(auth, user)
+                            val currentUser = SampleMethods.getUser(user)
                             val bundle = bundleOf("User" to currentUser)
                             navController.navigate(
                                 R.id.action_handlerFragment_to_explorarFragment,
@@ -105,7 +99,7 @@ class HandlerFragment : Fragment() {
             val user = auth.currentUser
             Handler(Looper.getMainLooper()).postDelayed({
                 if (user != null && auth.uid != null) {
-                    val currentUser = SampleMethods.getUser(auth, user)
+                    val currentUser = SampleMethods.getUser(user)
                     val bundle = bundleOf("User" to currentUser)
                     navController.navigate(R.id.explorarFragment, bundle)
                     progressBar.visibility = View.INVISIBLE

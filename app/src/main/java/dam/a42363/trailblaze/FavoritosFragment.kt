@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -43,7 +41,7 @@ class FavoritosFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    var _binding: FragmentFavoritosBinding? = null
+    private var _binding: FragmentFavoritosBinding? = null
     private val binding get() = _binding!!
     private var doubleBackToExitPressedOnce = false
 

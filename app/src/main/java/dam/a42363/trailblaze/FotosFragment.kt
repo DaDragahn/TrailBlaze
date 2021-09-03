@@ -1,23 +1,20 @@
 package dam.a42363.trailblaze
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dam.a42363.trailblaze.adapters.ImageAdapter
 import dam.a42363.trailblaze.databinding.FragmentFotosBinding
-import dam.a42363.trailblaze.databinding.FragmentTrailsBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,7 +30,7 @@ class FotosFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var fotosListView: RecyclerView
     private lateinit var navController: NavController
-    var _binding: FragmentFotosBinding? = null
+    private var _binding: FragmentFotosBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(

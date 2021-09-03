@@ -1,12 +1,10 @@
 package dam.a42363.trailblaze
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import dam.a42363.trailblaze.databinding.FragmentFiltrosBinding
@@ -16,7 +14,7 @@ class FiltrosFragment : Fragment() {
 
     private lateinit var navController: NavController
 
-    var _binding: FragmentFiltrosBinding? = null
+    private var _binding: FragmentFiltrosBinding? = null
     private val binding get() = _binding!!
     private var dificuldadeArray = ArrayList<String>()
     private val modalidadeArray = ArrayList<String>()

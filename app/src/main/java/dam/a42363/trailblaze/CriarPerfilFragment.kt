@@ -3,7 +3,6 @@ package dam.a42363.trailblaze
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +17,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dam.a42363.trailblaze.databinding.FragmentCriarPerfilBinding
+import timber.log.Timber
 
 class CriarPerfilFragment : Fragment() {
 
@@ -30,8 +30,6 @@ class CriarPerfilFragment : Fragment() {
     private lateinit var storage: FirebaseStorage
 
     private lateinit var navController: NavController
-
-    private lateinit var key: String
 
     private var _binding: FragmentCriarPerfilBinding? = null
     private val binding get() = _binding!!
@@ -78,7 +76,6 @@ class CriarPerfilFragment : Fragment() {
                 val storageRef = storage.reference
 
                 storageRef.child("images/defaultPic.jpg").downloadUrl.addOnSuccessListener {
-                    Log.d("URL", it.toString())
                     val updates: MutableMap<String, Any> = HashMap()
                     updates["nome"] = "$txtFirstName $txtLastName"
                     updates["email"] = email
@@ -95,8 +92,7 @@ class CriarPerfilFragment : Fragment() {
                     navController.navigate(R.id.action_criarPerfilFragment_to_perfilFragment)
 
                 }.addOnFailureListener {
-                    Log.d("URL", "Fail", it)
-
+                    Timber.tag("URL").d(it, "Fail")
                 }
             }
         }

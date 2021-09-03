@@ -29,7 +29,7 @@ import java.time.Month
 class NotificationsFragment : Fragment() {
     private var adapter: GetInvitesFirestoreRecyclerAdapter? = null
     private lateinit var navController: NavController
-    var _binding: FragmentNotificationsBinding? = null
+    private var _binding: FragmentNotificationsBinding? = null
     private val binding get() = _binding!!
     private lateinit var db: FirebaseFirestore
     private lateinit var locationRef: CollectionReference
@@ -95,7 +95,8 @@ class NotificationsFragment : Fragment() {
             routeName: String,
             ctx: Context
         ) {
-            notificationBinding.name.text = "$nome enviou-te um convite para percorrer $routeName"
+            notificationBinding.name.text =
+                "$nome ${getString(R.string.convitePercurso)} $routeName"
             Glide.with(ctx).load(photoUrl)
                 .into(notificationBinding.profileImage)
         }
@@ -108,7 +109,7 @@ class NotificationsFragment : Fragment() {
             ctx: Context
         ) {
             notificationBinding.name.text =
-                "$nome enviou-te um convite para juntares ao Grupo $grupoName"
+                "$nome ${getString(R.string.conviteGrupo)} $grupoName"
             Glide.with(ctx).load(photoUrl)
                 .into(notificationBinding.profileImage)
         }

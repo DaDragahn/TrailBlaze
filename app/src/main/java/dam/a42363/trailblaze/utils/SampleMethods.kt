@@ -1,8 +1,8 @@
 package dam.a42363.trailblaze.utils
 
+import android.annotation.SuppressLint
 import android.util.Log
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -10,9 +10,8 @@ import dam.a42363.trailblaze.models.User
 
 object SampleMethods {
 
-
-
-    fun getUser(auth: FirebaseAuth, user: FirebaseUser): User {
+    @SuppressLint("LogNotTimber")
+    fun getUser(user: FirebaseUser): User {
 
         lateinit var name: String
 
@@ -34,7 +33,6 @@ object SampleMethods {
                     Log.d("MainActivity", "get failed with ", task.exception)
                 }
             }
-
         return User(name, email)
     }
 }

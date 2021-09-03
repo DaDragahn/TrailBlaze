@@ -12,7 +12,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,7 +55,6 @@ import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
 import com.mapbox.mapboxsdk.style.expressions.Expression.*
-import com.mapbox.mapboxsdk.style.layers.Layer
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory.textField
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
@@ -75,7 +73,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
 
     private lateinit var mainDificuldadeArray: ArrayList<String>
     private lateinit var mainModalidadeArray: ArrayList<String>
-    var _binding: FragmentExplorarBinding? = null
+    private var _binding: FragmentExplorarBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var mapView: MapView
@@ -389,7 +387,6 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     }
 
     private fun initMarkerIconSymbolLayer(style: Style) {
-        // Add the marker image to map
         style.addImage(
             CYCLING_ICON_ID, BitmapFactory.decodeResource(
                 this.resources, R.drawable.cycling_icon
@@ -405,7 +402,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
                 this.resources, R.drawable.hiking_icon
             )
         )
-        // Add the source to the map
+
         style.addSource(
             GeoJsonSource(
                 ICON_GEOJSON_SOURSE_ID
@@ -451,6 +448,7 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setRating(id: String) = CoroutineScope(Dispatchers.IO).launch {
         try {
             val ratingsArray = mutableListOf<Float>()
@@ -725,8 +723,10 @@ class ExplorarFragment : Fragment(), OnMapReadyCallback, PermissionsListener,
     }
 
     override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
-        TODO("Not yet implemented")
+        Toast.makeText(
+            requireContext(),
+            R.string.user_location_permission_explanation,
+            Toast.LENGTH_LONG
+        ).show()
     }
-
-
 }

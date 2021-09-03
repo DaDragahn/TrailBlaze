@@ -2,7 +2,6 @@ package dam.a42363.trailblaze
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -106,7 +105,7 @@ class AmigosFragment : Fragment() {
         }
     }
 
-    inner class FindFriendsViewHolder(val amigoBinding: ItemAmigoBinding) :
+    inner class FindFriendsViewHolder(private val amigoBinding: ItemAmigoBinding) :
         RecyclerView.ViewHolder(amigoBinding.root) {
         fun setVariables(nome: String, photoUrl: String, ctx: Context) {
             amigoBinding.name.text = nome
@@ -126,7 +125,6 @@ class AmigosFragment : Fragment() {
             position: Int,
             model: Friends
         ) {
-            Log.d("TAG", snapshots.getSnapshot(position).id)
             val usersID = snapshots.getSnapshot(position).id
 
             userRef.document(usersID).addSnapshotListener { snapshot, _ ->

@@ -1,5 +1,6 @@
 package dam.a42363.trailblaze
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -32,7 +33,7 @@ class PerfilFragment : Fragment() {
 
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
-    var _binding: FragmentPerfilBinding? = null
+    private var _binding: FragmentPerfilBinding? = null
     private val binding get() = _binding!!
 
     private var doubleBackToExitPressedOnce = false
@@ -51,7 +52,7 @@ class PerfilFragment : Fragment() {
                 .show()
 
             Handler(Looper.getMainLooper()).postDelayed(
-                Runnable { doubleBackToExitPressedOnce = false },
+                { doubleBackToExitPressedOnce = false },
                 2000
             )
         }
@@ -117,6 +118,7 @@ class PerfilFragment : Fragment() {
     }
 
 
+    @SuppressLint("LogNotTimber")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
