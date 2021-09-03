@@ -52,26 +52,57 @@
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_baseline_share.xml" value="0.24177631578947367" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_bookmark.xml" value="0.24177631578947367" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_bookmark_filled.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_camera_filled.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_cross.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_directions.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_dry_clean.xml" value="0.24177631578947367" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_edit_image.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_edit_person.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_filters.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_heart_filled.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_heart_outlined.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_key.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_launcher_background.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_leave.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_line_bar.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_list.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_location.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_location_arrow.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_magnifying_glass.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_man_walking.xml" value="0.1" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_map.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_minus.xml" value="0.21597222222222223" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_notification_line.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_notification_solid.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_outline_add_circle.xml" value="0.24177631578947367" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_outline_group_add.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_outline_location.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_outline_map.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_outline_person_add_alt.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_pause_circle.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_person.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_play_circle.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_record_stop.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_round_background.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_round_check.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_round_download.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_running.xml" value="0.24177631578947367" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_settings.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_settings__1_.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_sharp_my_location.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_square_background.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/ic_trash_fill.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/record_button.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/round_buttons_perfil.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/round_navbar.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/search_bar.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/selector_contribuir.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/selector_explorar.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/selector_guardados.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/selector_notification.xml" value="0.23941368078175895" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/selector_perfil.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/sign_in_buttons.xml" value="0.24177631578947367" />
+        <entry key="..\:/Isel/TrailBlaze/app/src/main/res/drawable/slideup_view.xml" value="0.23941368078175895" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/activity_main.xml" value="0.11376858435681965" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_acompanhado.xml" value="0.23157894736842105" />
         <entry key="..\:/Isel/TrailBlaze/app/src/main/res/layout/fragment_add_amigos.xml" value="0.11376858435681965" />

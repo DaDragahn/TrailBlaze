@@ -61,41 +61,31 @@
                     android:layout_height="30dp"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginEnd="15dp"
-                    android:visibility="gone"
                     android:background="@drawable/ic_round_check"
+                    android:visibility="visible"
                     app:backgroundTint="@color/trailGreen" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/refuse"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginEnd="15dp"
-                    android:visibility="gone"
                     android:background="@drawable/ic_cross"
+                    android:visibility="visible"
                     app:backgroundTint="@color/trailGreen" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/adicionar"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:visibility="visible"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginEnd="15dp"
                     android:background="@drawable/ic_add_circle"
+                    android:visibility="visible"
                     app:backgroundTint="@color/trailGreen" />
 
             </GridLayout>
-
-
-            <!--            <com.google.android.material.button.MaterialButton-->
-            <!--                android:id="@+id/adicionar"-->
-            <!--                android:layout_width="30dp"-->
-            <!--                android:layout_height="30dp"-->
-            <!--                android:layout_gravity="end|center_vertical"-->
-            <!--                android:layout_marginEnd="15dp"-->
-            <!--                android:background="@drawable/ic_add_circle"-->
-            <!--                app:backgroundTint="@color/trailGreen" />-->
 
         </GridLayout>
 
