@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,7 @@ import java.time.LocalDateTime
 
 class AcompanhadoFragment : Fragment() {
 
-    var _binding: FragmentAcompanhadoBinding? = null
+    private var _binding: FragmentAcompanhadoBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var amigosListView: RecyclerView
@@ -54,7 +55,6 @@ class AcompanhadoFragment : Fragment() {
     private var optimizedRoute: String? = null
     private var feature: String? = null
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,25 +64,12 @@ class AcompanhadoFragment : Fragment() {
         amigosListView = binding.amigosListView
         grupoListView = binding.grupoListView
         auth = FirebaseAuth.getInstance()
-        onlineId = auth.currentUser!!.uid
         db = FirebaseFirestore.getInstance()
-        friendRef = db.collection("Friends").document("FriendDocument").collection(onlineId)
-        userRef = db.collection("users")
-        grupoRef = db.collection("Groups")
-
-        displayAllFriends()
-        displayAllGroups()
-
-        optimizedRoute = arguments?.getString("route")!!
-        feature = arguments?.getString("feature")!!
-
-        binding.start.setOnClickListener {
-            inviteAndStartTrail()
-        }
 
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -91,11 +78,26 @@ class AcompanhadoFragment : Fragment() {
         binding.backBtn.setOnClickListener {
             navController.popBackStack()
         }
+        if (auth.currentUser == null && auth.uid == null) {
+            navController.navigate(R.id.action_escolherModoFragment_to_signInFragment)
+        } else {
+            onlineId = auth.currentUser!!.uid
+            friendRef = db.collection("Friends").document("FriendDocument").collection(onlineId)
+            userRef = db.collection("users")
+            grupoRef = db.collection("Groups")
+            displayAllFriends()
+            displayAllGroups()
 
-        if (activity != null && this.activity is MainActivity) {
-            (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+            optimizedRoute = arguments?.getString("route")!!
+            feature = arguments?.getString("feature")!!
+
+            binding.start.setOnClickListener {
+                inviteAndStartTrail()
+            }
+            if (activity != null && this.activity is MainActivity) {
+                (activity as MainActivity).bottomNavigationView?.visibility = View.GONE
+            }
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -258,6 +260,7 @@ class AcompanhadoFragment : Fragment() {
                 val photoUrl = data["photoUrl"].toString()
                 holder.setVariables(nome, photoUrl, groupArray.size.toString(), ctx)
                 holder.grupoBinding.cardView.setOnClickListener {
+                    Log.d("RecordRoute", "Clicked")
                     binding.decisionCardView.visibility = View.VISIBLE
                     binding.aceitarBtn.setOnClickListener {
                         inviteGroupandStartTrail(groupArray)

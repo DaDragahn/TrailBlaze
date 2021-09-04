@@ -278,6 +278,9 @@
         <action
             android:id="@+id/action_escolherModoFragment_to_navigationFragment"
             app:destination="@id/navigationFragment" />
+        <action
+            android:id="@+id/action_escolherModoFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
     <fragment
         android:id="@+id/notificationsFragment"
