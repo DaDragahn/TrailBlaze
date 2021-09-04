@@ -14,7 +14,8 @@ class ImageAdapter(
     private val paths: List<String>,
     private val names: List<String>,
     val navController: NavController,
-    private val share: Boolean
+    private val share: Boolean,
+    private val terminar: Boolean
 ) : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
     private lateinit var name: String
@@ -38,7 +39,7 @@ class ImageAdapter(
             name = names[position]
         }
         Glide.with(holder.itemView).load(url).into(holder.fotoBinding.image)
-        if (share) {
+        if (share && terminar) {
             holder.fotoBinding.image.setOnClickListener {
                 val bundle = bundleOf("url" to url)
                 navController.navigate(R.id.action_terminarFragment_to_imageShareFragment, bundle)
@@ -48,6 +49,11 @@ class ImageAdapter(
             holder.fotoBinding.image.setOnClickListener {
                 val bundle = bundleOf("path" to paths[position])
                 navController.navigate(R.id.action_fotosFragment_to_routeFotosFragment, bundle)
+            }
+        } else if (share && !terminar) {
+            holder.fotoBinding.image.setOnClickListener {
+                val bundle = bundleOf("url" to url)
+                navController.navigate(R.id.action_routeFotosFragment_to_imageShareFragment, bundle)
             }
         }
     }

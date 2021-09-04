@@ -355,7 +355,11 @@
         android:id="@+id/routeFotosFragment"
         android:name="dam.a42363.trailblaze.RouteFotosFragment"
         android:label="fragment_route_fotos"
-        tools:layout="@layout/fragment_route_fotos" />
+        tools:layout="@layout/fragment_route_fotos" >
+        <action
+            android:id="@+id/action_routeFotosFragment_to_imageShareFragment"
+            app:destination="@id/imageShareFragment" />
+    </fragment>
     <fragment
         android:id="@+id/listarImagensPartilharFragment"
         android:name="dam.a42363.trailblaze.ListarImagensPartilharFragment"

@@ -39,7 +39,6 @@ class NotificationsFragment : Fragment() {
     private lateinit var inviteRef: Query
     private lateinit var inviteListView: RecyclerView
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,22 +46,26 @@ class NotificationsFragment : Fragment() {
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
-        onlineId = auth.currentUser!!.uid
 
         locationRef = db.collection("locations")
         grupoRef = db.collection("Groups")
         inviteListView = binding.inviteListView
-        displayAllNotifications()
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(view)
-
-        if (activity != null && this.activity is MainActivity) {
-            (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
+        if (auth.currentUser == null && auth.uid == null) {
+            navController.navigate(R.id.action_notificationsFragment_to_signInFragment)
+        } else {
+            onlineId = auth.currentUser!!.uid
+            if (activity != null && this.activity is MainActivity) {
+                (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
+            }
+            displayAllNotifications()
         }
     }
 

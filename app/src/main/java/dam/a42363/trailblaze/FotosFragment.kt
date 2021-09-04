@@ -84,7 +84,7 @@ class FotosFragment : Fragment() {
                 }
             }
             withContext(Dispatchers.Main) {
-                val imageAdapter = ImageAdapter(imageUrls, imagePaths, imageName, navController, false)
+                val imageAdapter = ImageAdapter(imageUrls, imagePaths, imageName, navController, false, false)
                 fotosListView.apply {
                     adapter = imageAdapter
                 }

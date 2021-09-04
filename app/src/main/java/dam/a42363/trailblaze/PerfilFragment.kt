@@ -70,22 +70,6 @@ class PerfilFragment : Fragment() {
     ): View {
         _binding = FragmentPerfilBinding.inflate(inflater, container, false)
 
-        binding.amigosBtn.setOnClickListener {
-            navController.navigate(R.id.action_perfilFragment_to_amigosFragment)
-        }
-
-        binding.trilhosBtn.setOnClickListener {
-            navController.navigate(R.id.action_perfilFragment_to_trailsFragment)
-        }
-
-        binding.gruposBtn.setOnClickListener {
-            navController.navigate(R.id.action_perfilFragment_to_gruposFragment)
-        }
-
-        binding.fotosBtn.setOnClickListener {
-            navController.navigate(R.id.action_perfilFragment_to_fotosFragment)
-        }
-
         toolbar = binding.toolbar
 
         toolbar.inflateMenu(R.menu.perfil_menu)
@@ -112,7 +96,7 @@ class PerfilFragment : Fragment() {
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+
             }
         }
     }
@@ -148,6 +132,22 @@ class PerfilFragment : Fragment() {
 
             if (activity != null && this.activity is MainActivity) {
                 (activity as MainActivity).bottomNavigationView?.visibility = View.VISIBLE
+            }
+
+            binding.amigosBtn.setOnClickListener {
+                navController.navigate(R.id.action_perfilFragment_to_amigosFragment)
+            }
+
+            binding.trilhosBtn.setOnClickListener {
+                navController.navigate(R.id.action_perfilFragment_to_trailsFragment)
+            }
+
+            binding.gruposBtn.setOnClickListener {
+                navController.navigate(R.id.action_perfilFragment_to_gruposFragment)
+            }
+
+            binding.fotosBtn.setOnClickListener {
+                navController.navigate(R.id.action_perfilFragment_to_fotosFragment)
             }
 
             val name = binding.firstName
