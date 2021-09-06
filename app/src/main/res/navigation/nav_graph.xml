@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/handlerFragment"
-        android:name="dam.a42363.trailblaze.HandlerFragment"
+        android:name="projeto.g54.trailblaze.HandlerFragment"
         android:label="fragment_handler"
         tools:layout="@layout/fragment_handler">
 
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/explorarFragment"
-        android:name="dam.a42363.trailblaze.ExplorarFragment"
+        android:name="projeto.g54.trailblaze.ExplorarFragment"
         android:label="fragment_explorar"
         tools:layout="@layout/fragment_explorar">
 
@@ -48,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/guardadosFragment"
-        android:name="dam.a42363.trailblaze.FavoritosFragment"
+        android:name="projeto.g54.trailblaze.FavoritosFragment"
         android:label="fragment_guardados"
         tools:layout="@layout/fragment_favoritos">
 
@@ -61,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/contribuirFragment"
-        android:name="dam.a42363.trailblaze.ContribuirFragment"
+        android:name="projeto.g54.trailblaze.ContribuirFragment"
         android:label="fragment_contribuir"
         tools:layout="@layout/fragment_contribuir">
 
@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/perfilFragment"
-        android:name="dam.a42363.trailblaze.PerfilFragment"
+        android:name="projeto.g54.trailblaze.PerfilFragment"
         android:label="fragment_perfil"
         tools:layout="@layout/fragment_perfil">
 
@@ -110,7 +110,7 @@
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
-        android:name="dam.a42363.trailblaze.SignInFragment"
+        android:name="projeto.g54.trailblaze.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in">
 
@@ -129,7 +129,7 @@
     </fragment>
     <fragment
         android:id="@+id/registarFragment"
-        android:name="dam.a42363.trailblaze.RegistarFragment"
+        android:name="projeto.g54.trailblaze.RegistarFragment"
         android:label="fragment_registar"
         tools:layout="@layout/fragment_registar">
 
@@ -140,7 +140,7 @@
     </fragment>
     <fragment
         android:id="@+id/criarPerfilFragment"
-        android:name="dam.a42363.trailblaze.CriarPerfilFragment"
+        android:name="projeto.g54.trailblaze.CriarPerfilFragment"
         android:label="fragment_criar_perfil"
         tools:layout="@layout/fragment_criar_perfil">
 
@@ -151,7 +151,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="dam.a42363.trailblaze.LoginFragment"
+        android:name="projeto.g54.trailblaze.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
 
@@ -162,7 +162,7 @@
     </fragment>
     <fragment
         android:id="@+id/fullInfoFragment"
-        android:name="dam.a42363.trailblaze.FullInfoFragment"
+        android:name="projeto.g54.trailblaze.FullInfoFragment"
         android:label="fragment_full_info"
         tools:layout="@layout/fragment_full_info">
         <action
@@ -174,7 +174,7 @@
     </fragment>
     <fragment
         android:id="@+id/explorarListFragment"
-        android:name="dam.a42363.trailblaze.ExplorarListFragment"
+        android:name="projeto.g54.trailblaze.ExplorarListFragment"
         android:label="fragment_explorar_list"
         tools:layout="@layout/fragment_explorar_list">
         <action
@@ -189,7 +189,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigationFragment"
-        android:name="dam.a42363.trailblaze.NavigationFragment"
+        android:name="projeto.g54.trailblaze.NavigationFragment"
         android:label="fragment_navigation"
         tools:layout="@layout/fragment_navigation">
         <action
@@ -207,7 +207,7 @@
     </fragment>
     <fragment
         android:id="@+id/partilharFragment"
-        android:name="dam.a42363.trailblaze.PartilharFragment"
+        android:name="projeto.g54.trailblaze.PartilharFragment"
         android:label="fragment_partilhar"
         tools:layout="@layout/fragment_partilhar">
         <action
@@ -219,7 +219,7 @@
     </fragment>
     <fragment
         android:id="@+id/amigosFragment"
-        android:name="dam.a42363.trailblaze.AmigosFragment"
+        android:name="projeto.g54.trailblaze.AmigosFragment"
         android:label="fragment_amigos"
         tools:layout="@layout/fragment_amigos">
         <action
@@ -228,12 +228,12 @@
     </fragment>
     <fragment
         android:id="@+id/addAmigosFragment"
-        android:name="dam.a42363.trailblaze.AddAmigosFragment"
+        android:name="projeto.g54.trailblaze.AddAmigosFragment"
         android:label="fragment_add_amigos"
         tools:layout="@layout/fragment_add_amigos" />
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="dam.a42363.trailblaze.CameraFragment"
+        android:name="projeto.g54.trailblaze.CameraFragment"
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera">
         <action
@@ -242,7 +242,7 @@
     </fragment>
     <fragment
         android:id="@+id/trailsFragment"
-        android:name="dam.a42363.trailblaze.TrailsFragment"
+        android:name="projeto.g54.trailblaze.TrailsFragment"
         android:label="fragment_trrails"
         tools:layout="@layout/fragment_trails" >
         <action
@@ -251,7 +251,7 @@
     </fragment>
     <fragment
         android:id="@+id/gruposFragment"
-        android:name="dam.a42363.trailblaze.GruposFragment"
+        android:name="projeto.g54.trailblaze.GruposFragment"
         android:label="fragment_grupos"
         tools:layout="@layout/fragment_grupos" >
         <action
@@ -263,7 +263,7 @@
     </fragment>
     <fragment
         android:id="@+id/fotosFragment"
-        android:name="dam.a42363.trailblaze.FotosFragment"
+        android:name="projeto.g54.trailblaze.FotosFragment"
         android:label="fragment_fotos"
         tools:layout="@layout/fragment_fotos" >
         <action
@@ -272,7 +272,7 @@
     </fragment>
     <fragment
         android:id="@+id/escolherModoFragment"
-        android:name="dam.a42363.trailblaze.AcompanhadoFragment"
+        android:name="projeto.g54.trailblaze.AcompanhadoFragment"
         android:label="fragment_escolher_modo"
         tools:layout="@layout/fragment_acompanhado">
         <action
@@ -284,7 +284,7 @@
     </fragment>
     <fragment
         android:id="@+id/notificationsFragment"
-        android:name="dam.a42363.trailblaze.NotificationsFragment"
+        android:name="projeto.g54.trailblaze.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications">
         <action
@@ -296,7 +296,7 @@
     </fragment>
     <fragment
         android:id="@+id/editarPerfilFragment"
-        android:name="dam.a42363.trailblaze.EditarPerfilFragment"
+        android:name="projeto.g54.trailblaze.EditarPerfilFragment"
         android:label="fragment_editar_perfil"
         tools:layout="@layout/fragment_editar_perfil" >
         <action
@@ -305,12 +305,12 @@
     </fragment>
     <fragment
         android:id="@+id/addGruposFragment"
-        android:name="dam.a42363.trailblaze.AddGruposFragment"
+        android:name="projeto.g54.trailblaze.AddGruposFragment"
         android:label="fragment_add_grupos"
         tools:layout="@layout/fragment_add_grupos" />
     <fragment
         android:id="@+id/filtrosFragment"
-        android:name="dam.a42363.trailblaze.FiltrosFragment"
+        android:name="projeto.g54.trailblaze.FiltrosFragment"
         android:label="fragment_filtros"
         tools:layout="@layout/fragment_filtros" >
         <action
@@ -322,7 +322,7 @@
     </fragment>
     <fragment
         android:id="@+id/terminarFragment"
-        android:name="dam.a42363.trailblaze.TerminarFragment"
+        android:name="projeto.g54.trailblaze.TerminarFragment"
         android:label="fragment_terminar"
         tools:layout="@layout/fragment_terminar" >
         <action
@@ -334,12 +334,12 @@
     </fragment>
     <fragment
         android:id="@+id/imageShareFragment"
-        android:name="dam.a42363.trailblaze.ImageShareFragment"
+        android:name="projeto.g54.trailblaze.ImageShareFragment"
         android:label="fragment_image_share"
         tools:layout="@layout/fragment_image_share" />
     <fragment
         android:id="@+id/grupoFragment"
-        android:name="dam.a42363.trailblaze.GrupoFragment"
+        android:name="projeto.g54.trailblaze.GrupoFragment"
         android:label="fragment_grupo"
         tools:layout="@layout/fragment_grupo" >
         <action
@@ -351,12 +351,12 @@
     </fragment>
     <fragment
         android:id="@+id/addAmigosGrupoFragment"
-        android:name="dam.a42363.trailblaze.AddAmigosGrupoFragment"
+        android:name="projeto.g54.trailblaze.AddAmigosGrupoFragment"
         android:label="fragment_add_amigos_grupo"
         tools:layout="@layout/fragment_add_amigos_grupo" />
     <fragment
         android:id="@+id/routeFotosFragment"
-        android:name="dam.a42363.trailblaze.RouteFotosFragment"
+        android:name="projeto.g54.trailblaze.RouteFotosFragment"
         android:label="fragment_route_fotos"
         tools:layout="@layout/fragment_route_fotos" >
         <action
@@ -365,12 +365,12 @@
     </fragment>
     <fragment
         android:id="@+id/listarImagensPartilharFragment"
-        android:name="dam.a42363.trailblaze.ListarImagensPartilharFragment"
+        android:name="projeto.g54.trailblaze.ListarImagensPartilharFragment"
         android:label="fragment_listar_imagens_partilhar"
         tools:layout="@layout/fragment_listar_imagens_partilhar" />
     <fragment
         android:id="@+id/definicoesFragment"
-        android:name="dam.a42363.trailblaze.DefinicoesFragment"
+        android:name="projeto.g54.trailblaze.DefinicoesFragment"
         android:label="fragment_definicoes"
         tools:layout="@layout/fragment_definicoes" />
 </navigation>

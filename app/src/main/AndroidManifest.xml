@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="dam.a42363.trailblaze">
+    package="projeto.g54.trailblaze">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-feature android:name="android.hardware.camera.any" />
@@ -27,7 +27,7 @@
         android:roundIcon="@mipmap/ic_square_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrailBlaze">
-        <activity android:name=".MainActivity"
+        <activity android:name="projeto.g54.trailblaze.MainActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
